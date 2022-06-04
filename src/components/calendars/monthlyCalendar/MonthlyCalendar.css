@@ -1,0 +1,31 @@
+#calendar
+{
+    width: 100%;
+    height: 100%;
+}
+
+.square
+{
+    border: 1px solid black;
+    float:left;
+    width:14% ;
+    height: 50px;
+}
+#sunday
+{
+  text-align:center;
+  display: 'flex';
+  font-family: Bahnschrift;
+  font-style: normal;
+  font-weight: normal;
+  color: #990A0A;
+  font-size: 16px;
+  line-height: 19px;
+}
+.button
+{
+  font-size: 20px;
+  border: none;
+  background-color: white;
+  margin: 0px 20px 0px 20px;
+}
