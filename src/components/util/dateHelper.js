@@ -25,43 +25,43 @@ export function firstOfMonth()
     }
 
 export function whatMonth(month)
-  {
-    switch(month) {
-      case 1:
-         return "Styczeń";
-      case 2:
-        return "Luty";
-      case 3:
-         return "Marzec";
-      case 4:
-         return "Kwiecień";
-       case 5:
-         return "Maj";
-      case 6:
-        return "Czerwiec";
-      case 7:
-        return "Lipiec";
-      case 8:
-        return "Sierpień";
-      case 9:
-        return "Wrzesień";
-      case 10:
-        return "Październik";
-      case 11:
-        return "Listopad";
-      case 12:
-        return "Grudzień";
-      default:
-        return 'error';
-      }
-    }
+{
+  switch(month) {
+    case 1:
+        return "Styczeń";
+    case 2:
+      return "Luty";
+    case 3:
+        return "Marzec";
+    case 4:
+        return "Kwiecień";
+      case 5:
+        return "Maj";
+    case 6:
+      return "Czerwiec";
+    case 7:
+      return "Lipiec";
+    case 8:
+      return "Sierpień";
+    case 9:
+      return "Wrzesień";
+    case 10:
+      return "Październik";
+    case 11:
+      return "Listopad";
+    case 12:
+      return "Grudzień";
+    default:
+      return 'error';
+  }
+}
 
 function leapYear(year)
 {
+  if(year%4===0) { return(true)}
   if(year%100===0){
     if(year%400===0) { return(true)}
   }
-  if(year%4===0) { return(true)}
   return (false)
   }
 
@@ -188,24 +188,6 @@ export function isEqualsDates(firstDate, secondDate) {
     firstDate.getDate() == secondDate.getDate()
   );
 }
-
-export function shortDataFormat(date, char, isInversely) {
-  if (!char) {
-    char = '.'
-  }
-  if (isInversely) {
-    return `${date.getFullYear()}${char}${date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1 > 11 ? '01' : date.getMonth() + 1}${char}${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`;
-  }
-  return `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}${char}${date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1 > 11 ? '01' : date.getMonth() + 1}${char}${date.getFullYear()}`;
-}
-
-export function getShortTime(date) {
-  return date != null
-  ?
-  `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`
-  :
-  '';
-}
 export function timeFromString(date)
 {
     let tmpMinutes=minutesFromString(date);
@@ -215,7 +197,6 @@ export function timeFromString(date)
 }
 export function minutesFromString(date)
 {
-
     let time="";
     let i=14;
     for(i;i<16;i++)   time+=date[i]
