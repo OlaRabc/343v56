@@ -12,8 +12,14 @@ const MainCalendarComponent = () => {
     }
 
 return(
-    <div className="calendar-container">
-                {monthlyCalendar ? <MonthlyCalendar/> : null}
+    <div>
+        <div> 
+
+        </div>
+        <div className="calendar-container">
+            {monthlyCalendar ? <MonthlyCalendar/> : null}
+            {weeklyCalendar ? "weeklyCalendar" : null}
+        </div>
      </div>
 )
 }

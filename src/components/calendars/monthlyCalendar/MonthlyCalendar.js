@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
 import moment from "moment"
 import {AiFillCaretLeft, AiFillCaretRight  } from "react-icons/ai";
-import Navigation from "./../navigation/Navigation";
+import Visit from "./../../visit/Visit"
 import { firstOfMonth,
   whatMonth,
   howLongMonth,
@@ -17,12 +18,8 @@ import { firstOfMonth,
   dateInLastSquare,
   firstDayInLastMonth,
   firstDayInNextMonth,
-  isEqualsDates,
-  yearFromString,
-  monthFromString,
-  hoursFromString,
-  minutesFromString,
   dayFromString } from './../../util/dateHelper';
+  
 
 function MonthlyCalendar() {
   const actualDate =new Date();
@@ -32,12 +29,23 @@ function MonthlyCalendar() {
   const [firstDayInNextM, setFirstDayInNextM] = useState(firstDayInNextMonth(month,year,firstOfM));
   const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month,year,firstOfM));
   const [howLongM, sethowLongM] = useState(howLongMonth(month,year));
+  const dayOfWeekArray=["Poniedziełek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
   
-  let thisMonth;
+ 
   let squares = [];
   function renderSquare(i)
   {
-    let tmpObj={ key:i }
+    let thisMonth, tmpDate="";
+    if(i>howLongM+firstOfM-1)  thisMonth=false;
+    else if(i<firstOfM)  thisMonth=false;
+     else thisMonth=true;
+     if(!thisMonth && i<7) tmpDate=lastDays(month,year,firstOfM,i)+"."+viewMonth(lastMonth(month))+"."+lastYear(month,year)
+     if(thisMonth)   tmpDate=(i-firstOfM+1)+"."+viewMonth(month)+"."+year
+     if(!thisMonth && i>20) tmpDate=nextDays(month,year,firstOfM,i)+"."+viewMonth(nextMonth(month))+"."+nextYear(month,year)
+                
+
+
+    let tmpObj={ key:i, date: tmpDate}
     squares.push(tmpObj);
 
   }
@@ -45,64 +53,89 @@ function MonthlyCalendar() {
       renderSquare(i)
   }
    return(
-     <div>
-       <Navigation
-       onLeft={
-        <button 
-        type="button" 
-        className="button"
-        onClick={()=>{
-          if (month === 1) {
-            setMonth(12); setYear(year - 1)
-          } else {
-            setMonth(month - 1);
-          }
-          sethowLongM(howLongMonth(month - 1, year));
-          setFirstDayInNextM(firstOfM)
-          setFirstOfM(firstDayInLastM);
-          setFirstDayInLastM(firstDayInLastMonth(month-1,year,firstDayInLastM));
-        }}>
-           <AiFillCaretLeft/> 
-        </button>
-       }
-       date={ whatMonth(month)+" "+year}
-       onRight={
-        <button 
-        type="button" 
-        className="button"
-         onClick={ async () => {
-          if(month===12) {
-            setMonth(1); setYear(year+1)
-          } else {
-            setMonth(month + 1);
-          }
-          sethowLongM(howLongMonth(month+1,year));
-          setFirstDayInLastM(firstOfM);
-          setFirstOfM( firstDayInNextM );
-          setFirstDayInNextM( firstDayInNextMonth(month+1,year,firstDayInNextM));
-        }}>
-          <AiFillCaretRight/>
-        </button>
-       }
-       />
-       <div id="calendar">
-       {squares.map((square)=>{
-         return (
-           <div key={square.key} className="square">
-             {square.key>=firstOfM?thisMonth=true:""}
-             <div id={square.key%7===0?'sunday':''}  >
-                <div className={!thisMonth?"anotherMonth":""}>
-                  { square.key>howLongM+firstOfM-1?thisMonth=false:""}
-                  { !thisMonth &&square.key<7?lastDays(month,year,firstOfM,square.key)+"."+viewMonth(lastMonth(month))+"."+lastYear(month,year):""}
-                  { thisMonth?(square.key-firstOfM+1)+"."+viewMonth(month)+"."+year :""}
-                  { !thisMonth && square.key>20? nextDays(month,year,firstOfM,square.key)+"."+viewMonth(nextMonth(month))+"."+nextYear(month,year) :""}
-                </div>
-              </div>
-           </div>
-         )
-       })}
-       </div>
-     </div>
+    <Container id="calendar"> 
+      <Row>
+        <Col className="col-sm-1">
+          <button 
+          type="button" 
+          className="button"
+          onClick={()=>{
+            if (month === 1) {
+              setMonth(12); setYear(year - 1)
+            } else {
+              setMonth(month - 1);
+            }
+            sethowLongM(howLongMonth(month - 1, year));
+            setFirstDayInNextM(firstOfM)
+            setFirstOfM(firstDayInLastM);
+            setFirstDayInLastM(firstDayInLastMonth(month-1,year,firstDayInLastM));
+          }}>
+            <AiFillCaretLeft/> 
+          </button>
+        </Col>
+        <Col className="col-sm-2">
+          { whatMonth(month)+" "+year}
+        </Col>
+        <Col className="col-sm-1">
+          <button 
+            type="button" 
+            className="button"
+            onClick={ async () => {
+              if(month===12) {
+                setMonth(1); setYear(year+1)
+              } else {
+                setMonth(month + 1);
+              }
+              sethowLongM(howLongMonth(month+1,year));
+              setFirstDayInLastM(firstOfM);
+              setFirstOfM( firstDayInNextM );
+              setFirstDayInNextM( firstDayInNextMonth(month+1,year,firstDayInNextM));
+          }}>
+            <AiFillCaretRight/>
+          </button>
+        </Col>
+        <Col className="col-sm-2">
+          Miesiąc
+        </Col>
+      </Row>
+      <Row>
+        {dayOfWeekArray.map((day)=>{
+          return(
+            <Col key={day} className="col-sm-1"
+                style={{ 
+                  textAlign: "center",
+                  width: "14%",
+                  borderTop: "none",
+                  borderRight: day==="Niedziela"? "none"
+                    : "",
+                }}
+                >
+                  {day}
+        </Col>
+          )
+        })} 
+      </Row>
+
+       <Row>
+        {squares.map((square)=>{
+          return (
+              <Col key={square.key}  className="col-sm-1 square "
+              style={{ 
+                borderRight: square.key%7===0? "none"
+                  : "",
+              }}
+              >
+                <Row>
+                  { square.date }
+                </Row>
+                <Row>
+                  <Visit/>
+                </Row>
+              </Col>
+          )
+        })}
+       </Row>
+    </Container>
    )
 }
 
