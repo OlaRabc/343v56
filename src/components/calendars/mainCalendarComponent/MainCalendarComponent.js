@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './MainCalendarComponent.css';
 import MonthlyCalendar from '../monthlyCalendar/MonthlyCalendar';
+import WeeklyCalendar from "./../weeklyCalendar/WeeklyCalendar";
 import { AiFillCaretLeft} from "react-icons/ai";
 
 const MainCalendarComponent = ({
@@ -8,6 +9,7 @@ const MainCalendarComponent = ({
 }) => {
     const [weeklyCalendar, setWeeklyCalendar] = useState(false);
     const [monthlyCalendar, setMonthyCalendar] = useState(true);
+    const [calendarVew, setCalendarVew] = useState(true);
 
     function setAllStatesToFalse() {
         setWeeklyCalendar(false);
@@ -20,10 +22,23 @@ return(
             <AiFillCaretLeft/>
         </div>
         <div className="calendar-container">
-            {monthlyCalendar ? <MonthlyCalendar/> : null}
-            {weeklyCalendar ? "weeklyCalendar" : null}
+            {monthlyCalendar ? <MonthlyCalendar
+            calendarVew={calendarVew}
+            onCalendarVewChange={()=>{ 
+                setCalendarVew(!calendarVew);
+                setAllStatesToFalse();
+                setWeeklyCalendar(!weeklyCalendar)
+            }}
+            /> : null}
+            {weeklyCalendar ? <WeeklyCalendar
+                calendarVew={calendarVew}
+                onCalendarVewChange={()=>{ 
+                    setCalendarVew(!calendarVew);
+                    setAllStatesToFalse();
+                    setMonthyCalendar(!monthlyCalendar)
+                }}
+            /> : null}
         </div>
      </div>
-)
-}
+)}
 export default MainCalendarComponent;

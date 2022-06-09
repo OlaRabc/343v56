@@ -240,3 +240,10 @@ export function addZero(day)
   }
   return String(tmpDay);
 }
+export function firstOfWeek()
+{
+  const current = new Date();
+  const date = current.getDate();
+  let day = current.getDay();
+  return(date-day+1);
+}

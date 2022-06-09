@@ -14,7 +14,7 @@
   border-right: 0.5px solid black;
   border-top: 0.5px solid black;
   float:left;
-  height: 100px;
+  height: 90px;
   font-size: 16px;
   line-height: 19px;
   width: 14% !important;
@@ -37,4 +37,12 @@
 .not-this-month
 {
   opacity: 0.60
+}
+.changeCalendarVew
+{
+  border: 1px solid black;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 3px 1px 3px #8ed2fc84
 }

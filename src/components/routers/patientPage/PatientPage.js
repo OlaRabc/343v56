@@ -22,30 +22,32 @@ function PatientPage() {
           firstName={"firstName"}
           lastName={"lastName"}
         />
-        {isPatentOperationVew?<PatentOperationVew 
-          onCalendarVewClick={()=>{
-            setAllVewsFale();
-            setIsMainCalendarComponent(true);
-          }}
-          onPatientVisitRejestrationFormVew={()=>{
-            setAllVewsFale();
-            setIsPatientVisitRejestrationForm(true);
-          }}
-          />:""}
-        {isMainCalendarComponent?
-        <MainCalendarComponent
-          onBack={()=>{
-            setAllVewsFale();
-            setIsPatentOperationVew(true);
-        }}/>
-        :""}
-        {isPatientVisitRejestrationForm?
-        <PatientVisitRejestrationForm
-          onBack={()=>{
-            setAllVewsFale();
-            setIsPatentOperationVew(true);
-      }}/>:
-        ""}
+        <div id="patient-body">
+          {isPatentOperationVew?<PatentOperationVew 
+            onCalendarVewClick={()=>{
+              setAllVewsFale();
+              setIsMainCalendarComponent(true);
+            }}
+            onPatientVisitRejestrationFormVew={()=>{
+              setAllVewsFale();
+              setIsPatientVisitRejestrationForm(true);
+            }}
+            />:""}
+          {isMainCalendarComponent?
+          <MainCalendarComponent
+            onBack={()=>{
+              setAllVewsFale();
+              setIsPatentOperationVew(true);
+          }}/>
+          :""}
+          {isPatientVisitRejestrationForm?
+          <PatientVisitRejestrationForm
+            onBack={()=>{
+              setAllVewsFale();
+              setIsPatentOperationVew(true);
+        }}/>:
+          ""}
+        </div>
     </div>
   );
 }
