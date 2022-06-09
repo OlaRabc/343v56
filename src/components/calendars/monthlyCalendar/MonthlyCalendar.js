@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
-import moment from "moment"
+import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import Visit from "./../../visit/Visit"
 import {
@@ -24,7 +24,10 @@ import {
 } from './../../util/dateHelper';
 
 
-function MonthlyCalendar() {
+function MonthlyCalendar({
+  onCalendarVewChange,
+  calendarVew
+}) {
   const actualDate = new Date();
   const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))
   const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")))
@@ -32,7 +35,8 @@ function MonthlyCalendar() {
   const [firstDayInNextM, setFirstDayInNextM] = useState(firstDayInNextMonth(month, year, firstOfM));
   const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month, year, firstOfM));
   const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
-  const dayOfWeekArray = ["Poniedziełek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"]
+
+  const dayOfWeekArray = ["Poniedziełek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
 
 
   let squares = [];
@@ -98,8 +102,8 @@ function MonthlyCalendar() {
             <AiFillCaretRight />
           </button>
         </Col>
-        <Col className="col-sm-2">
-          Miesiąc
+        <Col className="col-xs-2 col-sm-1 changeCalendarVew" onClick={onCalendarVewChange}>
+        {calendarVew?"Miesiąc":"Tydzień"}
         </Col>
       </Row>
       <Row>
