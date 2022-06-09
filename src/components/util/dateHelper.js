@@ -219,15 +219,24 @@ export function yearFromString(date_of_start)
 }
 export function monthFromString(date_of_start)
 {
-  let i=5;
+  let i=5; 
   let month="";
   for(i;i<7;i++) month+=date_of_start[i];
   return parseInt(month);
 }
 export function dayFromString(date_of_start)
 {
-  let i=9;
+  let i=8;
   let day="";
-  for(i;i<11;i++) day+=date_of_start[i]
+  for(i;i<10;i++) day+=date_of_start[i]
   return day;
+}
+export function addZero(day)
+{
+  let tmpDay=parseInt(day);
+  if(tmpDay<10)  
+  {
+    tmpDay="0"+tmpDay;
+  }
+  return String(tmpDay);
 }

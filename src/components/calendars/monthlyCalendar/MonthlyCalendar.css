@@ -34,3 +34,7 @@
   background-color: white;
   margin: 0px 20px 0px 20px;
 }
+.not-this-month
+{
+  opacity: 0.60
+}
