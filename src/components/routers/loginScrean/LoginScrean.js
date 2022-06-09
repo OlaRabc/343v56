@@ -17,7 +17,7 @@ function LoginScrean({
             </div>
 
             <button type="button" className="btn btn-secondary col-12 col-md-5 mt-4 " onClick={()=>console.log("notNow 1")}>Zresetuj hasło</button>
-            <Link to="parient">
+            <Link to="patient">
                 <button type="button" className="btn btn-primary col-12 col-md-5 offset-md-2 mt-4 ">
                     Zaloguj
                 </button>

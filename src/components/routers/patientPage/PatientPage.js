@@ -2,19 +2,22 @@ import './PatientPage.css';
 import PatientNavigation from "./../../navigation/patientNavigation/PatientNavigation";
 import PatentOperationVew from "./../../patentOperationVew/PatentOperationVew";
 import { useState } from 'react';
-import MonthlyCalendar from "./../../calendars/monthlyCalendar/MonthlyCalendar"
+import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainCalendarComponent";
+import PatientVisitRejestrationForm from "./../../patientVisitRejestrationForm/PatientVisitRejestrationForm";
 
 function PatientPage() {
   const [isPatentOperationVew,setIsPatentOperationVew ]=useState(true);
-  const [isMonthlyCalendar,setIsMonthlyCalendar ]=useState(false);
+  const [isMainCalendarComponent,setIsMainCalendarComponent ]=useState(false);
+  const [isPatientVisitRejestrationForm,setIsPatientVisitRejestrationForm ]=useState(false);
 
   function setAllVewsFale()
   {
     setIsPatentOperationVew(false);
-    setIsMonthlyCalendar(false);
+    setIsMainCalendarComponent(false);
+    setIsPatientVisitRejestrationForm(false);
   }
   return (
-    <div>
+    <div id="patient-conteiner">
         <PatientNavigation 
           firstName={"firstName"}
           lastName={"lastName"}
@@ -22,10 +25,27 @@ function PatientPage() {
         {isPatentOperationVew?<PatentOperationVew 
           onCalendarVewClick={()=>{
             setAllVewsFale();
-            setIsMonthlyCalendar(true);
-          }}/>:""}
-        {isMonthlyCalendar?<MonthlyCalendar/>:""}
-        
+            setIsMainCalendarComponent(true);
+          }}
+          onPatientVisitRejestrationFormVew={()=>{
+            setAllVewsFale();
+            setIsPatientVisitRejestrationForm(true);
+          }}
+          />:""}
+        {isMainCalendarComponent?
+        <MainCalendarComponent
+          onBack={()=>{
+            setAllVewsFale();
+            setIsPatentOperationVew(true);
+        }}/>
+        :""}
+        {isPatientVisitRejestrationForm?
+        <PatientVisitRejestrationForm
+          onBack={()=>{
+            setAllVewsFale();
+            setIsPatentOperationVew(true);
+      }}/>:
+        ""}
     </div>
   );
 }

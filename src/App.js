@@ -17,7 +17,7 @@ function App() {
           <Route path="/" element={<LoginScrean/>}>
           </Route>
 
-          <Route path="parient" element={<PatientPage/>}>
+          <Route path="patient" element={<PatientPage/>}>
           </Route>
           
         </Routes>
