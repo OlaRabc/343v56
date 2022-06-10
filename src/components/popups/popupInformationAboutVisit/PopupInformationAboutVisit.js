@@ -4,7 +4,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 const PopupInformationAboutVisit = ({
     open,
     onClose,
-    visitInformation
+    visitInformation,
+    onAcceptVisit,
+    onRejectVisit
 }) => {
     return (
         <Modal
@@ -62,14 +64,23 @@ const PopupInformationAboutVisit = ({
                 <button type="button" className="btn btn-primary col-12   mt-3" onClick={onClose}>
                     Anuluj
                 </button>
-                <button type="button" className="btn btn-primary col-12  mt-3">
-                    Odwołaj wizytę
-                </button>
+
                 {visitInformation.visitStatus === "toAcceptVisit" ? (
-                    <button type="button" className="btn btn-primary col-12  mt-3">
-                        Zaakceptuj Wizytę
-                    </button>
-                ) : ""}
+                    <>
+                        <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
+                            Zaakceptuj Wizytę
+                        </button>
+                        <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}>
+                            Odrzuć wizytę {/* reject */}
+                        </button>
+                    </>
+                ) :
+                    (
+                        <button type="button" className="btn btn-primary col-12  mt-3" >
+                            {/*visitStatus=free     cancel*/}
+                            Odwołaj wizytę
+                        </button>
+                    )}
             </Container>
         </Modal>
     )
