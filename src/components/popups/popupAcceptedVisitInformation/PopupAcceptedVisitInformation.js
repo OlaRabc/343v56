@@ -3,15 +3,17 @@ import './PopupAcceptedVisitInformation.css';
 import { AiOutlineClose } from "react-icons/ai";
 const PopupAcceptedVisitInformation = ({
     open,
-    onClose, }) => {
+    onClose,
+    onConfirmButtonClick,
+    onCancelButtonClick
+}) => {
 
 
     return (
         <Modal
-            open={open}
-            onClose={onClose}
-        >
-            Wizyta zakceptowana
+        open={open}
+        onClose={onClose}>
+         < AiOutlineClose/>
         </Modal>
     )
 }

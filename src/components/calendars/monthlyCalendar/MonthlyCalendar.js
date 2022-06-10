@@ -5,7 +5,6 @@ import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import Visit from "./../../visit/Visit";
 import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-import PopupAcceptedVisitInformation from "./../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
 import {
   firstOfMonth,
   whatMonth,
@@ -30,19 +29,19 @@ function MonthlyCalendar({
   onCalendarVewChange
 }) {
   /*tmp obj*/
-  const visitInformation = {
-    firstName: "Aleksandra",
-    lastName: "Rabcewicz",
-    timeStart: "10:00",
-    timeEnd: "10:30",
-    visitTime: "30",
-    visitType: "tel",
-    mail: "a@wp.pl",
-    phoneNumber: "123321122",
-    personalID: "11111111111",
-    visitStatus: "toAcceptVisit",
-    /*  freeVisit   removeByPatientVisit   acceptedVisit  toAcceptVisit  */
-  }
+       const visitInformation={
+        firstName: "Aleksandra",
+        lastName:"Rabcewicz",
+        timeStart:"10:00",
+        timeEnd:"10:30",
+        visitTime:"30",
+        visitType:"tel",
+        mail:"a@wp.pl",
+        phoneNumber:"123321122",
+        personalID:"11111111111",
+        visitStatus:"toAcceptVisit", 
+        /*  freeVisit   removeByPatientVisit   acceptedVisit  toAcceptVisit  */
+       }
 
   ////////////////////////////////////////////////////////////////////////
   const actualDate = new Date();
@@ -54,7 +53,6 @@ function MonthlyCalendar({
   const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
 
@@ -68,9 +66,9 @@ function MonthlyCalendar({
 
     if (!thisMonth && i < 7) tmpDate = lastYear(month, year) + "." + viewMonth(lastMonth(month)) + "." + lastDays(month, year, firstOfM, i)
     if (thisMonth) tmpDate = year + "." + viewMonth(month) + "." + addZero(i - firstOfM + 1)
-    if (!thisMonth && i > 20) tmpDate = nextYear(month, year) + "." + viewMonth(nextMonth(month)) + "." + addZero(nextDays(month, year, firstOfM, i))
+    if (!thisMonth && i > 20) tmpDate =  nextYear(month, year)+ "." + viewMonth(nextMonth(month)) + "." + addZero(nextDays(month, year, firstOfM, i))
 
-    let tmpObj = { key: i, date: tmpDate, thisMonth: thisMonth }
+    let tmpObj = { key: i, date: tmpDate, thisMonth:thisMonth }
     squares.push(tmpObj);
 
   }
@@ -134,9 +132,9 @@ function MonthlyCalendar({
                   borderTop: "none",
                   borderRight: day === "Nie" ? "none"
                     : "",
-                  color: day === "Nie" ? "red"
+                    color: day === "Nie" ? "red"
                     : "",
-                  fontWeight: "bold",
+                    fontWeight: "bold",
                 }}
               >
                 {day}
@@ -148,11 +146,11 @@ function MonthlyCalendar({
         <Row >
           {squares.map((square) => {
             return (
-              <div key={square.key}
-                className={
-                  !square.thisMonth ?
-                    "square not-this-month"
-                    : "square "}
+              <div key={square.key} 
+              className={
+                !square.thisMonth?
+                  "square not-this-month"
+                  :"square "}
                 style={{
                   borderRight: square.key % 7 === 0 ? "none"
                     : "",
@@ -160,34 +158,29 @@ function MonthlyCalendar({
               >
                 <Row
                   style={{
-                    color: square.key % 7 === 0 ? "red"
+                      color: square.key % 7 === 0 ? "red"
                       : "",
                   }}
                 >
                   {dayFromString(square.date)}
                 </Row>
                 <Row>
-                  <div onDoubleClick={() => { setIsPopupInformationAboutVisit(true) }}>
+                  <div onDoubleClick={()=>{setIsPopupInformationAboutVisit(true)}}>
                     <Visit />
                   </div>
                 </Row>
               </div>
             )
           })}
-        </Row>
+        </Row>  
       </Container>
       <PopupInformationAboutVisit
-        open={isPopupInformationAboutVisit}
-        onClose={() => { setIsPopupInformationAboutVisit(false); }}
-        visitInformation={visitInformation}
-        onAcceptVisit={() => {
-          setIsPopupInformationAboutVisit(false);
-          setIsPopupAcceptedVisitInformation(true);
-        }}
-      />
-      <PopupAcceptedVisitInformation
-        open={isPopupAcceptedVisitInformation}
-        onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
+       open={isPopupInformationAboutVisit}
+       onClose={()=>{setIsPopupInformationAboutVisit(false)}}
+       visitInformation={visitInformation}
+       onAcceptVisit={()=>{
+
+       }}
       />
     </div>
   )
