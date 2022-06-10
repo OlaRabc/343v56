@@ -17,7 +17,7 @@ function WeeklyCalendar({
     calendarVew
 }) {
     const actualDate = new Date();
-    const dayOfWeekArray = ["Poniedziełek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
+    const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
     const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")));
     const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")));
     const [dateInFirstSquare, setDateInFirstSquare] = useState(firstOfWeek());

@@ -22,7 +22,7 @@ function PatientPage() {
           firstName={"firstName"}
           lastName={"lastName"}
         />
-        <div id="patient-body">
+        <div id="col-12 patient-body ">
           {isPatentOperationVew?<PatentOperationVew 
             onCalendarVewClick={()=>{
               setAllVewsFale();

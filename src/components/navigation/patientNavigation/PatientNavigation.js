@@ -7,7 +7,9 @@ function PatientNavigation({
 }) {
   return (
     <nav className='navbar navbar-dark bg-primary text-light '>
-      {firstName+" "+lastName}
+      <div className='navbar-brand '>
+        {firstName+" "+lastName}
+      </div>
       <AiOutlineMessage/> 
       <div className='navbar-toggler mr-2'><AiOutlineMenu/></div>
     </nav>

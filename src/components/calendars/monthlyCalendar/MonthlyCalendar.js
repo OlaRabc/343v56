@@ -16,11 +16,11 @@ import {
   nextYear,
   viewMonth,
   addZero,
-  dateInFirstSquare,
-  dateInLastSquare,
   firstDayInLastMonth,
   firstDayInNextMonth,
-  dayFromString
+  dayFromString,
+  dateInFirstSquare,
+  dateInLastSquare
 } from './../../util/dateHelper';
 
 
@@ -36,7 +36,7 @@ function MonthlyCalendar({
   const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month, year, firstOfM));
   const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
 
-  const dayOfWeekArray = ["Poniedziełek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
+  const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
 
 
   let squares = [];
@@ -62,8 +62,8 @@ function MonthlyCalendar({
   }
   return (
     <Container id="calendar">
-      <Row>
-        <Col className="col-sm-1">
+      <Row className="mb-2">
+        <Col className="col-2 col-lg-1">
           <button
             type="button"
             className="button"
@@ -81,7 +81,7 @@ function MonthlyCalendar({
             <AiFillCaretLeft />
           </button>
         </Col>
-        <Col className="col-sm-2">
+        <Col className="col-3 pt-2 pt-md-3 nav-calendar">
           {whatMonth(month) + " " + year}
         </Col>
         <Col className="col-sm-1">
@@ -102,8 +102,8 @@ function MonthlyCalendar({
             <AiFillCaretRight />
           </button>
         </Col>
-        <Col className="col-xs-2 col-sm-1 changeCalendarVew" onClick={onCalendarVewChange}>
-        {calendarVew?"Miesiąc":"Tydzień"}
+        <Col className="col-10 col-sm-2 col-lg-1  offset-1 offset-sm-4 offset-lg-6 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+          Miesiąc
         </Col>
       </Row>
       <Row>
@@ -127,14 +127,14 @@ function MonthlyCalendar({
         })}
       </Row>
 
-      <Row>
+      <Row >
         {squares.map((square) => {
           return (
-            <Col key={square.key} 
+            <div key={square.key} 
             className={
               !square.thisMonth?
-                "col-sm-1 square not-this-month"
-                :"col-sm-1 square "}
+                "square not-this-month"
+                :"square "}
               style={{
                 borderRight: square.key % 7 === 0 ? "none"
                   : "",
@@ -151,7 +151,7 @@ function MonthlyCalendar({
               <Row>
                 <Visit />
               </Row>
-            </Col>
+            </div>
           )
         })}
       </Row>
