@@ -6,48 +6,47 @@ import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainC
 import PatientVisitRejestrationForm from "./../../patientVisitRejestrationForm/PatientVisitRejestrationForm";
 
 function PatientPage() {
-  const [isPatentOperationVew,setIsPatentOperationVew ]=useState(true);
-  const [isMainCalendarComponent,setIsMainCalendarComponent ]=useState(false);
-  const [isPatientVisitRejestrationForm,setIsPatientVisitRejestrationForm ]=useState(false);
+  const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
+  const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
+  const [isPatientVisitRejestrationForm, setIsPatientVisitRejestrationForm] = useState(false);
 
-  function setAllVewsFale()
-  {
+  function setAllVewsFale() {
     setIsPatentOperationVew(false);
     setIsMainCalendarComponent(false);
     setIsPatientVisitRejestrationForm(false);
   }
   return (
     <div id="patient-conteiner">
-        <PatientNavigation 
-          firstName={"firstName"}
-          lastName={"lastName"}
-        />
-        <div id="col-12 patient-body ">
-          {isPatentOperationVew?<PatentOperationVew 
-            onCalendarVewClick={()=>{
-              setAllVewsFale();
-              setIsMainCalendarComponent(true);
-            }}
-            onPatientVisitRejestrationFormVew={()=>{
-              setAllVewsFale();
-              setIsPatientVisitRejestrationForm(true);
-            }}
-            />:""}
-          {isMainCalendarComponent?
+      <PatientNavigation
+        firstName={"Aleksandra"}
+        lastName={"Rabcewicz"}
+      />
+      <div id="col-12 patient-body ">
+        {isPatentOperationVew ? <PatentOperationVew
+          onCalendarVewClick={() => {
+            setAllVewsFale();
+            setIsMainCalendarComponent(true);
+          }}
+          onPatientVisitRejestrationFormVew={() => {
+            setAllVewsFale();
+            setIsPatientVisitRejestrationForm(true);
+          }}
+        /> : ""}
+        {isMainCalendarComponent ?
           <MainCalendarComponent
-            onBack={()=>{
+            onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);
-          }}/>
-          :""}
-          {isPatientVisitRejestrationForm?
+            }} />
+          : ""}
+        {isPatientVisitRejestrationForm ?
           <PatientVisitRejestrationForm
-            onBack={()=>{
+            onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);
-        }}/>:
+            }} /> :
           ""}
-        </div>
+      </div>
     </div>
   );
 }

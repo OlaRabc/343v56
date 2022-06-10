@@ -1,10 +1,17 @@
 import './DoctorNavigation.css';
-
-function DoctorNavigation() {
+import {AiOutlineMenu, AiOutlineImport, AiFillExclamationCircle, AiOutlineMessage} from "react-icons/ai";
+/* menu,exit,! , massage*/
+function DoctorNavigation({
+  firstName,
+  lastName
+}) {
   return (
-    <div>
-      doctor
-    </div>
+    <nav className='navbar navbar-dark bg-primary text-light '>
+      <div className='navbar-brand '>
+        {"Dr "+firstName+" "+lastName}
+      </div>
+      <div className='navbar-toggler mr-2'><AiOutlineMenu/></div>
+    </nav>
   );
 }
 
