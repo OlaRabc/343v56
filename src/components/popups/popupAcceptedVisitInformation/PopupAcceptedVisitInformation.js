@@ -1,7 +1,7 @@
 import Modal from '../popupBasic/Modal';
-import './PopupVisitInformation.css';
+import './PopupAcceptedVisitInformation.css';
 import { AiOutlineClose } from "react-icons/ai";
-const PopupVisitInformation = ({
+const PopupAcceptedVisitInformation = ({
     open,
     onClose,
     onConfirmButtonClick,
@@ -18,4 +18,4 @@ const PopupVisitInformation = ({
     )
 }
 
-export default PopupVisitInformation;
+export default PopupAcceptedVisitInformation;

@@ -128,7 +128,8 @@ function WeeklyCalendar({
           return(
             <div key={square.key} className="weekly-square"
             style={{
-              
+              color: square.key % 7 === 0  ? "red"
+                    : "",
               borderRight: square.key % 7 === 0 ? "none"
                   : "1px solid black"
             }}>
