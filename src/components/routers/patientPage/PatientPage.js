@@ -6,6 +6,8 @@ import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainC
 import PatientVisitRejestrationForm from "./../../patientVisitRejestrationForm/PatientVisitRejestrationForm";
 
 function PatientPage() {
+  const isDoctor = false
+  /////////////////////////////////////
   const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
   const [isPatientVisitRejestrationForm, setIsPatientVisitRejestrationForm] = useState(false);
@@ -34,6 +36,7 @@ function PatientPage() {
         /> : ""}
         {isMainCalendarComponent ?
           <MainCalendarComponent
+            isDoctor={isDoctor}
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);

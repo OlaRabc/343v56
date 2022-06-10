@@ -27,7 +27,9 @@ import {
 
 
 function MonthlyCalendar({
+  isDoctor,
   onCalendarVewChange
+  
 }) {
   /*tmp obj*/
   const visitInformation = {
@@ -40,7 +42,7 @@ function MonthlyCalendar({
     mail: "a@wp.pl",
     phoneNumber: "123321122",
     personalID: "11111111111",
-    visitStatus: "acceptedVisit",
+    visitStatus: "toAcceptVisit",
     /*  freeVisit   removeByPatientVisit   acceptedVisit  toAcceptVisit  */
   }
 
@@ -77,6 +79,7 @@ function MonthlyCalendar({
   for (let i = 1; i < 43; i++) {
     renderSquare(i);
   }
+
   return (
     <div>
       <Container className="p-4 my-3 calendar ">
@@ -184,10 +187,12 @@ function MonthlyCalendar({
           setIsPopupInformationAboutVisit(false)
           setIsPopupAcceptedVisitInformation(true);
         }}
+        isDoctor={isDoctor}
       />
       <PopupAcceptedVisitInformation
         open={isPopupAcceptedVisitInformation}
         onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
+       
       />
     </div>
   )

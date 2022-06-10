@@ -8,6 +8,7 @@ import DoctorPlanningVisits from "./../../doctor/doctorPlanningVisits/DoctorPlan
 
 function DoctorPage({
 }) {
+    const isDoctor = true;
     const [isDoctrOperationVew, setIsDoctrOperationVew] = useState(true);
     const [isDoctorPlanningVisits, setIsDoctorPlanningVisits] = useState(false);
     const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
@@ -41,6 +42,7 @@ function DoctorPage({
                 }}
             /> : ""}
             {isMainCalendarComponent ? <MainCalendarComponent
+                isDoctor={isDoctor}
                 onBack={() => {
                     setAllVewsFale();
                     setIsDoctrOperationVew(true);

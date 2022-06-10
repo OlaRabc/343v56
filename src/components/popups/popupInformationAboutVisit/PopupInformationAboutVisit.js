@@ -2,6 +2,7 @@ import Modal from '../popupBasic/Modal';
 import './PopupInformationAboutVisit.css';
 import { Container, Row, Col } from 'react-bootstrap';
 const PopupInformationAboutVisit = ({
+    isDoctor,
     open,
     onClose,
     visitInformation,
@@ -64,10 +65,12 @@ const PopupInformationAboutVisit = ({
                 <button type="button" className="btn btn-primary col-12   mt-3" onClick={onClose}>
                     Anuluj
                 </button>
-
-                {visitInformation.visitStatus === "toAcceptVisit" ? (
+                
+                {visitInformation.visitStatus === "toAcceptVisit" && isDoctor? (
                     <>
+                    
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
+                            {/*change visitSttus=green*/}
                             Zaakceptuj Wizytę
                         </button>
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}>
