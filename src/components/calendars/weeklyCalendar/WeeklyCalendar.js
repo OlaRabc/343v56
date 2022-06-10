@@ -7,14 +7,14 @@ import {
   whatMonth,
   firstOfWeek,
   howLongMonth,
-  addZero
+  addZero,
+  dayFromString
 }
 from './../../util/dateHelper';
 
 
 function WeeklyCalendar({
-    onCalendarVewChange,
-    calendarVew
+    onCalendarVewChange
 }) {
     const actualDate = new Date();
     const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
@@ -27,22 +27,22 @@ function WeeklyCalendar({
     function renderSquare(i) {
       let date=i-1+dateInFirstSquare;
       if( date>howLongMonth(month,year)){
-        date=addZero(date-howLongMonth(month,year))+"."+addZero(parseInt(month+1))+"."+year;
+        date=year+"."+addZero(parseInt(month+1))+"."+addZero(parseInt(date-howLongMonth(month,year)));
       }
       else{
-        date=addZero(date)+"."+addZero(month)+"."+year;
+        date=year+"."+addZero(month)+"."+addZero(date);
       }
       let tmpObj = { key: i,date: date}
       squares.push(tmpObj);
     }
     for (let i = 1; i < 8; i++) {
-      renderSquare(i)
+      renderSquare(i);
     }
 
    return(
-    <Container id="calendar">
-      <Row>
-        <Col className="col-sm-1">
+    <Container className="py-4 my-3 calendar ">
+      <Row className="col-12 my-3">
+        <Col className="col-3 col-md-2 col-lg-1 ">
           <button
             type="button"
             className="button"
@@ -64,17 +64,16 @@ function WeeklyCalendar({
             <AiFillCaretLeft />
           </button>
         </Col>
-        <Col className="col-sm-2">
+        <Col className="col-7 col-md-8 col-lg-3 p-3 nav-date">
           { dateInFirstSquare+"-"+dateInLastSquare+" "+whatMonth(month)+" "+year}
         </Col>
-        <Col className="col-sm-1">
+        <Col className="col-2 col-lg-1">
           <button
             type="button"
             className="button"
             onClick={async () => {
               let tmpDateInFirstSquare=dateInLastSquare+1;
               let tmpDateInLastSquare=dateInLastSquare+7;
-
 
               if(tmpDateInFirstSquare>howLongMonth(month,year))
               {
@@ -103,40 +102,37 @@ function WeeklyCalendar({
             <AiFillCaretRight />
           </button>
         </Col>
-        <Col className="col-3 col-sm-3 changeCalendarVew" onClick={onCalendarVewChange}>
-            {calendarVew?"Miesiąc":"Tydzień"}
+        <Col className="col-10  col-lg-2  offset-1 offset-lg-5 p-2 my-2 nav-calendar" onClick={onCalendarVewChange}>
+            Tydzień
         </Col>
-        </Row>
-        <Row>
+      </Row>
+      <Row>
         {dayOfWeekArray.map((day) => {
           return (
-            <Col key={day} className="col-sm-1"
+            <div key={day} className="weekly-top-square"
               style={{
-                textAlign: "center",
-                width: "14%",
-                borderTop: "none",
-                borderRight: day === "Niedziela" ? "none"
+                borderRight: day === "Nie" ? "none"
                   : "1px solid black",
-                  color: day === "Niedziela" ? "red"
+                  color: day === "Nie" ? "red"
                   : "",
-                  fontWeight: "bold",
+                  
               }}
             >
               {day}
-            </Col>
+            </div>
           )
         })}
       </Row>
       <Row>
         {squares.map((square)=>{
           return(
-            <div key={square.key} className="col-1 weekly-square"
+            <div key={square.key} className="weekly-square"
             style={{
               
               borderRight: square.key % 7 === 0 ? "none"
                   : "1px solid black"
             }}>
-              {square.date}
+              {dayFromString(square.date)}
             </div>
           )
         })}

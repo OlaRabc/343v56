@@ -7,15 +7,16 @@ function PatentOperationVew({
 }) 
 {
   return (
-    <Container className="p-1 m-1 patent-operation-vew ">
-      <Row className="m-1 m-md-5">
-        <Col className="m-1 ">
-          <button type="button" className="btn btn-primary col-12 col-md-5 " 
+    <Container className="col-12 p-1 m-5 patent-operation-vew ">
+      <Row className="col-12 m-1 m-md-5">
+        <Col className="col-12 col-md-5 my-3 ">
+          <button type="button" className="btn btn-primary col-12 p-2" 
            onClick={onPatientVisitRejestrationFormVew}>
             Zarejestruj się
           </button>
-
-          <button type="button" className="btn btn-primary col-12  col-md-5 offset-md-2 mt-4 mt-md-0" 
+        </Col>
+        <Col className="col-12  col-md-5 my-3 offset-md-1">
+          <button type="button" className="btn btn-primary col-12 p-2" 
            onClick={onCalendarVewClick}>
           Kalendarz wizyt
           </button>

@@ -25,8 +25,7 @@ import {
 
 
 function MonthlyCalendar({
-  onCalendarVewChange,
-  calendarVew
+  onCalendarVewChange
 }) {
   const actualDate = new Date();
   const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))
@@ -46,51 +45,48 @@ function MonthlyCalendar({
     else if (i < firstOfM) thisMonth = false;
     else thisMonth = true;
 
-    
     if (!thisMonth && i < 7) tmpDate = lastYear(month, year) + "." + viewMonth(lastMonth(month)) + "." + lastDays(month, year, firstOfM, i)
     if (thisMonth) tmpDate = year + "." + viewMonth(month) + "." + addZero(i - firstOfM + 1)
     if (!thisMonth && i > 20) tmpDate =  nextYear(month, year)+ "." + viewMonth(nextMonth(month)) + "." + addZero(nextDays(month, year, firstOfM, i))
-
-
 
     let tmpObj = { key: i, date: tmpDate, thisMonth:thisMonth }
     squares.push(tmpObj);
 
   }
   for (let i = 1; i < 43; i++) {
-    renderSquare(i)
+    renderSquare(i);
   }
   return (
-    <Container id="calendar">
-      <Row className="mb-2">
+    <Container className="p-4 my-3 calendar ">
+      <Row className="my-3">
         <Col className="col-2 col-lg-1">
           <button
             type="button"
             className="button"
             onClick={() => {
               if (month === 1) {
-                setMonth(12); setYear(year - 1)
+                setMonth(12); setYear(year - 1);
               } else {
                 setMonth(month - 1);
               }
               sethowLongM(howLongMonth(month - 1, year));
-              setFirstDayInNextM(firstOfM)
+              setFirstDayInNextM(firstOfM);
               setFirstOfM(firstDayInLastM);
               setFirstDayInLastM(firstDayInLastMonth(month - 1, year, firstDayInLastM));
             }}>
             <AiFillCaretLeft />
           </button>
         </Col>
-        <Col className="col-3 pt-2 pt-md-3 nav-calendar">
+        <Col className="col-8 col-sm-3 pt-2 pt-md-3 nav-date">
           {whatMonth(month) + " " + year}
         </Col>
-        <Col className="col-sm-1">
+        <Col className="col-2 col-lg-1">
           <button
             type="button"
             className="button"
             onClick={async () => {
               if (month === 12) {
-                setMonth(1); setYear(year + 1)
+                setMonth(1); setYear(year + 1);
               } else {
                 setMonth(month + 1);
               }
@@ -102,7 +98,7 @@ function MonthlyCalendar({
             <AiFillCaretRight />
           </button>
         </Col>
-        <Col className="col-10 col-sm-2 col-lg-1  offset-1 offset-sm-4 offset-lg-6 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+        <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
           Miesiąc
         </Col>
       </Row>
