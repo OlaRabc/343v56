@@ -180,7 +180,7 @@ export function dateInLastSquare(firstOfM,month,year)
   tmp = tmp - firstOfM + 1;
   return new Date(tmpYear, tmpMonth - 1, tmp);
 }
-
+/*
 export function isEqualsDates(firstDate, secondDate) {
   return (
     firstDate.getFullYear() == secondDate.getFullYear() &&
@@ -188,6 +188,7 @@ export function isEqualsDates(firstDate, secondDate) {
     firstDate.getDate() == secondDate.getDate()
   );
 }
+*/
 export function timeFromString(date)
 {
     let tmpMinutes=minutesFromString(date);
