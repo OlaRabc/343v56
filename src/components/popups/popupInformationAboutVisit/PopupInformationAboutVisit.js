@@ -4,7 +4,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 const PopupInformationAboutVisit = ({
     open,
     onClose,
-    visitInformation
+    visitInformation,
+    onAcceptVisit
 }) => {
     return (
         <Modal
@@ -66,7 +67,7 @@ const PopupInformationAboutVisit = ({
                     Odwołaj wizytę
                 </button>
                 {visitInformation.visitStatus === "toAcceptVisit" ? (
-                    <button type="button" className="btn btn-primary col-12  mt-3">
+                    <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
                         Zaakceptuj Wizytę
                     </button>
                 ) : ""}
