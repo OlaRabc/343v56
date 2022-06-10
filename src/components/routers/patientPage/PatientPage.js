@@ -1,9 +1,9 @@
 import './PatientPage.css';
 import PatientNavigation from "./../../navigation/patientNavigation/PatientNavigation";
-import PatentOperationVew from "./../../patentOperationVew/PatentOperationVew";
+import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperationVew";
 import { useState } from 'react';
 import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainCalendarComponent";
-import PatientVisitRejestrationForm from "./../../patientVisitRejestrationForm/PatientVisitRejestrationForm";
+import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
 
 function PatientPage() {
   const isDoctor = false
