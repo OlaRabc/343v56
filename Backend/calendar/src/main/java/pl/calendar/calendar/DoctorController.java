@@ -23,8 +23,8 @@ public class DoctorController {
         return doctorRepository.getDoctorById(doctorId);
     }
 
-    @GetMapping("/doctors/{specialization}/{city}")
-    public Doctor getDoctorBySpecializationAndCity(@PathVariable("specialization") String specialization, @PathVariable("city") Integer city){
-        return doctorRepository.getDoctorBySpecializationAndCity(specialization, city);
+    @GetMapping("/doctors/{doctorId}/{specialization}")
+    public List<Doctor>getDoctorsByIdAndSpecialization(@PathVariable("doctorId") int doctorId, @PathVariable("specialization") String specialization){
+        return doctorRepository.getDoctorsByIdAndSpecialization(doctorId, specialization);
     }
 }
