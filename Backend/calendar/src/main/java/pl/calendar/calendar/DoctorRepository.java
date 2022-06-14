@@ -20,8 +20,8 @@ public class DoctorRepository {
     {
         return jdbcTemplate.queryForObject("SELECT doctorId, firstName, lastName, pwz, cityId, specialization, street, localNumber FROM calendar.doctor WHERE doctorId=?; ",BeanPropertyRowMapper.newInstance(Doctor.class),doctorId);
     }
-    public Doctor getDoctorBySpecializationAndCity(String specialization, Integer cityId)
-    {
-        return jdbcTemplate.queryForObject("SELECT doctorId, firstName, lastName, pwz, cityId, specialization, street, localNumber FROM calendar.doctor WHERE specialization=? AND cityId=?; ",BeanPropertyRowMapper.newInstance(Doctor.class),specialization,cityId);
+    public List<Doctor> getDoctorsByIdAndSpecialization(Integer doctorId, String specialization){
+
+        return jdbcTemplate.query("SELECT doctorId, firstName, lastName, pwz, cityId, specialization, street, localNumber FROM calendar.doctor WHERE cityId=? AND specialization=?;", BeanPropertyRowMapper.newInstance(Doctor.class),doctorId, specialization);
     }
 }
