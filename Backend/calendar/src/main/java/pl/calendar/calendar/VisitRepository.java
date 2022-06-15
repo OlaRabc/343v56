@@ -20,7 +20,6 @@ public class VisitRepository {
                 "LEFT JOIN patient " +
                 "ON patient.patientId=visit.patientId " +
                 "Where doctorId=? AND visit.visitDate>? AND  visit.visitDate<?;", BeanPropertyRowMapper.newInstance(Visit.class),doctorId, firstOfM, lastOfM);
-
     }
 
     public List<Visit> getVisitByPatientId(int patientId, Date firstOfM, Date lastOfM){
@@ -32,5 +31,12 @@ public class VisitRepository {
                 "Where visit.patientId=? AND visit.visitDate>? AND  visit.visitDate<?;", BeanPropertyRowMapper.newInstance(Visit.class),patientId, firstOfM, lastOfM);
 
     }
-
+    public List<Visit> getVisitByDoctorIdAndVisitStatus(int doctorId,int visitStatus, Date firstOfM, Date lastOfM){
+        return jdbcTemplate.query("SELECT visit.visitId, visit.doctorId, visit.visitStatusId,  visit.visitDate, visit.visitStart, visit.visitEnd, " +
+                " patient.patientId, patient.firstName, patient.lastName, patient.mail, patient.phoneNumber " +
+                "from visit " +
+                "LEFT JOIN patient " +
+                "ON patient.patientId=visit.patientId " +
+                "Where doctorId=? AND visit.visitStatusId=? AND visit.visitDate>? AND  visit.visitDate<?;", BeanPropertyRowMapper.newInstance(Visit.class),doctorId,visitStatus, firstOfM, lastOfM);
+    }
 }

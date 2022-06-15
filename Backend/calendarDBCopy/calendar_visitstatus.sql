@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `visitstatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `visitstatus` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `visitStatusId` int NOT NULL AUTO_INCREMENT,
   `visitStatus` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`visitStatusId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-14 14:15:17
+-- Dump completed on 2022-06-15 14:06:22
