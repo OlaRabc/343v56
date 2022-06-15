@@ -12,6 +12,6 @@ public class PatientRepository {
 
    public Patient getPatientById(Integer patientId)
     {
-        return jdbcTemplate.queryForObject("SELECT id, firstName, lastName, city, personalId, mail, phoneNumber FROM calendar.patient WHERE id=?;",BeanPropertyRowMapper.newInstance(Patient.class),patientId);
+        return jdbcTemplate.queryForObject("SELECT patientId, firstName, lastName, city, personalId, mail, phoneNumber FROM calendar.patient WHERE patientId=?;",BeanPropertyRowMapper.newInstance(Patient.class),patientId);
     }
 }
