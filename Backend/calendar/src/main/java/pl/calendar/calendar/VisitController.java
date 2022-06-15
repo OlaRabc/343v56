@@ -18,6 +18,10 @@ public class VisitController {
     public List<Visit> getVisitByDoctorId(@PathVariable("doctorId") int doctorId, @PathVariable("firstOfM") Date firstOfM, @PathVariable("lastOfM") Date lastOfM){
         return visitRepository.getVisitByDoctorId(doctorId, firstOfM, lastOfM);
     }
+    @GetMapping("/doctors/{doctorId}/{visitStatus}/{firstOfM}/{lastOfM}")
+    public List<Visit> getVisitByDoctorIdAndVisitStatus(@PathVariable("doctorId") int doctorId,@PathVariable("visitStatus") int visitStatus, @PathVariable("firstOfM") Date firstOfM, @PathVariable("lastOfM") Date lastOfM){
+        return visitRepository.getVisitByDoctorIdAndVisitStatus(doctorId,visitStatus, firstOfM, lastOfM);
+    }
     @GetMapping("/patients/{patientId}/{firstOfM}/{lastOfM}")
     public List<Visit> getVisitByPatientId(@PathVariable("patientId") int patientId, @PathVariable("firstOfM") Date firstOfM, @PathVariable("lastOfM") Date lastOfM){
         return visitRepository.getVisitByPatientId(patientId, firstOfM, lastOfM);
