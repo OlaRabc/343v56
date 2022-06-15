@@ -10,7 +10,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Patient {
-    private Integer id;
+    private Integer patientId;
     private String firstName;
     private String lastName;
     private String city;
@@ -23,11 +23,11 @@ public class Patient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return Objects.equals(id, patient.id) && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && Objects.equals(city, patient.city) && Objects.equals(personalId, patient.personalId) && Objects.equals(mail, patient.mail) && Objects.equals(phoneNumber, patient.phoneNumber);
+        return Objects.equals(patientId, patient.patientId) && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && Objects.equals(city, patient.city) && Objects.equals(personalId, patient.personalId) && Objects.equals(mail, patient.mail) && Objects.equals(phoneNumber, patient.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, city, personalId, mail, phoneNumber);
+        return Objects.hash(patientId, firstName, lastName, city, personalId, mail, phoneNumber);
     }
 }
