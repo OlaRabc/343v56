@@ -23,17 +23,16 @@ DROP TABLE IF EXISTS `doctor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctor` (
-  `doctorId` int NOT NULL AUTO_INCREMENT,
-  `firstName` varchar(20) DEFAULT NULL,
-  `lastName` varchar(20) DEFAULT NULL,
+  `doctor_id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(20) DEFAULT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
   `pwz` varchar(7) DEFAULT NULL,
-  `cityId` int DEFAULT NULL,
-  `specialization` varchar(40) DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
   `street` varchar(40) DEFAULT NULL,
-  `localNumber` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`doctorId`),
-  KEY `cityId` (`cityId`),
-  CONSTRAINT `cityId` FOREIGN KEY (`cityId`) REFERENCES `city` (`cityId`)
+  `local_number` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`doctor_id`),
+  KEY `cityId` (`city_id`),
+  CONSTRAINT `cityId` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,7 +42,7 @@ CREATE TABLE `doctor` (
 
 LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-INSERT INTO `doctor` VALUES (1,'Jadzia','Kowalska','1234567',1,'1','Kwiatowa','31'),(2,'Jurek','Nowakowski','7654321',1,'1','Podgórna','136'),(3,'Justyna','Kwiatkowska','7777777',2,'1','Lubartowska','149'),(4,'Świętosław','Tomaszewski','9877899',2,'1','Bolesława','143'),(5,'Blanka','Wiśniewska','8003307',2,'1','Grunwaldzka','84'),(6,'Ludmiła','Jabłońska','6611115',2,'1','Lubartowska','16'),(7,'Świętomierz','Chmielewski','3904174',1,'2','Człuchowska','36'),(8,'Kasia','Kozłowska','4308115',1,'2','Lwowska','132'),(9,'Nadzieja','Tomaszewska','6305113',3,'2','Kanałowa','143'),(10,'Grażyna','Kozłowska','7408214',2,'2','Kiepury','44'),(11,'Radosław','Jasiński','6405203',2,'2','Sienkiewicza','11');
+INSERT INTO `doctor` VALUES (1,'Jadzia','Kowalska','1234567',1,'Kwiatowa','31'),(2,'Jurek','Nowakowski','7654321',1,'Podgórna','136'),(3,'Justyna','Kwiatkowska','7777777',2,'Lubartowska','149'),(4,'Świętosław','Tomaszewski','9877899',2,'Bolesława','143'),(5,'Blanka','Wiśniewska','8003307',2,'Grunwaldzka','84'),(6,'Ludmiła','Jabłońska','6611115',2,'Lubartowska','16'),(7,'Świętomierz','Chmielewski','3904174',1,'Człuchowska','36'),(8,'Kasia','Kozłowska','4308115',1,'Lwowska','132'),(9,'Nadzieja','Tomaszewska','6305113',3,'Kanałowa','143'),(10,'Grażyna','Kozłowska','7408214',2,'Kiepury','44'),(11,'Radosław','Jasiński','6405203',2,'Sienkiewicza','11');
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-16  9:02:00
+-- Dump completed on 2022-06-16 18:51:40

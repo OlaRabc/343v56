@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `city`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `city` (
-  `cityId` int NOT NULL AUTO_INCREMENT,
+  `city_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`cityId`)
+  PRIMARY KEY (`city_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-16  9:02:01
+-- Dump completed on 2022-06-16 18:51:40

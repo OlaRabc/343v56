@@ -23,24 +23,24 @@ DROP TABLE IF EXISTS `visit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `visit` (
-  `visitId` int NOT NULL AUTO_INCREMENT,
-  `doctorId` int DEFAULT NULL,
-  `patientId` int DEFAULT NULL,
-  `visitStatusId` int DEFAULT NULL,
-  `visitDate` date DEFAULT NULL,
-  `visitStart` time DEFAULT NULL,
-  `visitEnd` time DEFAULT NULL,
-  `specializationId` int DEFAULT NULL,
-  PRIMARY KEY (`visitId`),
-  KEY `doctorId` (`doctorId`),
-  KEY `patientId` (`patientId`),
-  KEY `visitStatus` (`visitStatusId`),
-  KEY `specializationId` (`specializationId`),
-  CONSTRAINT `doctorId` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`),
-  CONSTRAINT `FdoctorId` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`),
-  CONSTRAINT `patientId` FOREIGN KEY (`patientId`) REFERENCES `patient` (`patientId`),
-  CONSTRAINT `specializationId` FOREIGN KEY (`specializationId`) REFERENCES `specialization` (`specializationId`),
-  CONSTRAINT `visitStatus` FOREIGN KEY (`visitStatusId`) REFERENCES `visitstatus` (`visitStatusId`)
+  `visit_id` int NOT NULL AUTO_INCREMENT,
+  `doctor_id` int DEFAULT NULL,
+  `patient_id` int DEFAULT NULL,
+  `visit_status_id` int DEFAULT NULL,
+  `visit_date` date DEFAULT NULL,
+  `visit_start` time DEFAULT NULL,
+  `visit_end` time DEFAULT NULL,
+  `specialization_id` int DEFAULT NULL,
+  PRIMARY KEY (`visit_id`),
+  KEY `doctorId` (`doctor_id`),
+  KEY `patientId` (`patient_id`),
+  KEY `visitStatus` (`visit_status_id`),
+  KEY `specializationId` (`specialization_id`),
+  CONSTRAINT `doctorId` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`),
+  CONSTRAINT `FdoctorId` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`),
+  CONSTRAINT `patientId` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`),
+  CONSTRAINT `specializationId` FOREIGN KEY (`specialization_id`) REFERENCES `specialization` (`specialization_id`),
+  CONSTRAINT `visitStatus` FOREIGN KEY (`visit_status_id`) REFERENCES `visitstatus` (`visit_status_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-16  9:02:00
+-- Dump completed on 2022-06-16 18:51:40
