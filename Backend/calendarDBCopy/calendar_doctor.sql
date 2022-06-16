@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: calendar
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -43,7 +43,7 @@ CREATE TABLE `doctor` (
 
 LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-INSERT INTO `doctor` VALUES (1,'Jadzia','Kowalska','1234567',1,'Alergologia','Kwiatowa','31'),(2,'Jurek','Nowakowski','7654321',1,'Alergologia','Podgórna','136'),(3,'Justyna','Kwiatkowska','7777777',2,'Alergologia','Lubartowska','149'),(4,'Świętosław','Tomaszewski','9877899',2,'Alergologia','Bolesława','143'),(5,'Blanka','Wiśniewska','8003307',2,'Alergologia','Grunwaldzka','84'),(6,'Ludmiła','Jabłońska','6611115',2,'Alergologia','Lubartowska','16'),(7,'Świętomierz','Chmielewski','3904174',1,'Chirurgia dziecięca','Człuchowska','36'),(8,'Kasia','Kozłowska','4308115',1,'Chirurgia dziecięca','Lwowska','132'),(9,'Nadzieja','Tomaszewska','6305113',3,'Chirurgia dziecięca','Kanałowa','143'),(10,'Grażyna','Kozłowska','7408214',2,'Chirurgia dziecięca','Kiepury','44'),(11,'Radosław','Jasiński','6405203',2,'Chirurgia dziecięca','Sienkiewicza','11');
+INSERT INTO `doctor` VALUES (1,'Jadzia','Kowalska','1234567',1,'1','Kwiatowa','31'),(2,'Jurek','Nowakowski','7654321',1,'1','Podgórna','136'),(3,'Justyna','Kwiatkowska','7777777',2,'1','Lubartowska','149'),(4,'Świętosław','Tomaszewski','9877899',2,'1','Bolesława','143'),(5,'Blanka','Wiśniewska','8003307',2,'1','Grunwaldzka','84'),(6,'Ludmiła','Jabłońska','6611115',2,'1','Lubartowska','16'),(7,'Świętomierz','Chmielewski','3904174',1,'2','Człuchowska','36'),(8,'Kasia','Kozłowska','4308115',1,'2','Lwowska','132'),(9,'Nadzieja','Tomaszewska','6305113',3,'2','Kanałowa','143'),(10,'Grażyna','Kozłowska','7408214',2,'2','Kiepury','44'),(11,'Radosław','Jasiński','6405203',2,'2','Sienkiewicza','11');
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-15 14:06:23
+-- Dump completed on 2022-06-16  9:02:00

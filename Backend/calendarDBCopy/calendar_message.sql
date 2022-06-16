@@ -16,32 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `patient`
+-- Table structure for table `message`
 --
 
-DROP TABLE IF EXISTS `patient`;
+DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `patient` (
-  `patientId` int NOT NULL AUTO_INCREMENT,
-  `firstName` varchar(20) DEFAULT NULL,
-  `lastName` varchar(20) DEFAULT NULL,
-  `city` varchar(20) DEFAULT NULL,
-  `personalId` varchar(11) DEFAULT NULL,
-  `mail` varchar(50) DEFAULT NULL,
-  `phoneNumber` varchar(9) DEFAULT NULL,
-  PRIMARY KEY (`patientId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `message` (
+  `msgId` int NOT NULL AUTO_INCREMENT,
+  `doctorId` int DEFAULT NULL,
+  `patientId` int DEFAULT NULL,
+  `visitId` int DEFAULT NULL,
+  `isRead` enum('true','false') DEFAULT NULL,
+  `newStatus` int DEFAULT NULL,
+  PRIMARY KEY (`msgId`),
+  KEY `doctorId2` (`doctorId`),
+  KEY `patientId2` (`patientId`),
+  KEY `visitId` (`visitId`),
+  CONSTRAINT `doctorId2` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`),
+  CONSTRAINT `patientId2` FOREIGN KEY (`patientId`) REFERENCES `patient` (`patientId`),
+  CONSTRAINT `visitId` FOREIGN KEY (`visitId`) REFERENCES `visit` (`visitId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `patient`
+-- Dumping data for table `message`
 --
 
-LOCK TABLES `patient` WRITE;
-/*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'Gertruda','Zawadzka','Gdynia','72032766841','GertrudaZawadzka@dayrep.com','784485740'),(2,'Ludmita','Olszewska','Kraków','65030597407','LudmitaOlszewska@teleworm.us','699820770'),(3,'Longin','Jasiński','Sopot','49112697250','LonginJasinski@teleworm.us','694138682'),(4,'Jeronim','Michalski','Racibórz','54052508214','Michalski@jourrapide.com','606345593');
-/*!40000 ALTER TABLE `patient` ENABLE KEYS */;
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (1,1,1,27,'false',NULL),(2,1,3,28,'false',NULL);
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
