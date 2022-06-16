@@ -1,12 +1,13 @@
 package pl.calendar.calendar.Classes;
 
 import lombok.*;
-import org.apache.tomcat.jni.Time;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -20,9 +21,9 @@ public class Visit {
     private Long doctorId;
     private Long patientId;
     private Long visitStatusId;
-    //private Date visitDate;
-    //private Date visitStart;
-    //private Time visitEnd;
+    private Date visitDate;
+    private Time visitStart;
+    private Time visitEnd;
     private Long specializationId;
 
 }
