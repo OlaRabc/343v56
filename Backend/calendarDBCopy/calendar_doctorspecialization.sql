@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: calendar
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,36 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `msg`
+-- Table structure for table `doctorspecialization`
 --
 
-DROP TABLE IF EXISTS `msg`;
+DROP TABLE IF EXISTS `doctorspecialization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `msg` (
-  `msgId` int NOT NULL AUTO_INCREMENT,
-  `doctorId` int DEFAULT NULL,
-  `patientId` int DEFAULT NULL,
-  `visitId` int DEFAULT NULL,
-  `isRead` enum('true','false') DEFAULT NULL,
-  PRIMARY KEY (`msgId`),
-  KEY `doctorId2` (`doctorId`),
-  KEY `patientId2` (`patientId`),
-  KEY `visitId` (`visitId`),
-  CONSTRAINT `doctorId2` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`),
-  CONSTRAINT `patientId2` FOREIGN KEY (`patientId`) REFERENCES `patient` (`patientId`),
-  CONSTRAINT `visitId` FOREIGN KEY (`visitId`) REFERENCES `visit` (`visitId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `doctorspecialization` (
+  `doctorId` int NOT NULL,
+  `specializationId` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `msg`
+-- Dumping data for table `doctorspecialization`
 --
 
-LOCK TABLES `msg` WRITE;
-/*!40000 ALTER TABLE `msg` DISABLE KEYS */;
-INSERT INTO `msg` VALUES (1,1,1,27,'false'),(2,1,3,28,'false');
-/*!40000 ALTER TABLE `msg` ENABLE KEYS */;
+LOCK TABLES `doctorspecialization` WRITE;
+/*!40000 ALTER TABLE `doctorspecialization` DISABLE KEYS */;
+INSERT INTO `doctorspecialization` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,2),(8,2),(9,2),(10,2),(11,2),(11,3);
+/*!40000 ALTER TABLE `doctorspecialization` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-15 14:06:23
+-- Dump completed on 2022-06-16  9:02:01
