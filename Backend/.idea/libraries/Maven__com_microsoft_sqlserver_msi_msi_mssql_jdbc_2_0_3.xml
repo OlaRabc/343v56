@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.microsoft.sqlserver.msi:msi-mssql-jdbc:2.0.3">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/msi/msi-mssql-jdbc/2.0.3/msi-mssql-jdbc-2.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/msi/msi-mssql-jdbc/2.0.3/msi-mssql-jdbc-2.0.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/msi/msi-mssql-jdbc/2.0.3/msi-mssql-jdbc-2.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
