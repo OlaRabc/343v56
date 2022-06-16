@@ -23,8 +23,10 @@ DROP TABLE IF EXISTS `doctorspecialization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctorspecialization` (
-  `doctorId` int NOT NULL,
-  `specializationId` int NOT NULL
+  `id` int NOT NULL,
+  `doctor_id` int NOT NULL,
+  `specialization_id` int NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -34,7 +36,7 @@ CREATE TABLE `doctorspecialization` (
 
 LOCK TABLES `doctorspecialization` WRITE;
 /*!40000 ALTER TABLE `doctorspecialization` DISABLE KEYS */;
-INSERT INTO `doctorspecialization` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,2),(8,2),(9,2),(10,2),(11,2),(11,3);
+INSERT INTO `doctorspecialization` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,5,1),(6,6,1),(7,7,2),(8,8,2),(9,9,2),(10,10,2),(11,11,2),(12,11,3);
 /*!40000 ALTER TABLE `doctorspecialization` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-16  9:02:01
+-- Dump completed on 2022-06-16 18:51:40

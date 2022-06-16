@@ -23,19 +23,19 @@ DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `message` (
-  `msgId` int NOT NULL AUTO_INCREMENT,
-  `doctorId` int DEFAULT NULL,
-  `patientId` int DEFAULT NULL,
-  `visitId` int DEFAULT NULL,
-  `isRead` enum('true','false') DEFAULT NULL,
-  `newStatus` int DEFAULT NULL,
-  PRIMARY KEY (`msgId`),
-  KEY `doctorId2` (`doctorId`),
-  KEY `patientId2` (`patientId`),
-  KEY `visitId` (`visitId`),
-  CONSTRAINT `doctorId2` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`),
-  CONSTRAINT `patientId2` FOREIGN KEY (`patientId`) REFERENCES `patient` (`patientId`),
-  CONSTRAINT `visitId` FOREIGN KEY (`visitId`) REFERENCES `visit` (`visitId`)
+  `msg_id` int NOT NULL AUTO_INCREMENT,
+  `doctor_id` int DEFAULT NULL,
+  `patient_id` int DEFAULT NULL,
+  `visit_id` int DEFAULT NULL,
+  `is_read` enum('true','false') DEFAULT NULL,
+  `new_status` int DEFAULT NULL,
+  PRIMARY KEY (`msg_id`),
+  KEY `doctorId2` (`doctor_id`),
+  KEY `patientId2` (`patient_id`),
+  KEY `visitId` (`visit_id`),
+  CONSTRAINT `doctorId2` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`),
+  CONSTRAINT `patientId2` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`),
+  CONSTRAINT `visitId` FOREIGN KEY (`visit_id`) REFERENCES `visit` (`visit_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-16  9:02:01
+-- Dump completed on 2022-06-16 18:51:40
