@@ -13,8 +13,6 @@ import javax.persistence.Id;
 public class Message {
     @Id
     private Long msgId;
-    private Long doctorId;
-    private Long patientId;
     private Long visitId;
     private String isRead;
     private Long newStatus;
