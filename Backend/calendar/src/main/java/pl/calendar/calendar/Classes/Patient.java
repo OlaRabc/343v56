@@ -2,8 +2,8 @@ package pl.calendar.calendar.Classes;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,7 +16,11 @@ public class Patient {
     private Long  patientId;
     private String firstName;
     private String lastName;
-    private String city;
+    private Long cityId;
     private String mail;
     private String phoneNumber;
+
+    //ok
+    //@OneToMany(mappedBy = "patientId")
+    //private Set<Visit> visits;
 }

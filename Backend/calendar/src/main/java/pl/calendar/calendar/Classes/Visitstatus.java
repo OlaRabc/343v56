@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Entity(name="visitstatus")
 public class Visitstatus {
     @Id
-    private Long visit_statusId;
+    private Long visitStatusId;
     private String visitStatus;
 
 }
