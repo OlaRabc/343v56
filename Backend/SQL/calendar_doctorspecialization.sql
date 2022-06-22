@@ -26,7 +26,11 @@ CREATE TABLE `doctorspecialization` (
   `id` int NOT NULL,
   `doctor_id` int NOT NULL,
   `specialization_id` int NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `doctor_id` (`doctor_id`),
+  KEY `specialization_id` (`specialization_id`),
+  CONSTRAINT `doctorspecialization_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`),
+  CONSTRAINT `doctorspecialization_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specialization` (`specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-17  9:19:11
+-- Dump completed on 2022-06-22 15:42:11
