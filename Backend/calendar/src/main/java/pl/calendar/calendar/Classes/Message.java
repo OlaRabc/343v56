@@ -15,12 +15,11 @@ import javax.persistence.ManyToOne;
 @Entity(name="message")
 public class Message {
     @Id
-    private Long msg_id;
-    //private Long visit_id;
-    private String is_read;
-    private Long new_status;
+    private Long msgId;
+    private String isRead;
+    private Long newStatus;
 
     @ManyToOne
-    @JoinColumn(name = " visit_id")
+    @JoinColumn(name = " visitId")
     private  Visit visit;
 }

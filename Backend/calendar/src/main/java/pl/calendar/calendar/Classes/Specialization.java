@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Entity(name="specialization")
 public class Specialization {
     @Id
-    private Long specialization_id;
+    private Long specializationId;
     private String name;
 
 }

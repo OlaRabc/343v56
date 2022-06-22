@@ -18,25 +18,56 @@ public class VisitController {
     @Autowired
     public VisitRepository visitRepository;
 
-
     @GetMapping("")
     public List<Visit> getAllVisits() {
         return visitRepository.findAll();
     }
-/*
+
     @GetMapping("/{id}")
-    public Optional<Visit> getVisitById(@PathVariable("id") Long id){
+    public Optional<Visit> getVisitById(
+            @PathVariable("id") Long id){
         return visitRepository.findById(id);
     }
-    @GetMapping("/doctor/{id}/{visitDate}")
-    public List<Visit> getByDoctorIdAndVisitDate(@PathVariable("id") Long id,@PathVariable("visitDate") Date visitDate){
-        return visitRepository.findByDoctorIdAndVisitDate(id, visitDate);
+
+    @GetMapping("/doctor/{id}")
+    public List<Visit> getByDoctorId(
+            @PathVariable("id") Long id){
+        return visitRepository.findByDoctor_doctorId(id);
     }
 
-   @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}")
-    public List<Visit> getByVisitDateBetween(@PathVariable("id") Long id, @PathVariable("dateStart") Date dateStart, @PathVariable("dateEnd") Date dateEnd){
-       return visitRepository.findByDoctorIdAndVisitDateBetween(id, dateStart, dateEnd);
+    @GetMapping("/doctor/{id}/{visitDate}")
+    public List<Visit> getByDoctorIdAndVisitDate(
+            @PathVariable("id") Long id,
+            @PathVariable("visitDate") Date visitDate){
+        return visitRepository.findByDoctor_doctorIdAndVisitDate(id, visitDate);
     }
-*/
+
+    @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}")
+    public List<Visit> getByDoctorIdAndVisitDateBetween(
+            @PathVariable("id") Long id,
+            @PathVariable("dateStart") Date dateStart,
+            @PathVariable("dateEnd") Date dateEnd){
+       return visitRepository.findByDoctor_doctorIdAndVisitDateBetween(id, dateStart, dateEnd);
+    }
+
+    @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}/{visitStatus}")
+    public List<Visit> getByDoctorIdAndVisitDateBetweenAndVisitStatus(
+            @PathVariable("id") Long id,
+            @PathVariable("dateStart") Date dateStart,
+            @PathVariable("dateEnd") Date dateEnd,
+            @PathVariable("visitStatus") Long visitStatus ){
+        return visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusId(id, dateStart, dateEnd, visitStatus);
+    }
+
+
+    @GetMapping("/patient/{id}/{visitDate}")
+    public List<Visit> getByPatientIdAndVisitDate(@PathVariable("id") Long id,@PathVariable("visitDate") Date visitDate){
+        return visitRepository.findByPatient_patientIdAndVisitDate(id, visitDate);
+    }
+
+    @GetMapping("/patient/{id}/{dateStart}/{dateEnd}")
+    public List<Visit> getByPatientIdAndVisitDateBetween(@PathVariable("id") Long id, @PathVariable("dateStart") Date dateStart, @PathVariable("dateEnd") Date dateEnd){
+        return visitRepository.findByPatient_patientIdAndVisitDateBetween(id, dateStart, dateEnd);
+    }
 }
 

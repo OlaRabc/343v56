@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Entity(name="city")
 public class City {
     @Id
-    private Long  city_id;
+    private Long cityId;
     private String name;
 
 }

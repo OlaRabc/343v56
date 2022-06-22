@@ -29,4 +29,6 @@ public class DoctorController {
     public Optional<Doctor> getDoctorById(@PathVariable("id") Long id){
         return doctorRepository.findById(id);
     }
+
+
 }
