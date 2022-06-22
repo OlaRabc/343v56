@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -14,7 +16,13 @@ import javax.persistence.Id;
 public class Doctorspecialization {
     @Id
     private Long id;
-    private Long doctorId;
-    private Long specializationId;
+    //private Long doctor_id;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
+    //private Long specialization_id;
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    private Specialization specialization;
 }

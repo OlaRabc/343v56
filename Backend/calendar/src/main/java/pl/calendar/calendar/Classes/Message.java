@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,8 +15,12 @@ import javax.persistence.Id;
 @Entity(name="message")
 public class Message {
     @Id
-    private Long msgId;
-    private Long visitId;
-    private String isRead;
-    private Long newStatus;
+    private Long msg_id;
+    //private Long visit_id;
+    private String is_read;
+    private Long new_status;
+
+    @ManyToOne
+    @JoinColumn(name = " visit_id")
+    private  Visit visit;
 }
