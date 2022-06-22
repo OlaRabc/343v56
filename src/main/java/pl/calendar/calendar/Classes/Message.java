@@ -1,18 +1,19 @@
 package pl.calendar.calendar.Classes;
+
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="specialization")
-public class Specialization {
+@Entity(name="message")
+public class Message {
     @Id
-    private Long specialization_id;
-    private String name;
-
+    private Long msgId;
+    private Long visitId;
+    private String isRead;
+    private Long newStatus;
 }

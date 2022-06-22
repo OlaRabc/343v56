@@ -23,7 +23,7 @@ public class VisitController {
     public List<Visit> getAllVisits() {
         return visitRepository.findAll();
     }
-/*
+
     @GetMapping("/{id}")
     public Optional<Visit> getVisitById(@PathVariable("id") Long id){
         return visitRepository.findById(id);
@@ -37,6 +37,6 @@ public class VisitController {
     public List<Visit> getByVisitDateBetween(@PathVariable("id") Long id, @PathVariable("dateStart") Date dateStart, @PathVariable("dateEnd") Date dateEnd){
        return visitRepository.findByDoctorIdAndVisitDateBetween(id, dateStart, dateEnd);
     }
-*/
+
 }
 

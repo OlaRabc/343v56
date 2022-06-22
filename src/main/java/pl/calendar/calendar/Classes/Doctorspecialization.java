@@ -1,4 +1,5 @@
 package pl.calendar.calendar.Classes;
+
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -9,10 +10,11 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="specialization")
-public class Specialization {
+@Entity(name="doctorspecialization")
+public class Doctorspecialization {
     @Id
-    private Long specialization_id;
-    private String name;
+    private Long id;
+    private Long doctorId;
+    private Long specializationId;
 
 }

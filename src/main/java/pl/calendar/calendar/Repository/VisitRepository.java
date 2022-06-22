@@ -9,8 +9,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface VisitRepository extends JpaRepository<Visit,Long> {
-    //List<Visit> findByDoctorId(Long doctorId);
-    //List<Visit> findByDoctorIdAndVisitDate(Long id, Date visitDate);
-    //List<Visit> findByDoctorIdAndVisitDateBetween(Long id, Date startVisitDate, Date endVisitDate);
+    List<Visit> findByDoctorId(Long doctorId);
+    List<Visit> findByDoctorIdAndVisitDate(Long id, Date visitDate);
+    List<Visit> findByDoctorIdAndVisitDateBetween(Long id, Date startVisitDate, Date endVisitDate);
 
 }
