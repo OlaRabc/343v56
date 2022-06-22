@@ -16,13 +16,12 @@ import javax.persistence.ManyToOne;
 public class Doctorspecialization {
     @Id
     private Long id;
-    //private Long doctor_id;
+
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
-    //private Long specialization_id;
     @ManyToOne
-    @JoinColumn(name = "specialization_id")
+    @JoinColumn(name = "specializationId")
     private Specialization specialization;
 }

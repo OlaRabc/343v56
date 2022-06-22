@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -16,25 +15,22 @@ import java.util.Set;
 @Entity(name="visit")
 public class Visit {
     @Id
-    private Long visit_id;
-    //private Long doctor_id;
-    //private Long patient_id;
-    private Long visit_status_id; //??
-    private Date visit_date;
-    private Time visit_start;
-    private Time visit_end;
-    //private Long specialization_id;
+    private Long visitId;
+    private Long visitStatusId; //??
+    private Date visitDate;
+    private Time visitStart;
+    private Time visitEnd;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patientId")
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name = "specialization_id")
+    @JoinColumn(name = "specializationId")
     private Specialization specialization;
 
 }
