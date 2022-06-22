@@ -26,7 +26,7 @@ CREATE TABLE `patient` (
   `patient_id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(20) DEFAULT NULL,
   `last_name` varchar(20) DEFAULT NULL,
-  `cityId` int DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
   `mail` varchar(50) DEFAULT NULL,
   `phone_number` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`patient_id`)
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-17  9:19:11
+-- Dump completed on 2022-06-22 15:42:10
