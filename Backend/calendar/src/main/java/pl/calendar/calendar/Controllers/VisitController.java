@@ -79,8 +79,8 @@ public class VisitController {
     public List<Visit> getByDoctorIdAndVisitDateBetweenAndVisitStatus(
             @PathVariable("id") Long id,
             @PathVariable("visitStatus") Long visitStatus ){
-        return visitRepository.findFirstByDoctor_doctorIdAndVisitStatusIdOrderByVisitDate(id, visitStatus);
+        java.sql.Date sqlDateNow = new java.sql.Date(new java.util.Date().getTime());
+        return visitRepository.findFirstByDoctor_doctorIdAndVisitStatusIdStartDateAfterOrderByVisitDate(id, visitStatus, sqlDateNow);
     }
 }
-//findFirstByDoctor_doctorIdAndVisitStatusIdOrderByVisitDate
 
