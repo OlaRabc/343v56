@@ -1,6 +1,7 @@
 package pl.calendar.calendar.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,12 @@ public class MessageController {
     public MessageRepository messageRepository;
 
     @GetMapping("")
-    public List<Message> getAllMessages(){
-        return messageRepository.findAll();
+    public ResponseEntity<List<Message>> getAllMessages(){
+        return ResponseEntity.ok(messageRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Message> getMessageById(@PathVariable("id") Long id){
-        return messageRepository.findById(id);
+    public ResponseEntity<?> getMessageById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(messageRepository.findById(id));
     }
 }

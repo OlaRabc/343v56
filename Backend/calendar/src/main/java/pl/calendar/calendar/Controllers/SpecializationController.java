@@ -1,6 +1,7 @@
 package pl.calendar.calendar.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +20,8 @@ public class SpecializationController {
 
 
     @GetMapping("")
-    public List<Specialization> getAllSpecializations() {
-        return specializationRepository.findAll();
+    public ResponseEntity<List<Specialization>> getAllSpecializations() {
+        return ResponseEntity.ok(specializationRepository.findAll());
     }
 
 }
