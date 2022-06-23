@@ -2,6 +2,7 @@ package pl.calendar.calendar.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.calendar.calendar.Classes.Visit;
+import pl.calendar.calendar.Classes.Visitstatus;
 
 import java.sql.Date;
 import java.util.List;
@@ -15,5 +16,5 @@ public interface VisitRepository extends JpaRepository<Visit,Long> {
     List<Visit> findByPatient_patientIdAndVisitDateBetween(Long id, Date startVisitDate, Date endVisitDate);
 
     //virst free date
-    List<Visit> findFirstByDoctor_doctorIdAndVisitStatusIdStartDateAfterOrderByVisitDate(Long id, Long visitStatus, Date date);
+    //List<Visit> findFirstByDoctor_doctorIdAndVisitStatusId/*StartDateAfterOrderByVisitDate*/(Long id, Long visitStatus/*, Date date*/);
 }

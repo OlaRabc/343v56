@@ -1,6 +1,7 @@
 package pl.calendar.calendar.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,12 @@ public class VisitstatusController {
 
 
     @GetMapping("")
-    public List<Visitstatus> getAllVisits(){
-        return visitstatusRepository.findAll();
+    public ResponseEntity<List<Visitstatus>> getAllVisits(){
+        return ResponseEntity.ok(visitstatusRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Visitstatus> getVisitstatusById(@PathVariable("id") Long id){
-        return visitstatusRepository.findById(id);
+    public ResponseEntity<?> getVisitstatusById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(visitstatusRepository.findById(id));
     }
 }

@@ -12,11 +12,15 @@
 	<artifactId>calendar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>calendar</name>
-	<description>calendar</description>
+	<description>calx</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
