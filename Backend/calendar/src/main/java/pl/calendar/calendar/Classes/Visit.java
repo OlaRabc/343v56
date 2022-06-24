@@ -15,6 +15,7 @@ import java.sql.Time;
 @Entity(name="visit")
 public class Visit {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long visitId;
     private Long visitStatusId; //??
     private Date visitDate;
