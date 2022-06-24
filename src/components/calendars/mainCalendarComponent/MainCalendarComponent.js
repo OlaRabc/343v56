@@ -5,6 +5,7 @@ import WeeklyCalendar from "./../weeklyCalendar/WeeklyCalendar";
 import { AiFillCaretLeft } from "react-icons/ai";
 
 const MainCalendarComponent = ({
+    userId,
     isDoctor,
     onBack
 }) => {
