@@ -28,9 +28,8 @@ CREATE TABLE `message` (
   `is_read` enum('true','false') DEFAULT NULL,
   `new_status` int DEFAULT NULL,
   PRIMARY KEY (`msg_id`),
-  KEY `visitId` (`visit_id`),
-  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`visit_id`) REFERENCES `visit` (`visit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `visitId` (`visit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +38,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,27,'false',NULL),(2,28,'false',NULL);
+INSERT INTO `message` VALUES (1,27,'false',NULL),(2,28,'false',NULL),(3,79,'false',1);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-22 15:42:11
+-- Dump completed on 2022-06-24 15:22:36

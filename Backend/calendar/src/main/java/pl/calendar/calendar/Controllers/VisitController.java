@@ -22,7 +22,6 @@ public class VisitController {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     public VisitRepository visitRepository;
-    public DoctorRepository doctorRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -100,16 +99,37 @@ public class VisitController {
     public ResponseEntity<?> postVisit(@RequestBody Visit visit) throws ParseException {
         visit.setVisitStatusId(1L);
         visit.setPatient(null);
-        return ResponseEntity.ok( visitRepository.saveAndFlush(visit));
+
+        visitRepository.saveAndFlush(visit);
+        return ResponseEntity.ok("");
     }
 
-   /* @PatchMapping("/{id}")
+    @PatchMapping("/{id}/status/{status}/patient/{patient}")
     @ResponseBody
-    public ResponseEntity<?> patchVisit(@RequestBody Visit visit) throws ParseException {
-        Visit v=new Visit();
-        visit.setVisitStatusId(1L);
-        visit.setPatient(null);
-        return ResponseEntity.ok( visitRepository);
-    }*/
+    public ResponseEntity<?> patchVisit(
+            @PathVariable("id") Long id,
+            @PathVariable("status") Long status,
+            @PathVariable("patient") Long patient){
+        Visit v=visitRepository.getById(id);
+        if (status == 1L) {
+            v.setVisitStatusId(1L);
+            v.setPatient(null);
+        }
+        if (status == 2L) {
+            v.setVisitStatusId(2L);
+            //setPatient
+        }
+        if (status == 3L) {
+            v.setVisitStatusId(3L);
+        }
+        if (status == 4L) {
+            v.setVisitStatusId(4L);
+        }
+        if (status == 4L) {
+            v.setVisitStatusId(5L);
+        }//5L del
+        visitRepository.saveAndFlush(v);
+        return ResponseEntity.ok("");
+    }
 }
 

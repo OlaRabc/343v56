@@ -6,7 +6,8 @@ import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainC
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
 
 function PatientPage() {
-  const isDoctor = false
+  const isDoctor = false;
+  const patientId= 1;
   /////////////////////////////////////
   const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
@@ -28,6 +29,7 @@ function PatientPage() {
           onCalendarVewClick={() => {
             setAllVewsFale();
             setIsMainCalendarComponent(true);
+            
           }}
           onPatientVisitRejestrationFormVew={() => {
             setAllVewsFale();
@@ -36,6 +38,7 @@ function PatientPage() {
         /> : ""}
         {isMainCalendarComponent ?
           <MainCalendarComponent
+            userId={patientId}
             isDoctor={isDoctor}
             onBack={() => {
               setAllVewsFale();
@@ -44,6 +47,7 @@ function PatientPage() {
           : ""}
         {isPatientVisitRejestrationForm ?
           <PatientVisitRejestrationForm
+            userId={patientId}
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);

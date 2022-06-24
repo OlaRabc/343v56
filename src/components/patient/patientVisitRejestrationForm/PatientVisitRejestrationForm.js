@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 //import { Container, Row, Col } from 'react-bootstrap';
 import "./PatientVisitRejestrationForm.css";
 import { AiFillCaretLeft} from "react-icons/ai";
+import {getCities} from "./../../../apiOperation/getOperaton/GetOperaton";
 
 function PatientVisitRejestrationForm({
+   userId,
    onBack
 }) {
-
+   const x=getCities();
   
    return(
-      <div className="col-12">
+      <div className="col-12" onLoad={console.log("Ddd")}>
          <div className="col-1 offset-md-1 back" onClick={onBack}> 
             <AiFillCaretLeft/>
          </div>
@@ -26,7 +28,7 @@ function PatientVisitRejestrationForm({
                <input type="specjalization" className="form-control" id="exampleInputSpecjalization" aria-describedby="specjalizationHelp" placeholder="Specjalizacja"/>
             </div>
             <button type="button" className="btn bg-primary text-light col-12 col-lg-4 mt-4 offset-lg-1" onClick={()=>{
-               console.log("szuk")
+               console.log("szukf")
             }}>
                Szukaj
             </button>
