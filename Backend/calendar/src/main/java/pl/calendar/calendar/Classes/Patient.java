@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity(name="patient")
 public class Patient {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long patientId;
     private String firstName;
     private String lastName;

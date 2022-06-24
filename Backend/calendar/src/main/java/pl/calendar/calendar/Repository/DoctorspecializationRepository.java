@@ -11,6 +11,7 @@ public interface DoctorspecializationRepository extends JpaRepository<Doctorspec
     List<Doctorspecialization> findBySpecialization_name(String specializationName);
     List<Doctorspecialization> findByDoctor_city_name(String cityName);
     List<Doctorspecialization> findBySpecialization_nameAndDoctor_city_name(String specializationName, String cityName);
+    List<Doctorspecialization> findByDoctor_doctorId(Long doctorId);
 
     List<Doctorspecialization> findBySpecialization_specializationId(Long specializationId);
     List<Doctorspecialization> findByDoctor_city_cityId(Long  cityId);

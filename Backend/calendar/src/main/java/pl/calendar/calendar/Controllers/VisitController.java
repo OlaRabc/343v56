@@ -3,19 +3,26 @@ package pl.calendar.calendar.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.calendar.calendar.Classes.City;
+import pl.calendar.calendar.Classes.Doctor;
 import pl.calendar.calendar.Classes.Visit;
+import pl.calendar.calendar.Repository.DoctorRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
 import pl.calendar.calendar.Repository.VisitstatusRepository;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/visits")
 public class VisitController {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     public VisitRepository visitRepository;
+    public DoctorRepository doctorRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -87,5 +94,22 @@ public class VisitController {
         visitRepository.deleteById(id);
         return ResponseEntity.ok("");
     }
+
+    @PostMapping("")
+    @ResponseBody
+    public ResponseEntity<?> postVisit(@RequestBody Visit visit) throws ParseException {
+        visit.setVisitStatusId(1L);
+        visit.setPatient(null);
+        return ResponseEntity.ok( visitRepository.saveAndFlush(visit));
+    }
+
+   /* @PatchMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<?> patchVisit(@RequestBody Visit visit) throws ParseException {
+        Visit v=new Visit();
+        visit.setVisitStatusId(1L);
+        visit.setPatient(null);
+        return ResponseEntity.ok( visitRepository);
+    }*/
 }
 

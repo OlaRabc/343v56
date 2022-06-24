@@ -22,7 +22,10 @@ public class DoctorspecializationController {
     public ResponseEntity<List<Doctorspecialization>> getAllDoctorSpecializations(){
         return  ResponseEntity.ok(doctorspecializationRepository.findAll());
     }
-
+    @GetMapping("/doctor/{id}")
+    public ResponseEntity<List<Doctorspecialization>> getAllDoctorSpecializations(@PathVariable("id") Long id){
+        return  ResponseEntity.ok(doctorspecializationRepository.findByDoctor_doctorId(id));
+    }
     @GetMapping("/specialization/{name}")
     public ResponseEntity<List<Doctorspecialization>> getDoctorBySpecializationId(@PathVariable("name") String name){
         return  ResponseEntity.ok(doctorspecializationRepository.findBySpecialization_name(name));
