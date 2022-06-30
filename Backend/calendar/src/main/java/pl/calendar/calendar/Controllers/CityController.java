@@ -9,6 +9,7 @@ import pl.calendar.calendar.Repository.CityRepository;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/cities")
 public class CityController {
@@ -20,6 +21,7 @@ public class CityController {
         return ResponseEntity.ok(cityRepository.findAll());
     }
             //test
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCity(@PathVariable("id") Long id) {
         cityRepository.deleteById(id);
