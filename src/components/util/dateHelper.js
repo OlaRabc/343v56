@@ -1,4 +1,6 @@
 //import {useTranslation} from 'react-i18next'
+import moment from "moment";
+
 
 export function firstOfMonth()
     {
@@ -180,15 +182,6 @@ export function dateInLastSquare(firstOfM,month,year)
   tmp = tmp - firstOfM + 1;
   return new Date(tmpYear, tmpMonth - 1, tmp);
 }
-/*
-export function isEqualsDates(firstDate, secondDate) {
-  return (
-    firstDate.getFullYear() == secondDate.getFullYear() &&
-    firstDate.getMonth() == secondDate.getMonth() &&
-    firstDate.getDate() == secondDate.getDate()
-  );
-}
-*/
 export function timeFromString(date)
 {
     let tmpMinutes=minutesFromString(date);
@@ -247,4 +240,9 @@ export function firstOfWeek()
   const date = current.getDate();
   let day = current.getDay();
   return(date-day+1);
+}
+export function parseToApiDate(date)
+{
+  let tmpDate=""+parseInt(moment(date).format("YYYY"))+"-"+moment(date).format("MM")+"-"+moment(date).format("DD");
+  return tmpDate;
 }

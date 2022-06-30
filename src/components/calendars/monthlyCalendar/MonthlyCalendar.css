@@ -49,3 +49,11 @@
   font-weight: bold;
   text-shadow: 3px 1px 3px #8ed2fc84;
 }
+.visit
+{
+  background-color: #8ed1fc;
+  text-align: center;
+  width: 90%;
+  border: 1px solid black;
+  border-radius: 50px 50px;
+}

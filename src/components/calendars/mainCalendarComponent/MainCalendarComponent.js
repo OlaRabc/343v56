@@ -26,6 +26,7 @@ const MainCalendarComponent = ({
             <div className="calendar-container">
                 {monthlyCalendar ? <MonthlyCalendar
                     isDoctor={isDoctor}
+                    userId={userId}
                     calendarVew={calendarVew}
                     onCalendarVewChange={() => {
                         setCalendarVew(!calendarVew);

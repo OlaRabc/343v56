@@ -20,3 +20,23 @@ export async function getSpecializations()
 	})
 	return tmpResponse;
 }
+export async function getVisitByPatientIdAndVisitDateBetween(id,dateStart,dateEnd) 
+{
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/patient/${id}/${dateStart}/${dateEnd}`)
+	.then(function (response) {
+		tmpResponse=response.data;
+		return(tmpResponse);
+	})
+	return tmpResponse;
+}
+export async function getVisitByVisitId(id) 
+{
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/${id}`)
+	.then(function (response) {
+		tmpResponse=response.data;
+		return(tmpResponse);
+	})
+	return tmpResponse;
+}

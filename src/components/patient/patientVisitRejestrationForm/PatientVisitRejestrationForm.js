@@ -8,10 +8,10 @@ function PatientVisitRejestrationForm({
    userId,
    onBack
 }) {
-   const [cities, setCities] = useState([])
-   const [chosenCitie, setChosenCitie] = useState("null")
-   const [specializations, setSpecializations] = useState([])
-   const [chosenSpecialization, setChosenSpecialization] = useState("null")
+   const [cities, setCities] = useState([]);
+   const [chosenCitie, setChosenCitie] = useState("null");
+   const [specializations, setSpecializations] = useState([]);
+   const [chosenSpecialization, setChosenSpecialization] = useState("null");
 
    useEffect(() => {
       getCities()
@@ -68,9 +68,9 @@ function PatientVisitRejestrationForm({
                </select>
             </div>
             <button type="button" className="btn bg-primary text-light col-12 col-lg-4 mt-4 offset-lg-1" onClick={() => {
-               console.log("szuk")
-               console.log(chosenCitie)
-               console.log(chosenSpecialization)
+               console.log("szuk");
+               console.log(chosenCitie);
+               console.log(chosenSpecialization);
             }}>
                Szukaj
             </button>
