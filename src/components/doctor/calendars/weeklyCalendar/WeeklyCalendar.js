@@ -10,7 +10,7 @@ import {
   addZero,
   dayFromString
 }
-  from './../../util/dateHelper';
+  from './../../../util/dateHelper';
 
 
 function WeeklyCalendar({

@@ -63,12 +63,3 @@ export async function getDoctrsBySpecializationandCity(specialization, city) {
 		})
 	return tmpResponse;
 }
-export async function getVisitsByPatientIdAndDate(id, visitDate) {
-	let tmpResponse;
-	await axios.get(`http://localhost:8080/visits/patient/${id}/${visitDate}`)
-		.then(function (response) {
-			tmpResponse = response.data;
-			return (tmpResponse);
-		})
-	return tmpResponse;
-}

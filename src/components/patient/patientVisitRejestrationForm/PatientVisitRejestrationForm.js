@@ -34,7 +34,7 @@ function PatientVisitRejestrationForm({
          <div className="col-1 offset-md-1 back" onClick={onBack}>
             <AiFillCaretLeft />
          </div>
-         <form className="col-12 col-lg-10 offset-lg-3 ">
+         <form className="col-12 col-lg-9 offset-lg-3 ">
             <div className="col-12 mx-3">
                Znajdź Doktora:
             </div>
@@ -89,17 +89,17 @@ function PatientVisitRejestrationForm({
                Szukaj
             </button>
          </form>
-         <Row className="col-12 mt-2">
+         <Row className="col-11 mt-2">
             {doctorList.map((doctor) => {
                return (
-                  <Row className="col-12 my-2 p-3 doctor-query"
+                  <Row className="btn col-12 bg-primary text-light m-2 p-2 doctor-query"
                   onClick={() => {
                      console.log("ss")
                   }}>
-                     <Col className="col-4 ">{doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
-                     <Col className="col-4"><AiOutlineEnvironment/>{doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
-                     <Col className="col-3">wolny termin</Col>
-                     <Col className="col-1"> <AiFillCaretRight/> </Col>
+                     <Col className="">{doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
+                     <Col className=""><AiOutlineEnvironment/>{doctor.doctor.city.name + ", " +doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
+                     <Col className="">wolny termin</Col>
+                     <Col className=""> <AiFillCaretRight/> </Col>
                   </Row>
                )
             })}
