@@ -1,14 +1,33 @@
 import './PatientPage.css';
 import PatientNavigation from "./../../navigation/patientNavigation/PatientNavigation";
 import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperationVew";
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
+import { getPatientById} from "./../../../apiOperation/getOperaton/GetOperaton";
 
 function PatientPage() {
   const isDoctor = false;
-  const patientId= 1;
+  const patientId = 1;
   /////////////////////////////////////
+  const [patient, setPatient] = useState(
+  {
+    patientId: null,
+    firstName: null,
+    lastName: null,
+    mail: null,
+    phoneNumber: null,
+    cityId: {
+        cityId: null,
+        name: null
+    }});
+  useEffect(() => {
+    getPatientById()
+       .then(data =>
+        setPatient(data)
+       );
+ }, [])
+
   const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
   const [isPatientVisitRejestrationForm, setIsPatientVisitRejestrationForm] = useState(false);
@@ -21,15 +40,15 @@ function PatientPage() {
   return (
     <div id="patient-conteiner">
       <PatientNavigation
-        firstName={"Aleksandra"}
-        lastName={"Rabcewicz"}
+        firstName={patient.firstName}
+        lastName={patient.lastName}
       />
       <div id="col-12 patient-body ">
         {isPatentOperationVew ? <PatentOperationVew
           onCalendarVewClick={() => {
             setAllVewsFale();
             setIsMainCalendarComponent(true);
-            
+
           }}
           onPatientVisitRejestrationFormVew={() => {
             setAllVewsFale();

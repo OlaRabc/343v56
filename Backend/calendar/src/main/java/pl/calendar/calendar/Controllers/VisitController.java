@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/visits")
 public class VisitController {
@@ -71,6 +72,7 @@ public class VisitController {
             @PathVariable("visitDate") Date visitDate){
         return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDate(id, visitDate));
     }
+
 
     @GetMapping("/patient/{id}/{dateStart}/{dateEnd}")
     public ResponseEntity<List<Visit>> getByPatientIdAndVisitDateBetween(

@@ -179,7 +179,7 @@ export function dateInLastSquare(firstOfM,month,year)
     tmpYear += 1;
   }
   let tmp = squareSize - howLongMonth(month, year);
-  tmp = tmp - firstOfM + 1;
+  tmp = tmp - firstOfM + 5;
   return new Date(tmpYear, tmpMonth - 1, tmp);
 }
 export function timeFromString(date)
@@ -243,6 +243,6 @@ export function firstOfWeek()
 }
 export function parseToApiDate(date)
 {
-  let tmpDate=""+parseInt(moment(date).format("YYYY"))+"-"+moment(date).format("MM")+"-"+moment(date).format("DD");
+  let tmpDate=""+moment(date).format("YYYY-MM-DD");
   return tmpDate;
 }

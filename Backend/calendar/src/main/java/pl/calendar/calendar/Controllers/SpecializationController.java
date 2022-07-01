@@ -13,7 +13,7 @@ import pl.calendar.calendar.Repository.VisitstatusRepository;
 
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/specializations")
 public class SpecializationController {

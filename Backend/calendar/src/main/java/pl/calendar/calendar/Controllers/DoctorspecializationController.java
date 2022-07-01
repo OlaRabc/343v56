@@ -32,7 +32,7 @@ public class DoctorspecializationController {
     }
 
     @GetMapping("/city/{name}")
-    public ResponseEntity<List<Doctorspecialization>> getDoctorByCity(@PathVariable("name") String name){
+    public ResponseEntity<List<Doctorspecialization>> findByDoctor_city_name(@PathVariable("name") String name){
         return ResponseEntity.ok(doctorspecializationRepository.findByDoctor_city_name(name));
     }
 

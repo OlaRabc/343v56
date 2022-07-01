@@ -9,7 +9,7 @@ import pl.calendar.calendar.Repository.CityRepository;
 
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/cities")
 public class CityController {
