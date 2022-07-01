@@ -63,3 +63,12 @@ export async function getDoctrsBySpecializationandCity(specialization, city) {
 		})
 	return tmpResponse;
 }
+export async function getDoctorById() {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/doctors/1`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
