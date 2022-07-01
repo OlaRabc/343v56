@@ -68,7 +68,7 @@ const PopupInformationAboutVisit = ({
                     Anuluj
                 </button>
 
-                {visitInformation.visitStatus === "toAcceptVisit" && isDoctor ? (
+                {visitInformation.visitStatusId === 2 && isDoctor ? (
                     <>
 
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
@@ -81,10 +81,11 @@ const PopupInformationAboutVisit = ({
                     </>
                 ) :
                     (
+                        visitInformation.visitStatusId !== 4 ?
                         <button type="button" className="btn btn-primary col-12  mt-3" >
                             {/*visitStatus=free     cancel*/}
                             Odwołaj wizytę
-                        </button>
+                        </button>:""
                     )}
             </Container>
             <PopupDoctorData
