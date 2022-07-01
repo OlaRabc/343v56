@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
 import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAcceptedVisitInformation from "./../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
+import PopupDayVew from "./../../popups/popupDayVew/PopupDayVew"
 import { getVisitByPatientIdAndVisitDateBetween } from "./../../../apiOperation/getOperaton/GetOperaton";
 import {
   firstOfMonth,
@@ -33,41 +34,39 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  /*tmp obj*/
   const visitObjectPrototype = {
-      visitId: null,
-      visitStatusId: null,
-      visitDate: null,
-      visitStart: null,
-      visitEnd: null,
-      doctor: {
-          doctorId: null,
-          firstName: null,
-          lastName: null,
-          pwz: null,
-          street: null,
-          localNumber: null,
-          city: {
-              cityId: null,
-              name: null
-          }
-      },
-      patient: {
-          patientId: null,
-          firstName: null,
-          lastName: null,
-          mail: null,
-          phoneNumber: null,
-          city: {
-              cityId: null,
-              name: null
-          }
-      },
-      specialization: {
-          specializationId: 1,
-          name: null
+    visitId: null,
+    visitStatusId: null,
+    visitDate: null,
+    visitStart: null,
+    visitEnd: null,
+    doctor: {
+      doctorId: null,
+      firstName: null,
+      lastName: null,
+      pwz: null,
+      street: null,
+      localNumber: null,
+      city: {
+        cityId: null,
+        name: null
       }
-    /*  freeVisit   removeByPatientVisit   acceptedVisit  toAcceptVisit  */
+    },
+    patient: {
+      patientId: null,
+      firstName: null,
+      lastName: null,
+      mail: null,
+      phoneNumber: null,
+      city: {
+        cityId: null,
+        name: null
+      }
+    },
+    specialization: {
+      specializationId: 1,
+      name: null
+    }
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -79,19 +78,35 @@ function MonthlyCalendar({
   const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month, year, firstOfM));
   const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
 
-  const [dateInFirstS, setDateInFirstS] = useState(dateInFirstSquare(firstOfMonth(), parseInt(moment(actualDate).format("MM")), parseInt(moment(actualDate).format("YYYY"))));
-  const [dateInLastS, setDateInLastS] = useState(dateInLastSquare(firstOfMonth(), parseInt(moment(actualDate).format("MM")), parseInt(moment(actualDate).format("YYYY"))));
-
   const [visitArray, setVisitArray] = useState([]);
-  const [visitToShow, setVisitToShow]= useState(visitObjectPrototype);
+  const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitDate, setVisitDate] = useState();
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
+  const [isPopupDayVew, setIsPopupDayVew] = useState(false);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
 
   let squares = [];
-  function renderSquare(i) {
+
+  useEffect(() => {
+    getVisitByPatientIdAndVisitDateBetween(userId,
+      parseToApiDate(
+        dateInFirstSquare(firstOfMonth(),
+          parseInt(moment(actualDate).format("MM")),
+          parseInt(moment(actualDate).format("YYYY")))),
+      parseToApiDate(
+        dateInLastSquare(firstOfMonth(),
+          parseInt(moment(actualDate).format("MM")),
+          parseInt(moment(actualDate).format("YYYY")))))
+      .then(data =>
+        setVisitArray(data)
+      );
+  }, [])
+
+  async function renderSquare(i) {
+
     let thisMonth, tmpDate = "", tmpVisit = [];
     if (i > howLongM + firstOfM - 1) thisMonth = false;
     else if (i < firstOfM) thisMonth = false;
@@ -101,9 +116,9 @@ function MonthlyCalendar({
     if (thisMonth) tmpDate = year + "-" + viewMonth(month) + "-" + addZero(i - firstOfM + 1)
     if (!thisMonth && i > 20) tmpDate = nextYear(month, year) + "-" + viewMonth(nextMonth(month)) + "-" + addZero(nextDays(month, year, firstOfM, i))
 
-    visitArray.map((visit)=>{
-      if(visit.visitDate==tmpDate)
-      tmpVisit.push(visit)
+    visitArray.map((visit) => {
+      if (visit.visitDate == tmpDate)
+        tmpVisit.push(visit)
     })
     let tmpObj = { key: i, date: tmpDate, thisMonth: thisMonth, visitList: tmpVisit }
     squares.push(tmpObj);
@@ -138,8 +153,6 @@ function MonthlyCalendar({
                 setFirstDayInNextM(firstOfM);
                 setFirstOfM(firstDayInLastM);
                 setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
-                setDateInFirstS(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear));
-                setDateInLastS(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear));
 
                 if (isDoctor === false) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
@@ -171,8 +184,6 @@ function MonthlyCalendar({
                 setFirstDayInLastM(firstOfM);
                 setFirstOfM(firstDayInNextM);
                 setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
-                setDateInFirstS(dateInFirstSquare(firstDayInNextM, tmpMonth, tmpYear));
-                setDateInLastS(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear));
 
                 if (isDoctor === false) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
@@ -211,6 +222,10 @@ function MonthlyCalendar({
           {squares.map((square) => {
             return (
               <div key={square.key}
+                onDoubleClick={() => {
+                  setIsPopupDayVew(true)
+                  setVisitDate(square.date)
+                }}
                 className={
                   !square.thisMonth ?
                     "square not-this-month"
@@ -228,22 +243,23 @@ function MonthlyCalendar({
                 >
                   {dayFromString(square.date)}
                 </Row>
-                <Row>
-                    {square.visitList.map((visit)=>{
-                      return(
-                        <div key={visit.visitId}  
-                          className={visit.visitStatusId === 1 ? "visit btn-secondary col-12" :
-                              (visit.visitStatusId === 3 ? "visit btn-success col-12" :
-                                  (visit.visitStatusId === 2 ? "visit btn-warning col-12"
-                                      : "btn btn-danger col-12"))}
-                          onDoubleClick={() => { 
-                            setIsPopupInformationAboutVisit(true) 
-                            setVisitToShow(visit)
-                            }}>
-                          {visit.specialization.name}
-                        </div>
-                      )
-                    })}
+                <Row className="">
+                  {square.visitList.map((visit) => {
+                    return (
+                      <Col key={visit.visitId}
+                        className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
+                          (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
+                            (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
+                              : "btn btn-danger col-11  m-1"))}
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          setIsPopupInformationAboutVisit(true)
+                          setVisitToShow(visit)
+                        }}>
+                        {visit.specialization.name}
+                      </Col>
+                    )
+                  })}
                 </Row>
               </div>
             )
@@ -263,6 +279,13 @@ function MonthlyCalendar({
       <PopupAcceptedVisitInformation
         open={isPopupAcceptedVisitInformation}
         onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
+      />
+      <PopupDayVew
+        isDoctor={isDoctor}
+        userId={userId}
+        visitDate={visitDate}
+        open={isPopupDayVew}
+        onClose={() => { setIsPopupDayVew(false); }}
       />
     </div>
   )
