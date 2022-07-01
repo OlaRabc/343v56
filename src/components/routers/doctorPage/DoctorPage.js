@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import React, { useState } from 'react';
 import DoctorNavigation from "./../../navigation/doctorNavigation/DoctorNavigation";
 import DoctrOperationVew from "./../../doctor/doctrOperationVew/DoctrOperationVew"
-import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainCalendarComponent";
+import MainCalendarComponent from "./../../doctor/calendars/mainCalendarComponent/MainCalendarComponent";
 import DoctorPlanningVisits from "./../../doctor/doctorPlanningVisits/DoctorPlanningVisits";
 
 function DoctorPage({

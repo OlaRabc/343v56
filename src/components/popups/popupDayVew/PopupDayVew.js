@@ -1,38 +1,57 @@
 import Modal from '../popupBasic/Modal';
 import './PopupDayVew.css';
-import { AiOutlineClose } from "react-icons/ai";
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { getVisitsByPatientIdAndDate } from "./../../../apiOperation/getOperaton/GetOperaton";
-import { useEffect, useState } from 'react';
+import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 const PopupDayVew = ({
     isDoctor,
     userId,
-    visitDate,
+    visitList,
+    dateToVisitDayVew,
     open,
     onClose,
     onConfirmButtonClick,
     onCancelButtonClick
 }) => {
-    const [visitList, setVisitList] = useState([])
-    
-
+    const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
     return (
         <Modal
             open={open}
             onClose={onClose}>
-            <Container>
+            <Container className='col-12 text-center'>
                 <Row>
-                    {console.log(visitList)}
-                    {console.log(userId)}
-                    {console.log(visitDate)}
+                    <Col className='col-12 text-center text-primary'>
+                        {dateToVisitDayVew}
+                    </Col>
+                    {visitList.map((visit) => {
+                        return (
+                            <Col key={visit.visitId}
+                                className="col-12"
+                                onDoubleClick={() => {
+
+                                }}>
+                                {visit.specialization.name + " " + visit.visitStart}
+                            </Col>
+                        )
+                    })}
                     <Col>
-                        {console.log(visitDate)}
                         <button type="button" className="btn btn-primary col-12   mt-3" onClick={onClose}>
                             Anuluj
                         </button>
                     </Col>
                 </Row>
             </Container>
+            {console.log(visitList)}
+            { /*<PopupInformationAboutVisit
+           isDoctor={isDoctor}
+            open={isPopupInformationAboutVisit}
+            onClose={setIsPopupInformationAboutVisit(false)}
+            visitInformation={visitList[0]}
+            onAcceptVisit={() => {
+                setIsPopupInformationAboutVisit(false)
+              }}
+            />*/}
+            
         </Modal>
     )
 }

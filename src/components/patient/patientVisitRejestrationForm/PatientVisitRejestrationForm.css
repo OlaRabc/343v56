@@ -1,9 +1,10 @@
-.doctor-query
+
+.btn-show-doctor-calendar
 {
-    border: 1px solid black;
-    border-radius: 30px;
-    min-height: 50px;
-    background-color:rgb(241, 241, 241);
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 140%;
+}
+.btn-show-doctor-calendar:hover
+{
+    font-size: 140%;
+    color:rgb(171, 244, 24)
 }

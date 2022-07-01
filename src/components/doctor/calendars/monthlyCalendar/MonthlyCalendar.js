@@ -3,10 +3,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
 import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
-import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-import PopupAcceptedVisitInformation from "./../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
-import PopupDayVew from "./../../popups/popupDayVew/PopupDayVew"
-import { getVisitByPatientIdAndVisitDateBetween } from "./../../../apiOperation/getOperaton/GetOperaton";
+import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
+import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
+import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
+import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import {
   firstOfMonth,
   whatMonth,
@@ -25,7 +25,7 @@ import {
   dateInFirstSquare,
   dateInLastSquare,
   parseToApiDate
-} from './../../util/dateHelper';
+} from './../../../util/dateHelper';
 
 
 function MonthlyCalendar({
@@ -80,7 +80,8 @@ function MonthlyCalendar({
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
-  const [visitDate, setVisitDate] = useState();
+  const [visitList, setVisitList] = useState([]);
+  const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
@@ -224,7 +225,8 @@ function MonthlyCalendar({
               <div key={square.key}
                 onDoubleClick={() => {
                   setIsPopupDayVew(true)
-                  setVisitDate(square.date)
+                  setVisitList(square.visitList)
+                  setDateToVisitDayVew(square.date)
                 }}
                 className={
                   !square.thisMonth ?
@@ -276,14 +278,15 @@ function MonthlyCalendar({
         }}
         isDoctor={isDoctor}
       />
-      <PopupAcceptedVisitInformation
+      <PopupAcceptedVisitInformation /*??*/
         open={isPopupAcceptedVisitInformation}
         onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
       />
       <PopupDayVew
         isDoctor={isDoctor}
         userId={userId}
-        visitDate={visitDate}
+        visitList={visitList}
+        dateToVisitDayVew={dateToVisitDayVew}
         open={isPopupDayVew}
         onClose={() => { setIsPopupDayVew(false); }}
       />

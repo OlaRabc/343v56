@@ -2,7 +2,7 @@ import './PatientPage.css';
 import PatientNavigation from "./../../navigation/patientNavigation/PatientNavigation";
 import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperationVew";
 import React, { useEffect, useState } from 'react';
-import MainCalendarComponent from "./../../calendars/mainCalendarComponent/MainCalendarComponent";
+import MainCalendarComponent from "./../../patient/calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
 import { getPatientById} from "./../../../apiOperation/getOperaton/GetOperaton";
 
