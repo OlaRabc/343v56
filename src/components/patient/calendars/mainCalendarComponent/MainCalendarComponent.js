@@ -35,6 +35,7 @@ const MainCalendarComponent = ({
                     }}
                 /> : null}
                 {weeklyCalendar ? <WeeklyCalendar
+                    userId={userId}
                     isDoctor={isDoctor}
                     calendarVew={calendarVew}
                     onCalendarVewChange={() => {

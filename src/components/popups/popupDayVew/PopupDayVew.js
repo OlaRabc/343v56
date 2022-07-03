@@ -10,6 +10,7 @@ const PopupDayVew = ({
     dateToVisitDayVew,
     open,
     onClose,
+    onCancelVisit,
     onConfirmButtonClick,
     onCancelButtonClick
 }) => {
@@ -89,6 +90,7 @@ const PopupDayVew = ({
                 open={isPopupInformationAboutVisit}
                 onClose={() => setIsPopupInformationAboutVisit(false)}
                 visitInformation={visitToShow}
+                onCancelVisit={onCancelVisit}
             //onAcceptVisit={()=>{console.log("dd")}}
             //onRejectVisit={()=>{console.log("dd")}}
             //onCancelVisit={()=>{console.log("dd")}}
