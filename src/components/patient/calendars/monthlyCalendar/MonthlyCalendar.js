@@ -5,8 +5,10 @@ import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
+import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
 import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import {
   firstOfMonth,
   whatMonth,
@@ -80,12 +82,15 @@ function MonthlyCalendar({
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
-  const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
+  const [dateToVisitDayVew, setDateToVisitDayVew] = useState();/*dateToVisitDayVew and to cancel*/
+
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
+  const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
 
@@ -257,6 +262,7 @@ function MonthlyCalendar({
                           e.stopPropagation();
                           setIsPopupInformationAboutVisit(true)
                           setVisitToShow(visit)
+                          setVisitToShowSquareId(square.key)
                         }}>
                         {visit.specialization.name}
                       </Col>
@@ -272,11 +278,22 @@ function MonthlyCalendar({
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
         visitInformation={visitToShow}
-        onAcceptVisit={() => {
-          setIsPopupInformationAboutVisit(false)
-          setIsPopupAcceptedVisitInformation(true);
-        }}
         isDoctor={isDoctor}
+        onCancelVisit={async () => {/*odwolac*/
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupCancelVisitInformation(true);
+
+          let tmp = visitArray.filter((visit) => {
+            return visit.visitId !== visitToShow.visitId
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 4, userId) //!!!
+        }}
+      />
+      <PopupCancelVisitInformation
+        open={isPopupCancelVisitInformation}
+        onClose={() => { setIsPopupCancelVisitInformation(false); }}
       />
       <PopupAcceptedVisitInformation /*??*/
         open={isPopupAcceptedVisitInformation}

@@ -54,7 +54,7 @@ export async function getDoctrsBySpecialization(specialization) {
 		})
 	return tmpResponse;
 }
-export async function getDoctrsBySpecializationandCity(specialization, city) {
+export async function getDoctrsBySpecializationAndCity(specialization, city) {
 	let tmpResponse;
 	await axios.get(`http://localhost:8080/doctorspecializations/specialization/${specialization}/city/${city}`)
 		.then(function (response) {

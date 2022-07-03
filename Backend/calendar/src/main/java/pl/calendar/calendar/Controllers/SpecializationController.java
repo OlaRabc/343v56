@@ -23,7 +23,7 @@ public class SpecializationController {
 
     @GetMapping("")
     public ResponseEntity<List<Specialization>> getAllSpecializations() {
-        return ResponseEntity.ok(specializationRepository.findAll());
+        return ResponseEntity.ok(specializationRepository.findAllByOrderByName());
     }
 
 }

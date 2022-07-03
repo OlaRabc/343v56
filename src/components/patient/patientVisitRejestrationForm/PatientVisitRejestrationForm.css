@@ -1,10 +1,5 @@
 
-.btn-show-doctor-calendar
+.doctor-query
 {
-    font-size: 140%;
-}
-.btn-show-doctor-calendar:hover
-{
-    font-size: 140%;
-    color:rgb(171, 244, 24)
+    font-size: 120%;
 }
