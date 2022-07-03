@@ -13,7 +13,7 @@ const PopupInformationAboutVisit = ({
     onRejectVisit,
     onCancelVisit
 }) => {
-    const actualDate=moment(new Date()).format("YYYY-MM-DD");
+    const actualDate = moment(new Date()).format("YYYY-MM-DD");
     const [isPopupDoctorData, setIsPopupDoctorData] = useState(0);
     return (
         <Modal
@@ -38,7 +38,7 @@ const PopupInformationAboutVisit = ({
                         Data wizyty:
                     </Col>
                     <Col className="col-12 col-md-5 my-4 my-md-2">
-                        {moment(visitInformation.visitDate).format("DD.MM.YYYY") }
+                        {moment(visitInformation.visitDate).format("DD.MM.YYYY")}
                     </Col>
                     <Col className="col-12 col-md-5 offset-md-2 my-2">
                         Początek wizyty:
@@ -83,15 +83,15 @@ const PopupInformationAboutVisit = ({
                     </>
                 ) :
                     (
-                        visitInformation.visitStatusId !== 4 && visitInformation.visitDate>actualDate?
-                        <button type="button" className="btn btn-primary col-12  mt-3" onClick={ onCancelVisit}>
-                            {/*visitStatus=free     cancel*/}
-                            Odwołaj wizytę
-                        </button>:""
+                        visitInformation.visitStatusId !== 4 && visitInformation.visitStatusId !== 5 && visitInformation.visitDate > actualDate ?
+                            <button type="button" className="btn btn-primary col-12  mt-3" onClick={onCancelVisit}>
+                                {/*visitStatus=free     cancel*/}
+                                Odwołaj wizytę
+                            </button> : ""
                     )}
             </Container>
             <PopupDoctorData
-                doctor={ visitInformation.doctor}
+                doctor={visitInformation.doctor}
                 open={isPopupDoctorData}
                 onClose={() => { setIsPopupDoctorData(false) }}
             />

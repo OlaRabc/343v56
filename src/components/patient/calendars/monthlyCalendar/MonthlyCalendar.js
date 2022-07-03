@@ -4,7 +4,7 @@ import "./MonthlyCalendar.css";
 import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
+//import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation"; DOCTOR
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
 import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
@@ -84,11 +84,11 @@ function MonthlyCalendar({
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
-  const [dateToVisitDayVew, setDateToVisitDayVew] = useState();/*dateToVisitDayVew and to cancel*/
+  const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
+  //const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false); doctor?
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
 
@@ -274,6 +274,9 @@ function MonthlyCalendar({
           })}
         </Row>
       </Container>
+
+
+
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
@@ -283,22 +286,30 @@ function MonthlyCalendar({
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
-          let tmp = visitArray.filter((visit) => {
-            return visit.visitId !== visitToShow.visitId
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 4;
+              return tmpVisit;
+            }
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 4, userId) //!!!
+          await patchVisit(visitToShow.visitId, 4, userId)
         }}
       />
+
       <PopupCancelVisitInformation
         open={isPopupCancelVisitInformation}
         onClose={() => { setIsPopupCancelVisitInformation(false); }}
       />
-      <PopupAcceptedVisitInformation /*??*/
+
+      {/* doctor
+      <PopupAcceptedVisitInformation 
         open={isPopupAcceptedVisitInformation}
         onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
-      />
+      />*/}
       <PopupDayVew
         isDoctor={isDoctor}
         userId={userId}
@@ -306,6 +317,23 @@ function MonthlyCalendar({
         dateToVisitDayVew={dateToVisitDayVew}
         open={isPopupDayVew}
         onClose={() => { setIsPopupDayVew(false); }}
+
+        onCancelVisit={async () => {/*odwolac*/
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupCancelVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 4;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 4, userId)
+        }}
       />
     </div>
   )
