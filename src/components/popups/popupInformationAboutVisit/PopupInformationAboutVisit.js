@@ -10,9 +10,11 @@ const PopupInformationAboutVisit = ({
     onClose,
     visitInformation,
     onAcceptVisit,
-    onRejectVisit
+    onRejectVisit,
+    onCancelVisit
 }) => {
-    const [isPopupDoctorData, setIsPopupDoctorData] = useState(0)
+    const actualDate=moment(new Date()).format("YYYY-MM-DD");
+    const [isPopupDoctorData, setIsPopupDoctorData] = useState(0);
     return (
         <Modal
             open={open}
@@ -68,7 +70,7 @@ const PopupInformationAboutVisit = ({
                     Anuluj
                 </button>
 
-                {visitInformation.visitStatusId === 2 && isDoctor ? (
+                {visitInformation.visitStatusId === 2 && isDoctor ? ( /*doctor? */
                     <>
 
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
@@ -81,8 +83,8 @@ const PopupInformationAboutVisit = ({
                     </>
                 ) :
                     (
-                        visitInformation.visitStatusId !== 4 ?
-                        <button type="button" className="btn btn-primary col-12  mt-3" >
+                        visitInformation.visitStatusId !== 4 && visitInformation.visitDate>actualDate?
+                        <button type="button" className="btn btn-primary col-12  mt-3" onClick={ onCancelVisit}>
                             {/*visitStatus=free     cancel*/}
                             Odwołaj wizytę
                         </button>:""

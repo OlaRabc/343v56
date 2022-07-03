@@ -17,8 +17,8 @@ public class CityController {
     public CityRepository cityRepository;
 
     @GetMapping("")
-    public ResponseEntity<List<City>> getAllCities(){
-        return ResponseEntity.ok(cityRepository.findAll());
+    public ResponseEntity<List<City>> findAll(){
+        return ResponseEntity.ok(cityRepository.findAllByOrderByName());
     }
             //test
 

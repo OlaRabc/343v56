@@ -13,22 +13,65 @@ const PopupDayVew = ({
     onConfirmButtonClick,
     onCancelButtonClick
 }) => {
+    const visitObjectPrototype = {
+        visitId: null,
+        visitStatusId: null,
+        visitDate: null,
+        visitStart: null,
+        visitEnd: null,
+        doctor: {
+            doctorId: null,
+            firstName: null,
+            lastName: null,
+            pwz: null,
+            street: null,
+            localNumber: null,
+            city: {
+                cityId: null,
+                name: null
+            }
+        },
+        patient: {
+            patientId: null,
+            firstName: null,
+            lastName: null,
+            mail: null,
+            phoneNumber: null,
+            city: {
+                cityId: null,
+                name: null
+            }
+        },
+        specialization: {
+            specializationId: 1,
+            name: null
+        }
+    }
+
     const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
+
+    const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+
     return (
         <Modal
             open={open}
             onClose={onClose}>
             <Container className='col-12 text-center'>
                 <Row>
-                    <Col className='col-12 text-center text-primary'>
+                    <Col className=' col-12 p-2 mb-3 text-center bg-primary text-light '>
                         {dateToVisitDayVew}
                     </Col>
                     {visitList.map((visit) => {
                         return (
                             <Col key={visit.visitId}
-                                className="col-12"
+                                className={visit.visitStatusId === 1 ? "btn btn-secondary col-12 my-1 " :
+                                    (visit.visitStatusId === 3 ? "btn btn-success col-12 my-1" :
+                                        (visit.visitStatusId === 2 ? "btn btn-warning col-12 my-1"
+                                            : "btn btn-danger col-12 my-1"))
+                                }
                                 onDoubleClick={() => {
-
+                                    setIsPopupInformationAboutVisit(true)
+                                    setVisitToShow(visit)
                                 }}>
                                 {visit.specialization.name + " " + visit.visitStart}
                             </Col>
@@ -41,19 +84,18 @@ const PopupDayVew = ({
                     </Col>
                 </Row>
             </Container>
-            {console.log(visitList)}
-            { /*<PopupInformationAboutVisit
-           isDoctor={isDoctor}
-            open={isPopupInformationAboutVisit}
-            onClose={setIsPopupInformationAboutVisit(false)}
-            visitInformation={visitList[0]}
-            onAcceptVisit={() => {
-                setIsPopupInformationAboutVisit(false)
-              }}
-            />*/}
-            
+            <PopupInformationAboutVisit
+                isDoctor={isDoctor}
+                open={isPopupInformationAboutVisit}
+                onClose={() => setIsPopupInformationAboutVisit(false)}
+                visitInformation={visitToShow}
+            //onAcceptVisit={()=>{console.log("dd")}}
+            //onRejectVisit={()=>{console.log("dd")}}
+            //onCancelVisit={()=>{console.log("dd")}}
+            />
         </Modal>
     )
 }
 
 export default PopupDayVew;
+

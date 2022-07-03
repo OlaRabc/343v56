@@ -22,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().permitAll();
         http.headers().frameOptions().disable();
-        http.cors();
     }
 
     @Bean

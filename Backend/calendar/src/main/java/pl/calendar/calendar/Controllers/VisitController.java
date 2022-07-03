@@ -3,18 +3,13 @@ package pl.calendar.calendar.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.calendar.calendar.Classes.City;
-import pl.calendar.calendar.Classes.Doctor;
 import pl.calendar.calendar.Classes.Visit;
-import pl.calendar.calendar.Repository.DoctorRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
-import pl.calendar.calendar.Repository.VisitstatusRepository;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -79,7 +74,7 @@ public class VisitController {
             @PathVariable("id") Long id,
             @PathVariable("dateStart") Date dateStart,
             @PathVariable("dateEnd") Date dateEnd){
-        return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetween(id, dateStart, dateEnd));
+        return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd,1L,5L));
     }
 
    /* @GetMapping("/firstFreeVisit/{id}/{visitStatus}")
@@ -106,6 +101,7 @@ public class VisitController {
         return ResponseEntity.ok("");
     }
 
+    @CrossOrigin
     @PatchMapping("/{id}/status/{status}/patient/{patient}")
     @ResponseBody
     public ResponseEntity<?> patchVisit(
@@ -113,21 +109,21 @@ public class VisitController {
             @PathVariable("status") Long status,
             @PathVariable("patient") Long patient){
         Visit v=visitRepository.getById(id);
-        if (status == 1L) {
+        if (status == 1L) {//free
             v.setVisitStatusId(1L);
             v.setPatient(null);
         }
-        if (status == 2L) {
+        if (status == 2L) { //toAccept
             v.setVisitStatusId(2L);
             //setPatient
         }
-        if (status == 3L) {
+        if (status == 3L) { //acepted
             v.setVisitStatusId(3L);
         }
-        if (status == 4L) {
+        if (status == 4L) { //removed
             v.setVisitStatusId(4L);
         }
-        if (status == 4L) {
+        if (status == 4L) { //del
             v.setVisitStatusId(5L);
         }//5L del
         visitRepository.saveAndFlush(v);

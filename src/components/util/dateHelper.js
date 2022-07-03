@@ -179,7 +179,6 @@ export function dateInLastSquare(firstOfM,month,year)
     tmpYear += 1;
   }
   let tmp = squareSize - howLongMonth(month, year);
-  tmp = tmp - firstOfM + 5;
   return new Date(tmpYear, tmpMonth - 1, tmp);
 }
 export function timeFromString(date)
