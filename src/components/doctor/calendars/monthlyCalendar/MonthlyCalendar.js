@@ -5,8 +5,12 @@ import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
-import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
-import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
+import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInformation/PopupRejectVisitInformation";
+import PopupDeletedVisitInformation from "./../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
+import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
+import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import {
   firstOfMonth,
   whatMonth,
@@ -80,30 +84,37 @@ function MonthlyCalendar({
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
 
+
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
+  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
+  const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
+  const [isPopupRejectVisitInformation, setIsPopupRejectVisitInformation] = useState(false);
+  const [isPopupDeletedVisitInformation, setIsPopupDeletedVisitInformation] = useState(false);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
 
   let squares = [];
 
   useEffect(() => {
-    getVisitByPatientIdAndVisitDateBetween(userId,
-      parseToApiDate(
-        dateInFirstSquare(firstOfMonth(),
-          parseInt(moment(actualDate).format("MM")),
-          parseInt(moment(actualDate).format("YYYY")))),
-      parseToApiDate(
-        dateInLastSquare(firstOfMonth(),
-          parseInt(moment(actualDate).format("MM")),
-          parseInt(moment(actualDate).format("YYYY")))))
-      .then(data =>
-        setVisitArray(data)
-      );
+    if (isDoctor === true) {
+      getVisitByDoctorIdAndVisitDateBetween(userId,
+        parseToApiDate(
+          dateInFirstSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))),
+        parseToApiDate(
+          dateInLastSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))))
+        .then(data =>
+          setVisitArray(data)
+        );
+    }
   }, [])
 
   async function renderSquare(i) {
@@ -155,8 +166,8 @@ function MonthlyCalendar({
                 setFirstOfM(firstDayInLastM);
                 setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
 
-                if (isDoctor === false) {
-                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
+                if (isDoctor === true) {
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
                   setVisitArray(tmp)
                 }
               }}>
@@ -186,8 +197,8 @@ function MonthlyCalendar({
                 setFirstOfM(firstDayInNextM);
                 setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
 
-                if (isDoctor === false) {
-                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
+                if (isDoctor === true) {
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
                   setVisitArray(tmp)
                 }
               }}>
@@ -252,11 +263,12 @@ function MonthlyCalendar({
                         className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
                           (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
                             (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
-                              : "btn btn-danger col-11  m-1"))}
+                              : "visit  btn-danger col-11  m-1"))}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
                           setIsPopupInformationAboutVisit(true)
                           setVisitToShow(visit)
+                          setVisitToShowSquareId(square.key)
                         }}>
                         {visit.specialization.name}
                       </Col>
@@ -268,19 +280,91 @@ function MonthlyCalendar({
           })}
         </Row>
       </Container>
+
+
+
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
-        visitInformation={visitToShow}
-        onAcceptVisit={() => {
-          setIsPopupInformationAboutVisit(false)
-          setIsPopupAcceptedVisitInformation(true);
-        }}
+        visit={visitToShow}
         isDoctor={isDoctor}
+        onCancelVisit={async () => {/*odwolac*/
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupCancelVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 4;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 4, userId)
+        }}
+        onAcceptVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupAcceptedVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 3;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 3, userId)
+        }}
+        onRejectVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupRejectVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 1;
+              tmpVisit.patient = null;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 1, userId)
+        }}
+        onDeleteVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupDeletedVisitInformation(true);
+
+          let tmp = visitArray.filter((visit) => {
+            return visit.visitId !== visitToShow.visitId
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 5, userId)
+        }}
       />
-      <PopupAcceptedVisitInformation /*??*/
+
+      <PopupCancelVisitInformation
+        open={isPopupCancelVisitInformation}
+        onClose={() => { setIsPopupCancelVisitInformation(false); }}
+      />
+      <PopupRejectVisitInformation
+        open={isPopupRejectVisitInformation}
+        onClose={() => { setIsPopupRejectVisitInformation(false); }}
+      />
+      <PopupAcceptedVisitInformation
         open={isPopupAcceptedVisitInformation}
         onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
+      />
+      <PopupDeletedVisitInformation
+        open={isPopupDeletedVisitInformation}
+        onClose={() => { setIsPopupDeletedVisitInformation(false); }}
       />
       <PopupDayVew
         isDoctor={isDoctor}
@@ -289,6 +373,24 @@ function MonthlyCalendar({
         dateToVisitDayVew={dateToVisitDayVew}
         open={isPopupDayVew}
         onClose={() => { setIsPopupDayVew(false); }}
+
+        onCancelVisit={async () => {/*odwolac*/
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupCancelVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 4;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 4, userId)
+        }}
+
       />
     </div>
   )

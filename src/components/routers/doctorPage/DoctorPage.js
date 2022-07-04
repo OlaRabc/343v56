@@ -66,6 +66,7 @@ function DoctorPage({
             /> : ""}
             {isMainCalendarComponent ? <MainCalendarComponent
                 isDoctor={isDoctor}
+                userId={doctorId}
                 onBack={() => {
                     setAllVewsFale();
                     setIsDoctrOperationVew(true);
