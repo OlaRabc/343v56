@@ -6,31 +6,32 @@ import DoctorNavigation from "./../../navigation/doctorNavigation/DoctorNavigati
 import DoctrOperationVew from "./../../doctor/doctrOperationVew/DoctrOperationVew"
 import MainCalendarComponent from "./../../doctor/calendars/mainCalendarComponent/MainCalendarComponent";
 import DoctorPlanningVisits from "./../../doctor/doctorPlanningVisits/DoctorPlanningVisits";
-import { getDoctorById} from "./../../../apiOperation/getOperaton/GetOperaton";
+import { getDoctorById } from "./../../../apiOperation/getOperaton/GetOperaton";
 function DoctorPage({
 }) {
     const isDoctor = true;
-    const doctorId=1;
+    const doctorId = 1;
     /////////////////////////////////////
-  const [doctor, setDoctor] = useState(
-    {
-        doctorId: null,
-        firstName: null,
-        lastName: null,
-        pwz: null,
-        street: null,
-        localNumber: null,
-      cityId: {
-          cityId: null,
-          name: null
-      }});
+    const [doctor, setDoctor] = useState(
+        {
+            doctorId: null,
+            firstName: null,
+            lastName: null,
+            pwz: null,
+            street: null,
+            localNumber: null,
+            cityId: {
+                cityId: null,
+                name: null
+            }
+        });
 
     useEffect(() => {
-      getDoctorById()
-         .then(data =>
-          setDoctor(data)
-         );
-   }, [])
+        getDoctorById()
+            .then(data =>
+                setDoctor(data)
+            );
+    }, [])
 
     const [isDoctrOperationVew, setIsDoctrOperationVew] = useState(true);
     const [isDoctorPlanningVisits, setIsDoctorPlanningVisits] = useState(false);
@@ -59,6 +60,8 @@ function DoctorPage({
                 }}
             /> : ""}
             {isDoctorPlanningVisits ? <DoctorPlanningVisits
+                isDoctor={isDoctor}
+                doctorId={doctorId}
                 onBack={() => {
                     setAllVewsFale();
                     setIsDoctrOperationVew(true);
