@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long visitId;
-    private Long visitStatusId; //??
+    private Long visitStatusId;
     private Date visitDate;
     private Time visitStart;
     private Time visitEnd;

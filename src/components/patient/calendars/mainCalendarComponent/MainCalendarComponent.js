@@ -7,6 +7,7 @@ import { AiFillCaretLeft } from "react-icons/ai";
 const MainCalendarComponent = ({
     userId,
     isDoctor,
+    isPatientVew,
     onBack
 }) => {
     const [weeklyCalendar, setWeeklyCalendar] = useState(false);
@@ -26,6 +27,7 @@ const MainCalendarComponent = ({
             <div className="calendar-container">
                 {monthlyCalendar ? <MonthlyCalendar
                     isDoctor={isDoctor}
+                    isPatientVew={isPatientVew}
                     userId={userId}
                     calendarVew={calendarVew}
                     onCalendarVewChange={() => {
@@ -35,8 +37,9 @@ const MainCalendarComponent = ({
                     }}
                 /> : null}
                 {weeklyCalendar ? <WeeklyCalendar
-                    userId={userId}
                     isDoctor={isDoctor}
+                    isPatientVew={isPatientVew}
+                    userId={userId}
                     calendarVew={calendarVew}
                     onCalendarVewChange={() => {
                         setCalendarVew(!calendarVew);

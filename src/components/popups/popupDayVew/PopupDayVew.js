@@ -1,5 +1,6 @@
 import Modal from '../popupBasic/Modal';
 import './PopupDayVew.css';
+import moment from "moment";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
@@ -60,7 +61,7 @@ const PopupDayVew = ({
             <Container className='col-12 text-center'>
                 <Row>
                     <Col className=' col-12 p-2 mb-3 text-center bg-primary text-light '>
-                        {dateToVisitDayVew}
+                        {moment(dateToVisitDayVew).format("DD.MM.YYYY")}
                     </Col>
                     {visitList.map((visit) => {
                         return (
@@ -89,7 +90,7 @@ const PopupDayVew = ({
                 isDoctor={isDoctor}
                 open={isPopupInformationAboutVisit}
                 onClose={() => setIsPopupInformationAboutVisit(false)}
-                visitInformation={visitToShow}
+                visit={visitToShow}
                 onCancelVisit={onCancelVisit}
             //onAcceptVisit={()=>{console.log("dd")}}
             //onRejectVisit={()=>{console.log("dd")}}

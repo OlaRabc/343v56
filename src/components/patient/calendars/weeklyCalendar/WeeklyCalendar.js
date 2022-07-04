@@ -20,7 +20,8 @@ import {
 function WeeklyCalendar({
   onCalendarVewChange,
   isDoctor,
-  userId
+  userId,
+  isPatientVew
 }) {
   const visitObjectPrototype = {
     visitId: null,
@@ -123,14 +124,12 @@ function WeeklyCalendar({
 
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
-
-              //tmp.setDate(tmp.getDate() - day + 1);
-              //dateInL.setDate(tmp.getDate() + 7);
-              /* 
-                            if (isDoctor === false) {
-                              let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
-                              setVisitArray(tmp)
-                            }*/
+              
+              if (isDoctor === false && isPatientVew===true) {
+                let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+                setVisitArray(tmpVisit)
+                console.log(tmpVisit)
+              }
             }}>
             <AiFillCaretLeft />
           </button>
@@ -149,6 +148,12 @@ function WeeklyCalendar({
 
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
+
+              if (isDoctor === false && isPatientVew===true) {
+                let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+                setVisitArray(tmpVisit)
+                console.log(tmpVisit)
+              }
             }}>
             <AiFillCaretRight />
           </button>
@@ -190,9 +195,9 @@ function WeeklyCalendar({
                   return (
                     <div
                       key={visit.visitId}
-                      className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
-                        (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
-                          (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
+                      className={visit.visitStatusId === 1 ? "btn btn-secondary col-11 m-1 " :
+                        (visit.visitStatusId === 3 ? "btn btn-success col-11  m-1" :
+                          (visit.visitStatusId === 2 ? "btn btn-warning col-11  m-1"
                             : "btn btn-danger col-11  m-1"))}
                       onDoubleClick={(e) => {
                         e.stopPropagation();
@@ -212,7 +217,7 @@ function WeeklyCalendar({
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
-        visitInformation={visitToShow}
+        visit={visitToShow}
         isDoctor={isDoctor}
         onCancelVisit={async () => {/*odwolac*/
           setIsPopupInformationAboutVisit(false);

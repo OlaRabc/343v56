@@ -3,6 +3,13 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
+import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
+import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
+import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
+import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInformation/PopupRejectVisitInformation";
+import PopupDeletedVisitInformation from "./../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
+import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import {
   whatMonth,
   firstOfWeek,
@@ -15,25 +22,92 @@ import {
 
 function WeeklyCalendar({
   onCalendarVewChange,
-  isDoctor
+  isDoctor,
+  userId
 }) {
-  const actualDate = new Date();
+  const visitObjectPrototype = {
+    visitId: null,
+    visitStatusId: null,
+    visitDate: null,
+    visitStart: null,
+    visitEnd: null,
+    doctor: {
+      doctorId: null,
+      firstName: null,
+      lastName: null,
+      pwz: null,
+      street: null,
+      localNumber: null,
+      city: {
+        cityId: null,
+        name: null
+      }
+    },
+    patient: {
+      patientId: null,
+      firstName: null,
+      lastName: null,
+      mail: null,
+      phoneNumber: null,
+      city: {
+        cityId: null,
+        name: null
+      }
+    },
+    specialization: {
+      specializationId: 1,
+      name: null
+    }
+  }
+  let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
+
+  let day = actualDate.getDay();
+  if (day === 0) day = 7;
+
+  tmp.setDate(tmp.getDate() - day + 1);
+  dateInL.setDate(tmp.getDate() + 7);
+
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
   const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")));
   const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")));
-  const [dateInFirstSquare, setDateInFirstSquare] = useState(firstOfWeek());
-  const [dateInLastSquare, setDateInLastSquare] = useState(dateInFirstSquare + 6);
+  const [dateInFirstSquare, setDateInFirstSquare] = useState(tmp);
+  const [dateInLastSquare, setDateInLastSquare] = useState(dateInL);
+
+
+  const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
+  const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
+  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
+  const [isPopupRejectVisitInformation, setIsPopupRejectVisitInformation] = useState(false);
+  const [isPopupDeletedVisitInformation, setIsPopupDeletedVisitInformation] = useState(false);
+
+  const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShowSquareId, setVisitToShowSquareId] = useState();
+
+  const [visitArray, setVisitArray] = useState([]);
 
   let squares = [];
+  useEffect(() => {
+    getVisitByDoctorIdAndVisitDateBetween(userId,
+      moment(dateInFirstSquare).format("YYYY-MM-DD"),
+      moment(dateInLastSquare).format("YYYY-MM-DD")).then(data =>
+        setVisitArray(data)
+      );
+  }, [])
+
   function renderSquare(i) {
-    let date = i - 1 + dateInFirstSquare;
-    if (date > howLongMonth(month, year)) {
-      date = year + "." + addZero(parseInt(month + 1)) + "." + addZero(parseInt(date - howLongMonth(month, year)));
-    }
-    else {
-      date = year + "." + addZero(month) + "." + addZero(date);
-    }
-    let tmpObj = { key: i, date: date }
+    let tmp = new Date(dateInFirstSquare);
+    tmp.setDate(dateInFirstSquare.getDate() + i - 1);
+
+    let date = moment(tmp).format("YYYY-MM-DD");
+
+    let tmpVisit = [];
+    visitArray.map((visit) => {
+      if (visit.visitDate == date) {
+        tmpVisit.push(visit)
+      }
+    })
+
+    let tmpObj = { key: i, date: date, visitList: tmpVisit }
     squares.push(tmpObj);
   }
   for (let i = 1; i < 8; i++) {
@@ -47,56 +121,43 @@ function WeeklyCalendar({
           <button
             type="button"
             className="button"
-            onClick={() => {
-              let tmpDateInFirstSquare = dateInFirstSquare - 7;
-              let tmpDateInLastSquare = dateInFirstSquare - 1;
-              let tmpMonth = month;
-              if (tmpDateInFirstSquare < 1) {
-                if (month === 1) {
-                  setMonth(12); tmpMonth = 12; setYear(year - 1)
-                } else {
-                  setMonth(month - 1); tmpMonth -= 1;
-                }
-                tmpDateInFirstSquare = howLongMonth(tmpMonth, year) + tmpDateInFirstSquare;
+            onClick={async () => {
+
+              let dateInF = new Date(dateInFirstSquare), dateInL = new Date(dateInLastSquare);
+              dateInF.setDate(dateInF.getDate() - 7);
+              dateInL.setDate(dateInL.getDate() - 7);
+
+              setDateInFirstSquare(dateInF)
+              setDateInLastSquare(dateInL)
+             
+              if (isDoctor === true) {
+                let tmpVisit = await getVisitByDoctorIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+                setVisitArray(tmpVisit)
+                console.log(tmpVisit)
               }
-              setDateInLastSquare(tmpDateInLastSquare);
-              setDateInFirstSquare(tmpDateInFirstSquare);
             }}>
             <AiFillCaretLeft />
           </button>
         </Col>
         <Col className="col-7 col-md-8 col-lg-3 p-3 nav-date">
-          {dateInFirstSquare + "-" + dateInLastSquare + " " + whatMonth(month) + " " + year}
+          {moment(dateInFirstSquare).format("DD.MM.YYYY")}-{moment(dateInLastSquare).format("DD.MM.YYYY")}
         </Col>
         <Col className="col-2 col-lg-1">
           <button
             type="button"
             className="button"
             onClick={async () => {
-              let tmpDateInFirstSquare = dateInLastSquare + 1;
-              let tmpDateInLastSquare = dateInLastSquare + 7;
+              let dateInF = new Date(dateInFirstSquare), dateInL = new Date(dateInLastSquare);
+              dateInF.setDate(dateInF.getDate() + 7);
+              dateInL.setDate(dateInL.getDate() + 7);
 
-              if (tmpDateInFirstSquare > howLongMonth(month, year)) {
-                tmpDateInFirstSquare = tmpDateInFirstSquare - howLongMonth(month, year);
-                if (month === 12) {
-                  setMonth(1); setYear(year + 1);
-                } else {
-                  setMonth(month + 1);
-                }
+              setDateInFirstSquare(dateInF)
+              setDateInLastSquare(dateInL)
+
+              if (isDoctor === true) {
+                let tmpVisit = await getVisitByDoctorIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+                setVisitArray(tmpVisit)
               }
-
-              if (tmpDateInLastSquare > howLongMonth(month, year)) {
-                tmpDateInLastSquare = tmpDateInLastSquare - howLongMonth(month, year);
-                if (month === 12) {
-                  setMonth(1); setYear(year + 1);
-                } else {
-                  setMonth(month + 1);
-                }
-
-              }
-              setDateInFirstSquare(tmpDateInFirstSquare);
-              setDateInLastSquare(tmpDateInLastSquare);
-
             }}>
             <AiFillCaretRight />
           </button>
@@ -133,10 +194,112 @@ function WeeklyCalendar({
                   : "1px solid black"
               }}>
               {dayFromString(square.date)}
+              <div>
+                {square.visitList.map((visit) => {
+                  return (
+                    <div
+                      key={visit.visitId}
+                      className={visit.visitStatusId === 1 ? "btn btn-secondary col-11 m-1 " :
+                        (visit.visitStatusId === 3 ? "btn btn-success col-11  m-1" :
+                          (visit.visitStatusId === 2 ? "btn btn-warning col-11  m-1"
+                            : "btn btn-danger col-11  m-1"))}
+                      onDoubleClick={(e) => {
+                        e.stopPropagation();
+                        setIsPopupInformationAboutVisit(true)
+                        setVisitToShow(visit)
+                        setVisitToShowSquareId(square.key)
+                      }}>
+                      {visit.specialization.name}
+                    </div>)
+                }
+                )}
+              </div>
             </div>
           )
         })}
       </Row>
+      <PopupInformationAboutVisit
+        open={isPopupInformationAboutVisit}
+        onClose={() => { setIsPopupInformationAboutVisit(false) }}
+        visit={visitToShow}
+        isDoctor={isDoctor}
+        onCancelVisit={async () => {/*odwolac*/
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupCancelVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 4;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 4, userId)
+        }}
+        onAcceptVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupAcceptedVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 3;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 3, userId)
+        }}
+        onRejectVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupRejectVisitInformation(true);
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 1;
+              tmpVisit.patient=null;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 1, userId)
+        }}
+        onDeleteVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          //setIsPopupRejectVisitInformation(true);
+
+          let tmp = visitArray.filter((visit) => {
+            return visit.visitId !== visitToShow.visitId
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 5, userId)
+        }}
+      />
+      <PopupCancelVisitInformation
+        open={isPopupCancelVisitInformation}
+        onClose={() => { setIsPopupCancelVisitInformation(false); }}
+      />
+      <PopupRejectVisitInformation
+        open={isPopupRejectVisitInformation}
+        onClose={() => { setIsPopupRejectVisitInformation(false); }}
+      />
+      <PopupAcceptedVisitInformation
+        open={isPopupAcceptedVisitInformation}
+        onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
+      />
+      <PopupDeletedVisitInformation
+        open={isPopupDeletedVisitInformation}
+        onClose={() => { setIsPopupDeletedVisitInformation(false); }}
+      />
     </Container>
   )
 }

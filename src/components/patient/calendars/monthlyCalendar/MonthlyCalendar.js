@@ -4,7 +4,6 @@ import "./MonthlyCalendar.css";
 import moment from "moment";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-//import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation"; DOCTOR
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
 import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
@@ -32,6 +31,7 @@ import {
 
 function MonthlyCalendar({
   isDoctor,
+  isPatientVew,
   userId,
   onCalendarVewChange
 
@@ -88,7 +88,6 @@ function MonthlyCalendar({
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  //const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false); doctor?
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
 
@@ -97,18 +96,20 @@ function MonthlyCalendar({
   let squares = [];
 
   useEffect(() => {
-    getVisitByPatientIdAndVisitDateBetween(userId,
-      parseToApiDate(
-        dateInFirstSquare(firstOfMonth(),
-          parseInt(moment(actualDate).format("MM")),
-          parseInt(moment(actualDate).format("YYYY")))),
-      parseToApiDate(
-        dateInLastSquare(firstOfMonth(),
-          parseInt(moment(actualDate).format("MM")),
-          parseInt(moment(actualDate).format("YYYY")))))
-      .then(data =>
-        setVisitArray(data)
-      );
+    if (isDoctor === false && isPatientVew === true) {
+      getVisitByPatientIdAndVisitDateBetween(userId,
+        parseToApiDate(
+          dateInFirstSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))),
+        parseToApiDate(
+          dateInLastSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))))
+        .then(data =>
+          setVisitArray(data)
+        );
+    }
   }, [])
 
   async function renderSquare(i) {
@@ -160,7 +161,7 @@ function MonthlyCalendar({
                 setFirstOfM(firstDayInLastM);
                 setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
 
-                if (isDoctor === false) {
+                if (isDoctor === false && isPatientVew === true) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
                   setVisitArray(tmp)
                 }
@@ -191,7 +192,7 @@ function MonthlyCalendar({
                 setFirstOfM(firstDayInNextM);
                 setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
 
-                if (isDoctor === false) {
+                if (isDoctor === false && isPatientVew === true) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
                   setVisitArray(tmp)
                 }
@@ -257,7 +258,7 @@ function MonthlyCalendar({
                         className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
                           (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
                             (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
-                              : "btn btn-danger col-11  m-1"))}
+                              : "visit btn-danger col-11  m-1"))}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
                           setIsPopupInformationAboutVisit(true)
@@ -280,7 +281,7 @@ function MonthlyCalendar({
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
-        visitInformation={visitToShow}
+        visit={visitToShow}
         isDoctor={isDoctor}
         onCancelVisit={async () => {/*odwolac*/
           setIsPopupInformationAboutVisit(false);
@@ -305,11 +306,6 @@ function MonthlyCalendar({
         onClose={() => { setIsPopupCancelVisitInformation(false); }}
       />
 
-      {/* doctor
-      <PopupAcceptedVisitInformation 
-        open={isPopupAcceptedVisitInformation}
-        onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
-      />*/}
       <PopupDayVew
         isDoctor={isDoctor}
         userId={userId}

@@ -4,29 +4,30 @@ import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperati
 import React, { useEffect, useState } from 'react';
 import MainCalendarComponent from "./../../patient/calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
-import { getPatientById} from "./../../../apiOperation/getOperaton/GetOperaton";
+import { getPatientById } from "./../../../apiOperation/getOperaton/GetOperaton";
 
 function PatientPage() {
-  const isDoctor = false;
-  const patientId = 1;
+  const isDoctor = false, patientId = 1;
   /////////////////////////////////////
+
   const [patient, setPatient] = useState(
-  {
-    patientId: null,
-    firstName: null,
-    lastName: null,
-    mail: null,
-    phoneNumber: null,
-    cityId: {
+    {
+      patientId: null,
+      firstName: null,
+      lastName: null,
+      mail: null,
+      phoneNumber: null,
+      cityId: {
         cityId: null,
         name: null
-    }});
+      }
+    });
   useEffect(() => {
     getPatientById()
-       .then(data =>
+      .then(data =>
         setPatient(data)
-       );
- }, [])
+      );
+  }, [])
 
   const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
@@ -59,6 +60,7 @@ function PatientPage() {
           <MainCalendarComponent
             userId={patientId}
             isDoctor={isDoctor}
+            isPatientVew={true}
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);

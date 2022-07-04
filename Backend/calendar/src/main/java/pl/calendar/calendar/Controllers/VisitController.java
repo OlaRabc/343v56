@@ -3,13 +3,16 @@ package pl.calendar.calendar.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.calendar.calendar.Classes.Patient;
 import pl.calendar.calendar.Classes.Visit;
+import pl.calendar.calendar.Repository.PatientRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -18,6 +21,8 @@ public class VisitController {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     public VisitRepository visitRepository;
+    @Autowired
+    public  PatientRepository patientRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -48,7 +53,7 @@ public class VisitController {
             @PathVariable("id") Long id,
             @PathVariable("dateStart") Date dateStart,
             @PathVariable("dateEnd") Date dateEnd){
-       return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetween(id, dateStart, dateEnd));
+       return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd,1L,4L));
     }
 
     @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}/{visitStatus}")
@@ -76,14 +81,6 @@ public class VisitController {
             @PathVariable("dateEnd") Date dateEnd){
         return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd,1L,5L));
     }
-
-   /* @GetMapping("/firstFreeVisit/{id}/{visitStatus}")
-    public List<Visit> getByDoctorIdAndVisitDateBetweenAndVisitStatus(
-            @PathVariable("id") Long id,
-            @PathVariable("visitStatus") Long visitStatus ){
-        java.sql.Date sqlDateNow = new java.sql.Date(new java.util.Date().getTime());
-        return visitRepository.findFirstByDoctor_doctorIdAndVisitStatusId(id, visitStatus/*, sqlDateNow);
-    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVisit(@PathVariable("id") Long id) {
@@ -115,7 +112,7 @@ public class VisitController {
         }
         if (status == 2L) { //toAccept
             v.setVisitStatusId(2L);
-            //setPatient
+            v.setPatient(patientRepository.findById(patient).get());
         }
         if (status == 3L) { //acepted
             v.setVisitStatusId(3L);
@@ -123,7 +120,7 @@ public class VisitController {
         if (status == 4L) { //removed
             v.setVisitStatusId(4L);
         }
-        if (status == 4L) { //del
+        if (status == 5L) { //del
             v.setVisitStatusId(5L);
         }//5L del
         visitRepository.saveAndFlush(v);
