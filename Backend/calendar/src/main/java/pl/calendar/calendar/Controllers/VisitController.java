@@ -3,7 +3,6 @@ package pl.calendar.calendar.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.calendar.calendar.Classes.Patient;
 import pl.calendar.calendar.Classes.Visit;
 import pl.calendar.calendar.Repository.PatientRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
@@ -11,8 +10,8 @@ import pl.calendar.calendar.Repository.VisitRepository;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -93,6 +92,7 @@ public class VisitController {
     public ResponseEntity<?> postVisit(@RequestBody Visit visit) throws ParseException {
         visit.setVisitStatusId(1L);
         visit.setPatient(null);
+        visit.setVisitStatusId(1L);
 
         visitRepository.saveAndFlush(visit);
         return ResponseEntity.ok("");
@@ -106,25 +106,31 @@ public class VisitController {
             @PathVariable("status") Long status,
             @PathVariable("patient") Long patient){
         Visit v=visitRepository.getById(id);
-        if (status == 1L) {//free
-            v.setVisitStatusId(1L);
-            v.setPatient(null);
+        Date currentDate=new Date(System.currentTimeMillis());
+        Date date2=v.getVisitDate();
+
+        if(date2.after(currentDate)) {
+            if (status == 1L) {//free
+                v.setVisitStatusId(1L);
+                v.setPatient(null);
+            }
+            if (status == 2L) { //toAccept
+                v.setVisitStatusId(2L);
+                v.setPatient(patientRepository.findById(patient).get());
+            }
+            if (status == 3L) { //acepted
+                v.setVisitStatusId(3L);
+            }
+            if (status == 4L) { //removed
+                v.setVisitStatusId(4L);
+            }
+            if (status == 5L) { //del
+                v.setVisitStatusId(5L);
+            }
+            visitRepository.saveAndFlush(v);
+            return ResponseEntity.ok("");
         }
-        if (status == 2L) { //toAccept
-            v.setVisitStatusId(2L);
-            v.setPatient(patientRepository.findById(patient).get());
-        }
-        if (status == 3L) { //acepted
-            v.setVisitStatusId(3L);
-        }
-        if (status == 4L) { //removed
-            v.setVisitStatusId(4L);
-        }
-        if (status == 5L) { //del
-            v.setVisitStatusId(5L);
-        }//5L del
-        visitRepository.saveAndFlush(v);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("");//date after current date
     }
 }
 
