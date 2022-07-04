@@ -1,7 +1,10 @@
 import './OneVisitPlanning.css';
+import moment from "moment";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getDoctorSpecializations } from "./../../../apiOperation/getOperaton/GetOperaton";
+import { patchVisit } from "./../../../apiOperation/postOperation/PostOperation";
+import { addZero } from "./../../util/dateHelper"
 function OneVisitPlanning({
   isDoctor,
   doctorId
@@ -43,9 +46,9 @@ function OneVisitPlanning({
         </Col>
         <Col className="col-12 col-md-4 my-3" >
           <label for="exampleInputCity" className="mx-2"
-          onChange={e => {
-            setTime(e.target.value)
-          }}>
+            onChange={e => {
+              setTime(e.target.value)
+            }}>
             Czas Wizyty:
           </label>
           <input type="text" name="pin" size="4" value="30" disabled />
@@ -74,11 +77,25 @@ function OneVisitPlanning({
 
       <Row>
         <Col className="col-12 my-3 " >
-          <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
-            console.log(chosenSpecialization)
-            console.log(time)
-            console.log(visitDate)
-            console.log(visitStart)
+          <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
+            let visitEnd = 0, hours = parseInt(visitStart[0] + visitStart[1]), minutes = parseInt(visitStart[3] + visitStart[4]);
+
+            minutes += 30;
+            if (minutes >= 60) {
+              minutes -= 60;
+              hours++;
+            }
+            visitEnd = "" + hours + ":" + addZero(minutes) + ":00"
+
+            let visitToPost = {
+              doctorId: doctorId,
+              visitDate: visitDate,
+              visitStart: visitStart,
+              visitEnd: visitEnd,
+              specialization: chosenSpecialization
+            }
+            if (chosenSpecialization !== "null")
+              await patchVisit(visitToPost);
           }}>
             Planuj
           </button>
