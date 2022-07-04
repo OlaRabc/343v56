@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
 import moment from "moment";
+import {visitObjectPrototype} from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
@@ -36,41 +37,7 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  const visitObjectPrototype = {
-    visitId: null,
-    visitStatusId: null,
-    visitDate: null,
-    visitStart: null,
-    visitEnd: null,
-    doctor: {
-      doctorId: null,
-      firstName: null,
-      lastName: null,
-      pwz: null,
-      street: null,
-      localNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    patient: {
-      patientId: null,
-      firstName: null,
-      lastName: null,
-      mail: null,
-      phoneNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    specialization: {
-      specializationId: 1,
-      name: null
-    }
-  }
-
+  
   ////////////////////////////////////////////////////////////////////////
   const actualDate = new Date();
   const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))

@@ -3,15 +3,12 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
+import {visitObjectPrototype} from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import {
-  whatMonth,
-  firstOfWeek,
-  howLongMonth,
-  addZero,
   dayFromString
 }
   from './../../../util/dateHelper';
@@ -23,40 +20,7 @@ function WeeklyCalendar({
   userId,
   isPatientVew
 }) {
-  const visitObjectPrototype = {
-    visitId: null,
-    visitStatusId: null,
-    visitDate: null,
-    visitStart: null,
-    visitEnd: null,
-    doctor: {
-      doctorId: null,
-      firstName: null,
-      lastName: null,
-      pwz: null,
-      street: null,
-      localNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    patient: {
-      patientId: null,
-      firstName: null,
-      lastName: null,
-      mail: null,
-      phoneNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    specialization: {
-      specializationId: 1,
-      name: null
-    }
-  }
+
   let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
 
   let day = actualDate.getDay();
@@ -124,8 +88,8 @@ function WeeklyCalendar({
 
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
-              
-              if (isDoctor === false && isPatientVew===true) {
+
+              if (isDoctor === false && isPatientVew === true) {
                 let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
                 setVisitArray(tmpVisit)
                 console.log(tmpVisit)
@@ -149,7 +113,7 @@ function WeeklyCalendar({
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
 
-              if (isDoctor === false && isPatientVew===true) {
+              if (isDoctor === false && isPatientVew === true) {
                 let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
                 setVisitArray(tmpVisit)
                 console.log(tmpVisit)

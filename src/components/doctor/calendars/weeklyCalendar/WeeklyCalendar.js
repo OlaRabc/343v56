@@ -3,6 +3,7 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
+import {visitObjectPrototype} from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
@@ -25,40 +26,6 @@ function WeeklyCalendar({
   isDoctor,
   userId
 }) {
-  const visitObjectPrototype = {
-    visitId: null,
-    visitStatusId: null,
-    visitDate: null,
-    visitStart: null,
-    visitEnd: null,
-    doctor: {
-      doctorId: null,
-      firstName: null,
-      lastName: null,
-      pwz: null,
-      street: null,
-      localNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    patient: {
-      patientId: null,
-      firstName: null,
-      lastName: null,
-      mail: null,
-      phoneNumber: null,
-      city: {
-        cityId: null,
-        name: null
-      }
-    },
-    specialization: {
-      specializationId: 1,
-      name: null
-    }
-  }
   let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
 
   let day = actualDate.getDay();

@@ -6,6 +6,8 @@ import HarmonogramVisitPlanning from "./../harmonogramVisitPlanning/HarmonogramV
 import OneVisitPlanning from "./../oneVisitPlanning/OneVisitPlanning";
 
 function DoctorPlanningVisits({
+   isDoctor,
+   doctorId,
    onBack
 }) {
    const [oneVisitPlanning, setOneVisitPlanning] = useState(false);
@@ -36,18 +38,19 @@ function DoctorPlanningVisits({
                </button>
             </Col>
          </Row>
-         {harmonogramVisitPlanning?<HarmonogramVisitPlanning/>:""}
-         {oneVisitPlanning?<OneVisitPlanning/>:""}
-         
-         <Row>
-            <Col className="col-12 my-3 " >
-               <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
-                  console.log("paln")
-               }}>
-                  Planuj
-               </button>
-            </Col>
-         </Row>
+         {harmonogramVisitPlanning ?
+            <HarmonogramVisitPlanning
+               isDoctor={isDoctor}
+               doctorId={doctorId} />
+            : ""}
+         {oneVisitPlanning ?
+            <OneVisitPlanning
+               isDoctor={isDoctor}
+               doctorId={doctorId}
+            />
+            : ""}
+
+
       </Container>
    )
 }

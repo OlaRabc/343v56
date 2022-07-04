@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getCities() {
 	let tmpResponse;
-	await axios.get('http://localhost:8080/cities')
+	await axios.get(`http://localhost:8080/cities`)
 		.then(function (response) {
 			tmpResponse = response.data;
 			return (tmpResponse);
@@ -11,7 +11,16 @@ export async function getCities() {
 }
 export async function getSpecializations() {
 	let tmpResponse;
-	await axios.get('http://localhost:8080/specializations')
+	await axios.get(`http://localhost:8080/specializations`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
+export async function getDoctorSpecializations(id) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/doctorspecializations/doctor/${id}`)
 		.then(function (response) {
 			tmpResponse = response.data;
 			return (tmpResponse);
