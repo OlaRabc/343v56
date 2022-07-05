@@ -85,25 +85,15 @@ function OneVisitPlanning({
       <Row>
         <Col className="col-12 my-3 " >
           <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
-            let visitEnd = 0, hours = parseInt(visitStart[0] + visitStart[1]), minutes = parseInt(visitStart[3] + visitStart[4]);
-            let tmpVisitStart=""+visitStart+ ":00"
-            minutes += 30;
-            if (minutes >= 60) {
-              minutes -= 60;
-              hours++;
-            }
-            visitEnd = "" + hours + ":" + addZero(minutes) + ":00"
-            
             let visitToPost = {
               doctorId: doctorId,
               visitDate: visitDate,
-              visitStart: tmpVisitStart,
-              visitEnd: visitEnd,
+              visitStart: moment(visitStart, "HH:mm").format("HH:mm:00"),
+              visitEnd: moment(visitStart, "HH:mm").add(30, 'm').format("HH:mm:ss"),
               specialization: chosenSpecialization
             }
             if (chosenSpecialization !== "null") {
               await patchVisit(visitToPost);
-              console.log("await patchVisit(visitToPost)")
             }
             else {
               setIsPopupDoctorInvalidData(true);

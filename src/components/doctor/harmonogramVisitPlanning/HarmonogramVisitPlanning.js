@@ -10,7 +10,7 @@ function HarmonogramVisitPlanning({
   isDoctor,
   doctorId
 }) {
-  const daysOfWeek = ["Pon","Wt","Śr","Czw","Pt","Sob","Ndz"];
+  const daysOfWeek = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz"];
   let date = new Date();
   date.setDate(date.getDate() + 1);
 
@@ -26,10 +26,12 @@ function HarmonogramVisitPlanning({
   const [timekBetweenVisits, setTimekBetweenVisits] = useState(5);
   const [visitCount, setVisitCount] = useState(12);
   const [chosenSpecialization, setChosenSpecialization] = useState("null");
-  
+
+  const [dateInSecondDateSquare, setDateInSecondDateSquare] = useState(date);
+
   const [isPopupDoctorInvalidData, setIsPopupDoctorInvalidData] = useState(false);
 
-  
+
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedDay.map((item, index) =>
       index === position ? !item : item
@@ -55,7 +57,7 @@ function HarmonogramVisitPlanning({
           <label for="exampleInputCity" className="mx-2">
             Powtarzalność wizyt:
             <Row className="col-12 my-3 " >
-              {daysOfWeek.map(( name , index) => {
+              {daysOfWeek.map((name, index) => {
                 return (
                   <Col className="col-3" key={name}>
                     <input
@@ -68,7 +70,7 @@ function HarmonogramVisitPlanning({
                   </Col>
                 );
               })}
-              </Row>
+            </Row>
           </label>
         </Col>
         <Col className="col-12 col-lg-6 my-3" >
@@ -78,14 +80,18 @@ function HarmonogramVisitPlanning({
           <input type="date" min={moment(date).format("YYYY-MM-DD")} required
             onChange={e => {
               setVisitDateStart(e.target.value)
+              let date = new Date(e.target.value)
+
+              setDateInSecondDateSquare(date.setDate(date.getDate() + 7))
             }}></input>
           {" do "}
-          <input type="date" min={moment(visitDateStart).format("YYYY-MM-DD")} required
+          <input type="date" id="secondDateSquare" min={moment(dateInSecondDateSquare).format("YYYY-MM-DD")} required
             onChange={e => {
               setVisitDateEnd(e.target.value)
             }}></input>
         </Col>
-        <Col className="col-12 col-md-6 my-3" >
+        <Col className="col-12 col-md-6
+         my-3" >
           <label for="exampleInputCity" className="mx-2">
             Początek wizyt:
           </label>
@@ -94,7 +100,8 @@ function HarmonogramVisitPlanning({
               setVisitStart(e.target.value)
             }}></input>
         </Col>
-        <Col className="col-12 col-md-6 my-3" >
+        <Col className="col-12 col-md-6
+         my-3" >
           <label for="exampleInputCity" className="mx-2">
             Czas Wizyty:
           </label>
@@ -103,7 +110,8 @@ function HarmonogramVisitPlanning({
               setTime(e.target.value)
             }} />
         </Col>
-        <Col className="col-12 col-md-6 my-3" >
+        <Col className="col-12 col-md-6
+         my-3" >
           <label for="exampleInputCity" className="mx-2">
             Odstęp między wizytami:
           </label>
@@ -112,11 +120,12 @@ function HarmonogramVisitPlanning({
               setTimekBetweenVisits(e.target.value)
             }} />
         </Col>
-        <Col className="col-12 col-md-6 my-3" >
+        <Col className="col-12 col-md-6
+         my-3" >
           <label for="exampleInputCity" className="mx-2">
             Ilość wizyt w jednym dniu:
           </label>
-          <input type="number" name="visitCount" size="1" min={1} max={12}
+          <input type="number" name="visitCount" size="1" min={1} max={12} step="1"
             onChange={e => {
               setVisitCount(e.target.value)
             }} />
@@ -147,6 +156,32 @@ function HarmonogramVisitPlanning({
       <Row>
         <Col className="col-12 my-3 " >
           <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
+            let visitList = [];
+
+
+            let hours = parseInt(moment(visitStart, "HH:mm").format("HH"));
+            let minutes = parseInt(moment(visitStart, "HH:mm").format("mm"));
+
+            minutes += 30;
+            if (minutes >= 60) {
+              minutes -= 60;
+              hours++;
+              //hours>24
+            }
+
+            console.log("###############")
+            var newDateObj = moment(visitStart,"HH:mm").add(30, 'm').format("HH:mm:ss");
+            console.log(moment(visitStart,"HH:mm").add(30, 'm').format("HH:mm:ss"))
+            console.log("################")
+            let visitToPost = {
+              doctorId: doctorId,
+              visitDate: null,
+              visitStart: moment(visitStart, "HH:mm").format("HH:mm:00"),
+              visitEnd: null,
+              specialization: chosenSpecialization
+            }
+            visitList.push(visitToPost)
+            //////////////////////
             console.log(checkedDay)
             console.log(visitDateStart)
             console.log(visitDateEnd)
@@ -154,30 +189,19 @@ function HarmonogramVisitPlanning({
             console.log(time)
             console.log(timekBetweenVisits)
             console.log(visitCount)
-            console.log(chosenSpecialization
-              )
-            let visitEnd = 0, hours = parseInt(visitStart[0] + visitStart[1]), minutes = parseInt(visitStart[3] + visitStart[4]);
-            let tmpVisitStart = "" + visitStart + ":00"
-            minutes += 30;
-            if (minutes >= 60) {
-              minutes -= 60;
-              hours++;
-            }
-            visitEnd = "" + hours + ":" + addZero(minutes) + ":00"
+            console.log(chosenSpecialization)
+            //////////////////////
 
-            /*let visitToPost = {
-              doctorId: doctorId,
-              visitDate: visitDate,
-              visitStart: tmpVisitStart,
-              visitEnd: visitEnd,
-              specialization: chosenSpecialization
-            }*/
+
+            console.log("@@@@@@@@@@@@@@@@@@@@@")
+            console.log(visitList)
+            console.log("@@@@@@@@@@@@@@@@@@@@@")
 
             let isCheckedDay;
-            checkedDay.map((day)=>{
-              if (day===true) isCheckedDay=true;
+            checkedDay.map((day) => {
+              if (day === true) isCheckedDay = true;
             })
-            if (chosenSpecialization !== "null" && visitCount>0 && visitCount<13 && isCheckedDay) {/* + zaznaczony jakis dzien tygodznia  */
+            if (chosenSpecialization !== "null" && visitCount > 0 && visitCount < 13 && isCheckedDay) {/* + zaznaczony jakis dzien tygodznia  */
               //await patchVisit(visitToPost);
               console.log("await patchVisit(visitToPost)")
             }
