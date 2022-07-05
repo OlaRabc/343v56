@@ -176,7 +176,7 @@ function WeeklyCalendar({
                         setVisitToShow(visit)
                         setVisitToShowSquareId(square.key)
                       }}>
-                      {visit.specialization.name}
+                      {visit.specialization.shortName}
                     </div>)
                 }
                 )}
