@@ -8,7 +8,7 @@ import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutV
 import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInformation/PopupRejectVisitInformation";
-import PopupDeletedVisitInformation from "./../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
+import PopupDeletedVisitInformation from "../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import {

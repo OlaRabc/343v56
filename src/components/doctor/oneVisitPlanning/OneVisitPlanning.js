@@ -4,22 +4,29 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getDoctorSpecializations } from "./../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../apiOperation/postOperation/PostOperation";
-import { addZero } from "./../../util/dateHelper"
+import { addZero } from "./../../util/dateHelper";
+import PopupDoctorInvalidData from "./../../popups/popupDoctorInvalidData/PopupDoctorInvalidData";
 function OneVisitPlanning({
   isDoctor,
   doctorId
 }) {
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
   const [doctorSpecializations, setDoctorSpecializations] = useState([]);
   const [chosenSpecialization, setChosenSpecialization] = useState("null");
-  const [visitDate, setVisitDate] = useState(new Date());
-  const [visitStart, setVisitStart] = useState("00:00");
+  const [visitDate, setVisitDate] = useState(date);
+  const [visitStart, setVisitStart] = useState("00:00:00");
   const [time, setTime] = useState(30);
 
+  const [isPopupDoctorInvalidData, setIsPopupDoctorInvalidData] = useState(false);
   useEffect(() => {
     getDoctorSpecializations(doctorId)
       .then(data =>
         setDoctorSpecializations(data)
-      );
+      )
+      .catch(function (error) {
+        console.log(error);
+      });;
   }, [])
 
   return (
@@ -30,7 +37,7 @@ function OneVisitPlanning({
           <label for="exampleInputCity" className="mx-2">
             Data wizyty:
           </label>
-          <input type="date" required
+          <input type="date" min={moment(date).format("YYYY-MM-DD")} required
             onChange={e => {
               setVisitDate(e.target.value)
             }}></input>
@@ -51,7 +58,7 @@ function OneVisitPlanning({
             }}>
             Czas Wizyty:
           </label>
-          <input type="text" name="pin" size="4" value="30" disabled />
+          <input type="text" name="visitTime" size="1" value="30" disabled />
         </Col>
         <Col className="col-12 col-md-12 my-3" >
           <label for="exampleInputCity" className="mx-2">
@@ -79,28 +86,38 @@ function OneVisitPlanning({
         <Col className="col-12 my-3 " >
           <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
             let visitEnd = 0, hours = parseInt(visitStart[0] + visitStart[1]), minutes = parseInt(visitStart[3] + visitStart[4]);
-
+            let tmpVisitStart=""+visitStart+ ":00"
             minutes += 30;
             if (minutes >= 60) {
               minutes -= 60;
               hours++;
             }
             visitEnd = "" + hours + ":" + addZero(minutes) + ":00"
-
+            
             let visitToPost = {
               doctorId: doctorId,
               visitDate: visitDate,
-              visitStart: visitStart,
+              visitStart: tmpVisitStart,
               visitEnd: visitEnd,
               specialization: chosenSpecialization
             }
-            if (chosenSpecialization !== "null")
+            if (chosenSpecialization !== "null") {
               await patchVisit(visitToPost);
+              console.log("await patchVisit(visitToPost)")
+            }
+            else {
+              setIsPopupDoctorInvalidData(true);
+            }
           }}>
             Planuj
           </button>
         </Col>
       </Row>
+
+      <PopupDoctorInvalidData
+        open={isPopupDoctorInvalidData}
+        onClose={() => { setIsPopupDoctorInvalidData(false); }}
+      />
     </Container>
   );
 }

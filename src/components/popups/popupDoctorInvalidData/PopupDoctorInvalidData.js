@@ -1,6 +1,6 @@
 import Modal from '../popupBasic/Modal';
-import './PopupDeletedVisitInformation.css';
-const PopupDeletedVisitInformation = ({
+import './PopupDoctorInvalidData.css';
+const PopupDoctorInvalidData = ({
     open,
     onClose,
 }) => {
@@ -10,9 +10,9 @@ const PopupDeletedVisitInformation = ({
         <Modal
             open={open}
             onClose={onClose}>
-            Wizyta uzunięta
+            Błędne Dane
         </Modal>
     )
 }
 
-export default PopupDeletedVisitInformation;
+export default PopupDoctorInvalidData;

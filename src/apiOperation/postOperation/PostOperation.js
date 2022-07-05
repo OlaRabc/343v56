@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export async function patchVisit(visit) {
-    await axios.post(`http://localhost:8080/visits`, {
+    await axios.post(`http://localhost:8080/visits/one`, {
         "visitDate": visit.visitDate,
-        "visitStart": "10:00:00",
+        "visitStart": visit.visitStart,
         "visitEnd": visit.visitEnd,
         "doctor": {
             "doctorId": visit.doctorId
