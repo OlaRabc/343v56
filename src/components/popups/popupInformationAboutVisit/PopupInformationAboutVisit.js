@@ -2,6 +2,7 @@ import Modal from '../popupBasic/Modal';
 import moment from "moment";
 import React, { useState, useEffect } from 'react';
 import PopupDoctorData from "./../popupDoctorData/PopupDoctorData";
+import PopupPatientData from "./../popupPatientData/PopupPatientData";
 import './PopupInformationAboutVisit.css';
 import { Container, Row, Col } from 'react-bootstrap';
 const PopupInformationAboutVisit = ({
@@ -15,7 +16,11 @@ const PopupInformationAboutVisit = ({
     onDeleteVisit
 }) => {
     const actualDate = moment(new Date()).format("YYYY-MM-DD");
-    const [isPopupDoctorData, setIsPopupDoctorData] = useState(0);
+
+    const [isPopupDoctorData, setIsPopupDoctorData] = useState(false);
+    const [isPopupPatientData, setIsPopupPatientData] = useState(false);
+
+    const [patient, setPatient] = useState({});
     return (
         <Modal
             open={open}
@@ -32,7 +37,11 @@ const PopupInformationAboutVisit = ({
                                     : "btn btn-danger col-12"))
                         }
                         onClick={() => {
-                            setIsPopupDoctorData(true)
+                            if (!isDoctor) setIsPopupDoctorData(true)
+                            if (isDoctor && visit.patient !== null) {
+                                setIsPopupPatientData(true);
+                                setPatient(visit.patient);
+                            }
                         }}>
                         {!isDoctor ?
                             "Dr " + visit
@@ -126,17 +135,22 @@ const PopupInformationAboutVisit = ({
                     </button>
                     : ""}
                 {isDoctor && visit.visitDate > actualDate && visit.visitStatusId === 4 ?
-                    <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}> 
+                    <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}>
                         {/*patient removed visit*/}
-                        Odwołaj wizytę 
+                        Odwołaj wizytę
                     </button> :
                     ""}
             </Container>
             <PopupDoctorData
-                doctor={visit
-                    .doctor}
+                doctor={visit.doctor}
                 open={isPopupDoctorData}
                 onClose={() => { setIsPopupDoctorData(false) }}
+            />
+            <PopupPatientData
+
+                open={isPopupPatientData}
+                patient={patient}
+                onClose={() => { setIsPopupPatientData(false) }}
             />
         </Modal>
     )
