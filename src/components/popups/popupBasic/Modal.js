@@ -11,6 +11,7 @@ const MODAL_STYLES = {
     padding: '50px',
     zIndex: 1000,
     borderRadius:29,
+    cursor: 'default'
 }
 
 const OVERLAY_STYLES = {
@@ -20,7 +21,8 @@ const OVERLAY_STYLES = {
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,.7)',
-    zIndex: 1000
+    zIndex: 1000,
+    cursor: 'default'
 }
 
 const Modal = ({

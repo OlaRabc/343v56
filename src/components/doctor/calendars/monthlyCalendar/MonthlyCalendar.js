@@ -214,6 +214,7 @@ function MonthlyCalendar({
                 style={{
                   borderRight: square.key % 7 === 0 ? "none"
                     : "",
+                    
                 }}
               >
                 <Row
@@ -228,17 +229,17 @@ function MonthlyCalendar({
                   {square.visitList.map((visit) => {
                     return (
                       <Col key={visit.visitId}
-                        className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
-                          (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
-                            (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
-                              : "visit  btn-danger col-11  m-1"))}
+                        className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
+                          (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
+                            (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
+                              : "visit  btn-danger col-11  m-1 visit"))}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
                           setIsPopupInformationAboutVisit(true)
                           setVisitToShow(visit)
                           setVisitToShowSquareId(square.key)
                         }}>
-                        {visit.specialization.name}
+                        {visit.specialization.shortName}
                       </Col>
                     )
                   })}

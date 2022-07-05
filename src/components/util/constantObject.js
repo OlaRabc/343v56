@@ -28,7 +28,8 @@ export const visitObjectPrototype = {
       }
     },
     specialization: {
-      specializationId: 1,
-      name: null
+      specializationId: null,
+      name: null,
+      shortName: null
     }
   }

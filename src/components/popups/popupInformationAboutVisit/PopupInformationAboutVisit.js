@@ -47,7 +47,7 @@ const PopupInformationAboutVisit = ({
                             )}
                     </Col>
                 </Row>
-                <Row>
+                <Row >
                     <Col className="col-12 col-md-5 offset-md-2 my-2">
                         Data wizyty:
                     </Col>
