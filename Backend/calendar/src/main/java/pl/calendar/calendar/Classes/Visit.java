@@ -13,10 +13,10 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="visit")
+@Entity(name = "visit")
 public class Visit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long visitId;
     private Long visitStatusId;
     private Date visitDate;

@@ -54,18 +54,18 @@ export async function getVisitByVisitId(id) {
 		})
 	return tmpResponse;
 }
-export async function getPatientById() {
+export async function getPatientById(id) {
 	let tmpResponse;
-	await axios.get(`http://localhost:8080/patients/1`)
+	await axios.get(`http://localhost:8080/patients/${id}`)
 		.then(function (response) {
 			tmpResponse = response.data;
 			return (tmpResponse);
 		})
 	return tmpResponse;
 }
-export async function getDoctrsBySpecialization(specialization) {
+export async function getDoctrsBySpecialization(id) {
 	let tmpResponse;
-	await axios.get(`http://localhost:8080/doctorspecializations/specialization/${specialization}`)
+	await axios.get(`http://localhost:8080/doctorspecializations/specialization/${id}`)
 		.then(function (response) {
 			tmpResponse = response.data;
 			return (tmpResponse);

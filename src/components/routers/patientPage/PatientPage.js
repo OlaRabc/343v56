@@ -23,7 +23,7 @@ function PatientPage() {
       }
     });
   useEffect(() => {
-    getPatientById()
+    getPatientById(patientId)
       .then(data =>
         setPatient(data)
       );

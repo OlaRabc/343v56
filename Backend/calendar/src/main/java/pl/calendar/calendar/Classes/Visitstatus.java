@@ -12,10 +12,10 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="visitstatus")
+@Entity(name = "visitstatus")
 public class Visitstatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long visit_status_id;
     private String visit_status;
 

@@ -21,12 +21,12 @@ public class MessageController {
     public MessageRepository messageRepository;
 
     @GetMapping("")
-    public ResponseEntity<List<Message>> getAllMessages(){
+    public ResponseEntity<List<Message>> getAllMessages() {
         return ResponseEntity.ok(messageRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMessageById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getMessageById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(messageRepository.findById(id));
     }
 }

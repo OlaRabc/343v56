@@ -9,15 +9,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="message")
+@Entity(name = "message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long msgId;
     private String isRead;
     private Long newStatus;
 
     @ManyToOne
     @JoinColumn(name = " visitId")
-    private  Visit visit;
+    private Visit visit;
 }
