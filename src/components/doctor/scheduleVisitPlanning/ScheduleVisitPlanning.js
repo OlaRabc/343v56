@@ -1,11 +1,11 @@
-import './HarmonogramVisitPlanning.css';
+import './ScheduleVisitPlanning.css';
 import moment from "moment";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { getDoctorSpecializations } from "./../../../apiOperation/getOperaton/GetOperaton";
-import { patchVisits } from "./../../../apiOperation/postOperation/PostOperation";
-import PopupDoctorInvalidData from "./../../popups/popupDoctorInvalidData/PopupDoctorInvalidData";
-function HarmonogramVisitPlanning({
+import { getDoctorSpecializations } from "../../../apiOperation/getOperaton/GetOperaton";
+import { patchVisits } from "../../../apiOperation/postOperation/PostOperation";
+import PopupDoctorInvalidData from "../../popups/popupDoctorInvalidData/PopupDoctorInvalidData";
+function ScheduleVisitPlanning({
   isDoctor,
   doctorId
 }) {
@@ -220,4 +220,4 @@ function HarmonogramVisitPlanning({
   );
 }
 
-export default HarmonogramVisitPlanning;
+export default ScheduleVisitPlanning;

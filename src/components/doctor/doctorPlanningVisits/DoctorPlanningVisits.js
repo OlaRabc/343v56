@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./DoctorPlanningVisits.css";
 import { AiFillCaretLeft } from "react-icons/ai";
-import HarmonogramVisitPlanning from "./../harmonogramVisitPlanning/HarmonogramVisitPlanning";
+import ScheduleVisitPlanning from "./../scheduleVisitPlanning/ScheduleVisitPlanning";
 import OneVisitPlanning from "./../oneVisitPlanning/OneVisitPlanning";
 
 function DoctorPlanningVisits({
@@ -11,7 +11,7 @@ function DoctorPlanningVisits({
    onBack
 }) {
    const [oneVisitPlanning, setOneVisitPlanning] = useState(false);
-   const [harmonogramVisitPlanning, setHarmonogramVisitPlanning] = useState(false);
+   const [scheduleVisitPlanning, setScheduleVisitPlanning] = useState(false);
 
    return (
       <Container className="col-12">
@@ -24,7 +24,7 @@ function DoctorPlanningVisits({
             <Col className="col-12 col-md-5 my-3 " >
                <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
                   setOneVisitPlanning(true);
-                  setHarmonogramVisitPlanning(false);
+                  setScheduleVisitPlanning(false);
                }}>
                   Zaplanuj wizytę
                </button>
@@ -32,14 +32,14 @@ function DoctorPlanningVisits({
             <Col className="col-12  col-md-5 my-3 offset-md-2" >
                <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
                   setOneVisitPlanning(false);
-                  setHarmonogramVisitPlanning(true);
+                  setScheduleVisitPlanning(true);
                }}>
                   Zaplanuj Harmonogram
                </button>
             </Col>
          </Row>
-         {harmonogramVisitPlanning ?
-            <HarmonogramVisitPlanning
+         {scheduleVisitPlanning ?
+            <ScheduleVisitPlanning
                isDoctor={isDoctor}
                doctorId={doctorId} />
             : ""}

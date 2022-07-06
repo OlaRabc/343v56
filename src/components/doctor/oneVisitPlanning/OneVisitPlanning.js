@@ -39,7 +39,7 @@ function OneVisitPlanning({
           <label htmlFor="exampleInputCity" className="mx-2">
             Data wizyty:
           </label>
-          <input type="date" min={moment(date).format("YYYY-MM-DD")} required
+          <input type="date" min={moment(date).format("YYYY-MM-DD")} className="cursor" required
             onChange={e => {
               setVisitDate(e.target.value)
             }}></input>
@@ -48,7 +48,7 @@ function OneVisitPlanning({
           <label htmlFor="exampleInputCity" className="mx-2">
             Początek wizyty:
           </label>
-          <input type="time" required
+          <input type="time" className="cursor" required
             onChange={e => {
               setVisitStart(e.target.value)
             }}></input>
@@ -60,13 +60,13 @@ function OneVisitPlanning({
             }}>
             Czas Wizyty:
           </label>
-          <input type="text" name="visitTime" size="1" value="30" disabled />
+          <input type="text" name="visitTime" size="1" value="30" className="cursor" disabled />
         </Col>
         <Col className="col-12 col-md-12 my-3" >
           <label htmlFor="exampleInputCity" className="mx-2">
             Specjalizacja:
           </label>
-          <select className="form-control col-12 p-2"
+          <select className="form-control col-12 p-2 cursor"
             onChange={e => {
               setChosenSpecialization(e.target.value)
             }}>

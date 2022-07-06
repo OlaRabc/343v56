@@ -39,7 +39,7 @@ function PatientVisitRejestrationForm({
                Znajdź Doktora:
             </div>
             <div className="col-12 col-lg-6 mt-2 form-group">
-               <label for="exampleInputCity" className="mx-2">Miasto:</label>
+               <label htmlFor="exampleInputCity" className="mx-2">Miasto:</label>
 
                <select className="form-control col-12 p-2"
                   onChange={e => {
@@ -50,7 +50,7 @@ function PatientVisitRejestrationForm({
                   </option>
                   {cities.map((city) => {
                      return (
-                        <option key={city.id} value={city.id}>
+                        <option key={city.name} value={city.id}>
                            {city.name}
                         </option>
                      )
@@ -58,7 +58,7 @@ function PatientVisitRejestrationForm({
                </select>
             </div>
             <div className="col-12 col-lg-6 mt-2 form-group">
-               <label for="exampleInputSpecjalization" className="mx-2" >Specjalizacja:</label>
+               <label htmlFor="exampleInputSpecjalization" className="mx-2" >Specjalizacja:</label>
                <select className="form-control col-12 p-2"
                   onChange={e => {
                      setChosenSpecialization(e.target.value)
@@ -70,7 +70,7 @@ function PatientVisitRejestrationForm({
 
                   {specializations.map((specialization) => {
                      return (
-                        <option key={specialization.specialization_id} value={specialization.name}>
+                        <option key={specialization.name} value={specialization.name}>
                            {specialization.name}
                         </option>
                      )
@@ -93,7 +93,7 @@ function PatientVisitRejestrationForm({
          <Row className="col-11 mt-2">
             {doctorList.map((doctor) => {
                return (
-                  <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query"
+                  <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query" key={doctor.id}
                   onClick={() => {
                      console.log("ss")
                   }}>
