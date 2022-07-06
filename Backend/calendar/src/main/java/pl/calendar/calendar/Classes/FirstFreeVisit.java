@@ -14,7 +14,7 @@ import java.sql.Date;
 @ToString
 public class FirstFreeVisit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer doctorId;
     private Date firstFreeDate;

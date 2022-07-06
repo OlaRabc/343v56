@@ -20,12 +20,12 @@ public class PatientController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<Patient>> getAllPatients(){
+    public ResponseEntity<List<Patient>> getAllPatients() {
         return ResponseEntity.ok(patientRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPatientById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getPatientById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(patientRepository.findById(id));
     }
 }

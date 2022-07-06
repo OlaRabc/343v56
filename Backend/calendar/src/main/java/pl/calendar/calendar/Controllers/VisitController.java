@@ -14,8 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static java.util.Objects.isNull;
-
 
 @RestController
 @RequestMapping("/visits")
@@ -24,7 +22,7 @@ public class VisitController {
     @Autowired
     public VisitRepository visitRepository;
     @Autowired
-    public  PatientRepository patientRepository;
+    public PatientRepository patientRepository;
     @Autowired
     public DoctorRepository doctorRepository;
 
@@ -35,13 +33,13 @@ public class VisitController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getVisitById(
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id) {
         return ResponseEntity.ok(visitRepository.findById(id));
     }
 
     @GetMapping("/doctor/{id}")
     public ResponseEntity<List<Visit>> getByDoctorId(
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id) {
         return ResponseEntity.ok(visitRepository.findByDoctor_doctorId(id));
     }
 
@@ -56,8 +54,8 @@ public class VisitController {
     public ResponseEntity<List<Visit>> getByDoctorIdAndVisitDateBetween(
             @PathVariable("id") Long id,
             @PathVariable("dateStart") Date dateStart,
-            @PathVariable("dateEnd") Date dateEnd){
-       return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd,1L,4L));
+            @PathVariable("dateEnd") Date dateEnd) {
+        return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd, 1L, 4L));
     }
 
     @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}/{visitStatus}")
@@ -65,7 +63,7 @@ public class VisitController {
             @PathVariable("id") Long id,
             @PathVariable("dateStart") Date dateStart,
             @PathVariable("dateEnd") Date dateEnd,
-            @PathVariable("visitStatus") Long visitStatus ){
+            @PathVariable("visitStatus") Long visitStatus) {
         return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusId(id, dateStart, dateEnd, visitStatus));
     }
 
@@ -73,7 +71,7 @@ public class VisitController {
     @GetMapping("/patient/{id}/{visitDate}")
     public ResponseEntity<List<Visit>> getByPatientIdAndVisitDate(
             @PathVariable("id") Long id,
-            @PathVariable("visitDate") Date visitDate){
+            @PathVariable("visitDate") Date visitDate) {
         return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDate(id, visitDate));
     }
 
@@ -82,8 +80,8 @@ public class VisitController {
     public ResponseEntity<List<Visit>> getByPatientIdAndVisitDateBetween(
             @PathVariable("id") Long id,
             @PathVariable("dateStart") Date dateStart,
-            @PathVariable("dateEnd") Date dateEnd){
-        return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd,1L,5L));
+            @PathVariable("dateEnd") Date dateEnd) {
+        return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd, 1L, 5L));
     }
 
     @DeleteMapping("/{id}")
@@ -95,24 +93,24 @@ public class VisitController {
     @PostMapping("/one")
     @ResponseBody
     public ResponseEntity<?> postOneVisit(@RequestBody Visit newVisit) throws ParseException {
-        Date currentDate=new Date(System.currentTimeMillis());
-        Date date2=newVisit.getVisitDate();
-        if(!(date2.after(currentDate))){
+        Date currentDate = new Date(System.currentTimeMillis());
+        Date date2 = newVisit.getVisitDate();
+        if (!(date2.after(currentDate))) {
             return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
         }
-        Doctor d=newVisit.getDoctor();
-        List<Visit> visitList=visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
+        Doctor d = newVisit.getDoctor();
+        List<Visit> visitList = visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
 
-        for(Visit oldVisit: visitList){
-            if(!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
-                    && oldVisit.getVisitEnd().after(newVisit.getVisitStart())  ) {
+        for (Visit oldVisit : visitList) {
+            if (!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
+                    && oldVisit.getVisitEnd().after(newVisit.getVisitStart())) {
                 return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
             }
-            if(newVisit.getVisitEnd().after(oldVisit.getVisitStart())
+            if (newVisit.getVisitEnd().after(oldVisit.getVisitStart())
                     && !(newVisit.getVisitEnd().after(oldVisit.getVisitEnd()))) {
                 return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
             }
-            if(!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
+            if (!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
                     && !(oldVisit.getVisitStart().after(newVisit.getVisitEnd()))
                     && !(newVisit.getVisitStart().after(oldVisit.getVisitEnd()))
                     && !(oldVisit.getVisitEnd().after(newVisit.getVisitEnd()))) {
@@ -124,32 +122,33 @@ public class VisitController {
         visitRepository.saveAndFlush(newVisit);
         return ResponseEntity.ok("");
     }
+
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<?> postOneDayVisit(@RequestBody List<Visit> newVisitList) throws ParseException {
-        Date currentDate=new Date(System.currentTimeMillis());
-        for(Visit newVisit: newVisitList) {
-            Date date2=newVisit.getVisitDate();
-            if(!(date2.after(currentDate))){
+        Date currentDate = new Date(System.currentTimeMillis());
+        for (Visit newVisit : newVisitList) {
+            Date date2 = newVisit.getVisitDate();
+            if (!(date2.after(currentDate))) {
                 return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
             }
-            Doctor d=newVisit.getDoctor();
-            List<Visit> oldVisitList=visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
+            Doctor d = newVisit.getDoctor();
+            List<Visit> oldVisitList = visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
 
-            for(Visit oldVisit: oldVisitList){
-                if(!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
-                        && oldVisit.getVisitEnd().after(newVisit.getVisitStart())  ) {
-                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+            for (Visit oldVisit : oldVisitList) {
+                if (!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
+                        && oldVisit.getVisitEnd().after(newVisit.getVisitStart())) {
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at " + oldVisit.getVisitDate() + ", " + oldVisit.getVisitStart() + " - " + oldVisit.getVisitEnd() + " already exist ");
                 }
-                if(newVisit.getVisitEnd().after(oldVisit.getVisitStart())
+                if (newVisit.getVisitEnd().after(oldVisit.getVisitStart())
                         && !(newVisit.getVisitEnd().after(oldVisit.getVisitEnd()))) {
-                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at " + oldVisit.getVisitDate() + ", " + oldVisit.getVisitStart() + " - " + oldVisit.getVisitEnd() + " already exist ");
                 }
-                if(!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
+                if (!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
                         && !(oldVisit.getVisitStart().after(newVisit.getVisitEnd()))
                         && !(newVisit.getVisitStart().after(oldVisit.getVisitEnd()))
                         && !(oldVisit.getVisitEnd().after(newVisit.getVisitEnd()))) {
-                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at " + oldVisit.getVisitDate() + ", " + oldVisit.getVisitStart() + " - " + oldVisit.getVisitEnd() + " already exist ");
                 }
             }
             newVisit.setVisitStatusId(1L);
@@ -166,12 +165,12 @@ public class VisitController {
     public ResponseEntity<?> patchVisit(
             @PathVariable("id") Long id,
             @PathVariable("status") Long status,
-            @PathVariable("patient") Long patient){
-        Visit v=visitRepository.getById(id);
-        Date currentDate=new Date(System.currentTimeMillis());
-        Date date2=v.getVisitDate();
+            @PathVariable("patient") Long patient) {
+        Visit v = visitRepository.getById(id);
+        Date currentDate = new Date(System.currentTimeMillis());
+        Date date2 = v.getVisitDate();
 
-        if(date2.after(currentDate)) {
+        if (date2.after(currentDate)) {
             if (status == 1L) {//free
                 v.setVisitStatusId(1L);
                 v.setPatient(null);

@@ -9,10 +9,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name="patient")
+@Entity(name = "patient")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long patientId;
     private String firstName;
     private String lastName;

@@ -6,6 +6,6 @@ import pl.calendar.calendar.Classes.Doctor;
 
 import java.util.List;
 
-public interface DoctorRepository extends JpaRepository <Doctor,Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
 }

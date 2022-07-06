@@ -12,7 +12,7 @@ function PatientVisitRejestrationForm({
    const [firstFreeVisitList, setFirstFreeVisitList] = useState([]); //!!!!
 
    const [cities, setCities] = useState([]);
-   const [chosenCitie, setChosenCitie] = useState("null");
+   const [chosenCity, setChosenCity] = useState("null");
    const [specializations, setSpecializations] = useState([]);
    const [chosenSpecialization, setChosenSpecialization] = useState("null");
 
@@ -43,7 +43,7 @@ function PatientVisitRejestrationForm({
 
                <select className="form-control col-12 p-2"
                   onChange={e => {
-                     setChosenCitie(e.target.value)
+                     setChosenCity(e.target.value)
                   }}>
                   <option key={0} value={"null"}>
                      Brak
@@ -79,26 +79,36 @@ function PatientVisitRejestrationForm({
             </div>
             <button type="button" className="btn bg-primary text-light col-12 col-lg-4 my-4 offset-lg-1"
                onClick={async () => {
-                  if (chosenSpecialization !== "null" && chosenCitie === "null") {
-                     setDoctorList(await getDoctrsBySpecialization(chosenSpecialization));
+                  let tmpSpec;
+                  specializations.map((spec) => {
+                     if (spec.name === chosenSpecialization) tmpSpec = spec.specializationId
+                  })
+
+                  let tmpCity;
+                  cities.map((city) => {
+                     if (city.name === chosenCity) tmpCity = city.cityId
+                  })
+
+                  if (chosenSpecialization !== "null" && chosenCity === "null") {
+                     setDoctorList(await getDoctrsBySpecialization(tmpSpec));
                   }
-                  if (chosenSpecialization !== "null" && chosenCitie !== "null") {
-                     setDoctorList(await getDoctrsBySpecializationAndCity(chosenSpecialization, chosenCitie));
+                  if (chosenSpecialization !== "null" && chosenCity !== "null") {
+                     setDoctorList(await getDoctrsBySpecializationAndCity(tmpSpec, tmpCity));
                   }
                }}>
                Szukaj
             </button>
          </form>
-         
+
          <Row className="col-11 mt-2">
             {doctorList.map((doctor) => {
                return (
                   <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query" key={doctor.id}
-                  onClick={() => {
-                     console.log("ss")
-                  }}>
-                     <Col className="col-12 col-lg-4">{"Dr "+doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
-                     <Col className="col-12 col-lg-4">{doctor.doctor.city.name + ", " +doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
+                     onClick={() => {
+                        console.log("ss")
+                     }}>
+                     <Col className="col-12 col-lg-4">{"Dr " + doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
+                     <Col className="col-12 col-lg-4">{doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
                      <Col className="col-12 col-lg-4">Najbliższy wolny termin:</Col>
                   </Row>
                )

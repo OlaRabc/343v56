@@ -6,8 +6,6 @@ import pl.calendar.calendar.Classes.Doctorspecialization;
 import java.util.List;
 
 public interface DoctorspecializationRepository extends JpaRepository<Doctorspecialization,Long> {
-    List<Doctorspecialization> findBySpecialization_nameOrderByDoctor_lastNameAscDoctor_firstNameAsc(String specializationName);
-    List<Doctorspecialization> findByDoctor_city_nameOrderByDoctor_lastNameAscDoctor_firstNameAsc(String cityName);
     List<Doctorspecialization> findBySpecialization_nameAndDoctor_city_nameOrderByDoctor_lastNameAscDoctor_firstNameAsc(String specializationName, String cityName);
     List<Doctorspecialization> findByDoctor_doctorIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(Long doctorId);
 

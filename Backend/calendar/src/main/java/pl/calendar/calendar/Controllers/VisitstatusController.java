@@ -23,12 +23,12 @@ public class VisitstatusController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<Visitstatus>> getAllVisits(){
+    public ResponseEntity<List<Visitstatus>> getAllVisits() {
         return ResponseEntity.ok(visitstatusRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getVisitstatusById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getVisitstatusById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(visitstatusRepository.findById(id));
     }
 }
