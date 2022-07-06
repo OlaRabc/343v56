@@ -3,15 +3,18 @@ package pl.calendar.calendar.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.calendar.calendar.Classes.Doctor;
 import pl.calendar.calendar.Classes.Visit;
+import pl.calendar.calendar.Repository.DoctorRepository;
 import pl.calendar.calendar.Repository.PatientRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 
 @RestController
@@ -22,6 +25,8 @@ public class VisitController {
     public VisitRepository visitRepository;
     @Autowired
     public  PatientRepository patientRepository;
+    @Autowired
+    public DoctorRepository doctorRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -87,14 +92,71 @@ public class VisitController {
         return ResponseEntity.ok("");
     }
 
+    @PostMapping("/one")
+    @ResponseBody
+    public ResponseEntity<?> postOneVisit(@RequestBody Visit newVisit) throws ParseException {
+        Date currentDate=new Date(System.currentTimeMillis());
+        Date date2=newVisit.getVisitDate();
+        if(!(date2.after(currentDate))){
+            return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
+        }
+        Doctor d=newVisit.getDoctor();
+        List<Visit> visitList=visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
+
+        for(Visit oldVisit: visitList){
+            if(!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
+                    && oldVisit.getVisitEnd().after(newVisit.getVisitStart())  ) {
+                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
+            }
+            if(newVisit.getVisitEnd().after(oldVisit.getVisitStart())
+                    && !(newVisit.getVisitEnd().after(oldVisit.getVisitEnd()))) {
+                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
+            }
+            if(!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
+                    && !(oldVisit.getVisitStart().after(newVisit.getVisitEnd()))
+                    && !(newVisit.getVisitStart().after(oldVisit.getVisitEnd()))
+                    && !(oldVisit.getVisitEnd().after(newVisit.getVisitEnd()))) {
+                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
+            }
+        }
+        newVisit.setVisitStatusId(1L);
+        newVisit.setPatient(null);
+        visitRepository.saveAndFlush(newVisit);
+        return ResponseEntity.ok("");
+    }
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity<?> postVisit(@RequestBody Visit visit) throws ParseException {
-        visit.setVisitStatusId(1L);
-        visit.setPatient(null);
-        visit.setVisitStatusId(1L);
+    public ResponseEntity<?> postOneDayVisit(@RequestBody List<Visit> newVisitList) throws ParseException {
+        Date currentDate=new Date(System.currentTimeMillis());
+        for(Visit newVisit: newVisitList) {
+            Date date2=newVisit.getVisitDate();
+            if(!(date2.after(currentDate))){
+                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
+            }
+            Doctor d=newVisit.getDoctor();
+            List<Visit> oldVisitList=visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
 
-        visitRepository.saveAndFlush(visit);
+            for(Visit oldVisit: oldVisitList){
+                if(!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
+                        && oldVisit.getVisitEnd().after(newVisit.getVisitStart())  ) {
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+                }
+                if(newVisit.getVisitEnd().after(oldVisit.getVisitStart())
+                        && !(newVisit.getVisitEnd().after(oldVisit.getVisitEnd()))) {
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+                }
+                if(!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
+                        && !(oldVisit.getVisitStart().after(newVisit.getVisitEnd()))
+                        && !(newVisit.getVisitStart().after(oldVisit.getVisitEnd()))
+                        && !(oldVisit.getVisitEnd().after(newVisit.getVisitEnd()))) {
+                    return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at "+oldVisit.getVisitDate()+ " already exist ");
+                }
+            }
+            newVisit.setVisitStatusId(1L);
+            newVisit.setPatient(null);
+
+        }
+        visitRepository.saveAllAndFlush(newVisitList);
         return ResponseEntity.ok("");
     }
 
@@ -128,9 +190,9 @@ public class VisitController {
                 v.setVisitStatusId(5L);
             }
             visitRepository.saveAndFlush(v);
-            return ResponseEntity.ok("");
+            return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visit status error");
         }
-        return ResponseEntity.ok("");//date after current date
+        return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
     }
 }
 
