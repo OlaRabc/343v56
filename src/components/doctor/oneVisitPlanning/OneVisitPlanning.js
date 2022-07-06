@@ -3,9 +3,9 @@ import moment from "moment";
 import { Container, Row, Col } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getDoctorSpecializations } from "./../../../apiOperation/getOperaton/GetOperaton";
-import { patchVisit } from "./../../../apiOperation/postOperation/PostOperation";
-import { addZero } from "./../../util/dateHelper";
+import { patchVisits } from "./../../../apiOperation/postOperation/PostOperation";
 import PopupDoctorInvalidData from "./../../popups/popupDoctorInvalidData/PopupDoctorInvalidData";
+import PopupCreatedVisitInformation from "./../../popups/popupCreatedVisitInformation/PopupCreatedVisitInformation";
 function OneVisitPlanning({
   isDoctor,
   doctorId
@@ -19,6 +19,8 @@ function OneVisitPlanning({
   const [time, setTime] = useState(30);
 
   const [isPopupDoctorInvalidData, setIsPopupDoctorInvalidData] = useState(false);
+  const [isPopupCreatedVisitInformation, setIsPopupCreatedVisitInformation] = useState(false);
+
   useEffect(() => {
     getDoctorSpecializations(doctorId)
       .then(data =>
@@ -26,7 +28,7 @@ function OneVisitPlanning({
       )
       .catch(function (error) {
         console.log(error);
-      });;
+      })
   }, [])
 
   return (
@@ -34,7 +36,7 @@ function OneVisitPlanning({
       <Row className="col-12 my-3 p-1 patent-operation-vew" >
 
         <Col className="col-12 col-md-4 my-3" >
-          <label for="exampleInputCity" className="mx-2">
+          <label htmlFor="exampleInputCity" className="mx-2">
             Data wizyty:
           </label>
           <input type="date" min={moment(date).format("YYYY-MM-DD")} required
@@ -43,7 +45,7 @@ function OneVisitPlanning({
             }}></input>
         </Col>
         <Col className="col-12 col-md-4 my-3" >
-          <label for="exampleInputCity" className="mx-2">
+          <label htmlFor="exampleInputCity" className="mx-2">
             Początek wizyty:
           </label>
           <input type="time" required
@@ -52,7 +54,7 @@ function OneVisitPlanning({
             }}></input>
         </Col>
         <Col className="col-12 col-md-4 my-3" >
-          <label for="exampleInputCity" className="mx-2"
+          <label htmlFor="exampleInputCity" className="mx-2"
             onChange={e => {
               setTime(e.target.value)
             }}>
@@ -61,7 +63,7 @@ function OneVisitPlanning({
           <input type="text" name="visitTime" size="1" value="30" disabled />
         </Col>
         <Col className="col-12 col-md-12 my-3" >
-          <label for="exampleInputCity" className="mx-2">
+          <label htmlFor="exampleInputCity" className="mx-2">
             Specjalizacja:
           </label>
           <select className="form-control col-12 p-2"
@@ -85,15 +87,21 @@ function OneVisitPlanning({
       <Row>
         <Col className="col-12 my-3 " >
           <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
+            let specializationId = 0;
+            doctorSpecializations.map((spec => {
+              if (spec.specialization.name === chosenSpecialization)
+                specializationId = spec.specialization.specializationId
+            }));
             let visitToPost = {
               doctorId: doctorId,
               visitDate: visitDate,
               visitStart: moment(visitStart, "HH:mm").format("HH:mm:00"),
               visitEnd: moment(visitStart, "HH:mm").add(30, 'm').format("HH:mm:ss"),
-              specialization: chosenSpecialization
+              specializationId: specializationId
             }
             if (chosenSpecialization !== "null") {
-              await patchVisit(visitToPost);
+              await patchVisits([visitToPost]);
+              setIsPopupCreatedVisitInformation(true);
             }
             else {
               setIsPopupDoctorInvalidData(true);
@@ -107,6 +115,10 @@ function OneVisitPlanning({
       <PopupDoctorInvalidData
         open={isPopupDoctorInvalidData}
         onClose={() => { setIsPopupDoctorInvalidData(false); }}
+      />
+      <PopupCreatedVisitInformation
+        open={isPopupCreatedVisitInformation}
+        onClose={() => { setIsPopupCreatedVisitInformation(false); }}
       />
     </Container>
   );

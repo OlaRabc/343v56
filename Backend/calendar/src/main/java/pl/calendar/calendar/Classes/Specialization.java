@@ -17,5 +17,6 @@ public class Specialization {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long specializationId;
     private String name;
+    private String shortName;
 
 }
