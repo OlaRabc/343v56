@@ -6,7 +6,8 @@ import { getCities, getSpecializations, getDoctrsBySpecialization, getDoctrsBySp
 
 function PatientVisitRejestrationForm({
    userId,
-   onBack
+   onBack,
+   onDoctorClick
 }) {
    const [doctorList, setDoctorList] = useState([]);
    const [firstFreeVisitList, setFirstFreeVisitList] = useState([]); //!!!!
@@ -104,9 +105,9 @@ function PatientVisitRejestrationForm({
             {doctorList.map((doctor) => {
                return (
                   <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query" key={doctor.id}
-                     onClick={() => {
-                        console.log("ss")
-                     }}>
+                     onClick={
+                        onDoctorClick
+                     }>
                      <Col className="col-12 col-lg-4">{"Dr " + doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
                      <Col className="col-12 col-lg-4">{doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
                      <Col className="col-12 col-lg-4">Najbliższy wolny termin:</Col>
