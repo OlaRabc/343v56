@@ -69,6 +69,10 @@ function PatientPage() {
         {isPatientVisitRejestrationForm ?
           <PatientVisitRejestrationForm
             userId={patientId}
+            onDoctorClick={()=>{
+              setAllVewsFale()
+              setIsMainCalendarComponent(true)
+            }}
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);
