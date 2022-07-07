@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { getDoctorSpecializations } from "../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisits } from "../../../apiOperation/postOperation/PostOperation";
 import PopupDoctorInvalidData from "../../popups/popupDoctorInvalidData/PopupDoctorInvalidData";
+import PopupCreatedVisitInformation from "./../../popups/popupCreatedVisitInformation/PopupCreatedVisitInformation";
+
 function ScheduleVisitPlanning({
   isDoctor,
   doctorId
@@ -29,13 +31,13 @@ function ScheduleVisitPlanning({
   const [dateInSecondDateSquare, setDateInSecondDateSquare] = useState(date);
 
   const [isPopupDoctorInvalidData, setIsPopupDoctorInvalidData] = useState(false);
+  const [isPopupCreatedVisitInformation, setIsPopupCreatedVisitInformation] = useState(false);
 
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedDay.map((item, index) =>
       index === position ? !item : item
     );
-
     setCheckedState(updatedCheckedState);
   };
 
@@ -65,7 +67,6 @@ function ScheduleVisitPlanning({
                       id={`custom-checkbox-${index}`}
                       checked={checkedDay[index]}
                       onChange={() => handleOnChange(index)}
-
                     />
                     <label htmlFor={`custom-checkbox-${index}`} className="cursor">{name}</label>
                   </Col>
@@ -153,7 +154,6 @@ function ScheduleVisitPlanning({
 
         </Col>
       </Row>
-
       <Row>
         <Col className="col-12 my-3 " >
           <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
@@ -171,7 +171,6 @@ function ScheduleVisitPlanning({
                 if (spec.specialization.name === chosenSpecialization)
                   specializationId = spec.specialization.specializationId
               }));
-
 
               tmpDateEnd = moment(tmpDateEnd, "YYYY-MM-DD d HH:mm").add(1440, 'm').format("YYYY-MM-DD d HH:mm");
               let tmpTime = time + timekBetweenVisits;
@@ -200,8 +199,7 @@ function ScheduleVisitPlanning({
 
 
               let x = await patchVisits(visitList);
-              console.log("x")
-              console.log(x)
+              setIsPopupCreatedVisitInformation(true);
             }
             else {
               setIsPopupDoctorInvalidData(true);
@@ -215,6 +213,10 @@ function ScheduleVisitPlanning({
       <PopupDoctorInvalidData
         open={isPopupDoctorInvalidData}
         onClose={() => { setIsPopupDoctorInvalidData(false); }}
+      />
+      <PopupCreatedVisitInformation
+        open={isPopupCreatedVisitInformation}
+        onClose={() => { setIsPopupCreatedVisitInformation(false); }}
       />
     </Container>
   );
