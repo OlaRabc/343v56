@@ -141,7 +141,7 @@ const PopupInformationAboutVisit = ({
                         Odwołaj wizytę
                     </button> :
                     ""}
-                {!isDoctor && visit.visitStatusId === 1 ?
+                {!isDoctor && visit.visitStatusId === 1 && visit.visitDate > actualDate ?
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onBookVisit}>
                         Zarezerwuj
                     </button>

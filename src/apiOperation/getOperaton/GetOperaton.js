@@ -100,3 +100,12 @@ export async function getDoctorById(id) {
 		})
 	return tmpResponse;
 }
+export async function getMessageByPatientId(id) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/messages/patient/${id}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}

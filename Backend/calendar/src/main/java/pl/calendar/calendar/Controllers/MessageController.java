@@ -29,4 +29,8 @@ public class MessageController {
     public ResponseEntity<?> getMessageById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(messageRepository.findById(id));
     }
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<?> getByPatientId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(messageRepository.findByPatientId(id));
+    }
 }

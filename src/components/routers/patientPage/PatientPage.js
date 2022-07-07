@@ -4,7 +4,8 @@ import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperati
 import React, { useEffect, useState } from 'react';
 import MainCalendarComponent from "./../../patient/calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
-import { getPatientById } from "./../../../apiOperation/getOperaton/GetOperaton";
+import PopupMessageVew from "./../../popups/popupMessageVew/PopupMessageVew";
+import { getPatientById, getMessageByPatientId } from "./../../../apiOperation/getOperaton/GetOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import { setDoctorId } from './../../../features/counter/counterSlice';
 
@@ -12,8 +13,9 @@ function PatientPage() {
   const isDoctor = false, patientId = 1;
   /////////////////////////////////////
   const doctorId = useSelector((state) => state.doctorId.value)
-  const dispatch = useDispatch()
-  console.log(doctorId)
+  const dispatch = useDispatch();
+
+  const [messages, setMessages] = useState([]);
   const [patient, setPatient] = useState(
     {
       patientId: null,
@@ -27,6 +29,13 @@ function PatientPage() {
       }
     });
   useEffect(() => {
+    getMessageByPatientId(patientId)
+      .then(data =>
+        setMessages(data)
+      );
+  }, [])
+  
+  useEffect(() => {
     getPatientById(patientId)
       .then(data =>
         setPatient(data)
@@ -36,6 +45,7 @@ function PatientPage() {
   const [isPatentOperationVew, setIsPatentOperationVew] = useState(true);
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
   const [isPatientVisitRejestrationForm, setIsPatientVisitRejestrationForm] = useState(false);
+  const [isPopupMessageVew, setIsPopupMessageVew] = useState(false);
 
   function setAllVewsFale() {
     setIsPatentOperationVew(false);
@@ -47,6 +57,10 @@ function PatientPage() {
       <PatientNavigation
         firstName={patient.firstName}
         lastName={patient.lastName}
+        messages={messages}
+        onMessageClick={()=>{
+          setIsPopupMessageVew(true);
+        }}
       />
       <div id="col-12 patient-body ">
         {isPatentOperationVew ? <PatentOperationVew
@@ -90,6 +104,11 @@ function PatientPage() {
             }} /> :
           ""}
       </div>
+      <PopupMessageVew
+       open={isPopupMessageVew}
+       onClose={() => { setIsPopupMessageVew(false); }}
+       messages={messages}
+       />
     </div>
   );
 }
