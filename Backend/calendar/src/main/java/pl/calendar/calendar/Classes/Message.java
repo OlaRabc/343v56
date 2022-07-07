@@ -3,6 +3,7 @@ package pl.calendar.calendar.Classes;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -13,11 +14,10 @@ import javax.persistence.*;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long msgId;
+    private Long messageId;
+    private Long doctorId;
     private String isRead;
-    private Long newStatus;
-
-    @ManyToOne
-    @JoinColumn(name = " visitId")
-    private Visit visit;
+    private Long newStatusId;
+    private Long patientId;
+    private Date visitDate;
 }

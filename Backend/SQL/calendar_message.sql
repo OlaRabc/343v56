@@ -23,12 +23,14 @@ DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `message` (
-  `msg_id` int NOT NULL AUTO_INCREMENT,
-  `visit_id` int DEFAULT NULL,
-  `is_read` enum('true','false') DEFAULT NULL,
-  `new_status` int DEFAULT NULL,
-  PRIMARY KEY (`msg_id`),
-  KEY `visitId` (`visit_id`)
+  `message_id` int NOT NULL AUTO_INCREMENT,
+  `doctor_id` int DEFAULT NULL,
+  `is_read` enum('true','false') DEFAULT 'false',
+  `new_status_id` int DEFAULT NULL,
+  `patient_id` int DEFAULT NULL,
+  `visit_date` date DEFAULT NULL,
+  PRIMARY KEY (`message_id`),
+  KEY `visitId` (`doctor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +40,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,27,'false',NULL),(2,28,'false',NULL),(3,79,'false',1);
+INSERT INTO `message` VALUES (1,27,'false',NULL,1,NULL),(2,28,'false',NULL,1,NULL),(3,79,'false',1,1,NULL);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-07 13:15:11
+-- Dump completed on 2022-07-07 15:48:56

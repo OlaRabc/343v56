@@ -11,18 +11,8 @@ export const counterSlice = createSlice({
       state.value = action.payload
     },
   },
-  name: 'doctorList',
-  initialState: {
-    value: [null],
-  },
-  reducers: {
-
-    setDoctorList: (state, action) => {
-      state.value = action.payload
-    }
-  },
 })
 
-export const { setDoctorId, setDoctorList } = counterSlice.actions
+export const { setDoctorId } = counterSlice.actions
 
 export default counterSlice.reducer
