@@ -59,3 +59,7 @@
   cursor: pointer;
 
 }
+.no-cursor
+{
+  cursor: default !important;
+}

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./MonthlyCalendar.css";
 import moment from "moment";
-import {visitObjectPrototype} from "./../../../util/constantObject";
+import { visitObjectPrototype } from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
-import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew"
-import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
+import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInformation/PopupBookedVisitInformation";
+import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   firstOfMonth,
   whatMonth,
@@ -37,7 +39,8 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  
+  const doctorId = useSelector((state) => state.doctorId.value)
+  const dispatch = useDispatch()
   ////////////////////////////////////////////////////////////////////////
   const actualDate = new Date();
   const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))
@@ -52,18 +55,27 @@ function MonthlyCalendar({
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
+  const [doctor, setDoctor] = useState({});
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
+  const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
+
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
-
   let squares = [];
 
   useEffect(() => {
-    if (isDoctor === false && isPatientVew === true) {
+    if (doctorId !== 0)
+      getDoctorById(doctorId).then(data =>
+        setDoctor(data)
+      );
+  }, [])
+
+  useEffect(() => {
+    if (isDoctor === false && isPatientVew === true && doctorId === 0) {
       getVisitByPatientIdAndVisitDateBetween(userId,
         parseToApiDate(
           dateInFirstSquare(firstOfMonth(),
@@ -73,6 +85,21 @@ function MonthlyCalendar({
           dateInLastSquare(firstOfMonth(),
             parseInt(moment(actualDate).format("MM")),
             parseInt(moment(actualDate).format("YYYY")))))
+        .then(data =>
+          setVisitArray(data)
+        );
+    }
+    else {
+      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+        parseToApiDate(
+          dateInFirstSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))),
+        parseToApiDate(
+          dateInLastSquare(firstOfMonth(),
+            parseInt(moment(actualDate).format("MM")),
+            parseInt(moment(actualDate).format("YYYY")))),
+        1)
         .then(data =>
           setVisitArray(data)
         );
@@ -167,9 +194,20 @@ function MonthlyCalendar({
               <AiFillCaretRight />
             </button>
           </Col>
-          <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
-            Miesiąc
-          </Col>
+          {doctorId === 0 ?
+            <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+              Miesiąc
+            </Col>
+            : <>
+              <Col className="col-12 col-md-2 col-lg-2   mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar no-cursor">
+                {doctor.firstName + " " + doctor.lastName}
+              </Col>
+              <Col className="col-12 col-md-2 col-lg-2 offset-md-1 offset-lg-2 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+                Miesiąc
+              </Col>
+            </>}
+
+
         </Row>
         <Row>
           {dayOfWeekArray.map((day) => {
@@ -266,13 +304,32 @@ function MonthlyCalendar({
           setVisitArray(tmp)
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
+        onBookVisit={async () => {
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupBookedVisitInformation(true)
+          
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 2;
+              return tmpVisit;
+            }
+          })
+          setVisitArray(tmp)
+
+          await patchVisit(visitToShow.visitId, 2, userId)
+        }}
       />
 
       <PopupCancelVisitInformation
         open={isPopupCancelVisitInformation}
         onClose={() => { setIsPopupCancelVisitInformation(false); }}
       />
-
+      <PopupBookedVisitInformation
+        open={isPopupBookedVisitInformation}
+        onClose={() => { setIsPopupBookedVisitInformation(false); }}
+      />
       <PopupDayVew
         isDoctor={isDoctor}
         userId={userId}
