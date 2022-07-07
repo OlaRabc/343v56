@@ -5,11 +5,15 @@ import React, { useEffect, useState } from 'react';
 import MainCalendarComponent from "./../../patient/calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
 import { getPatientById } from "./../../../apiOperation/getOperaton/GetOperaton";
+import { useSelector, useDispatch } from 'react-redux';
+import { setDoctorId } from './../../../features/counter/counterSlice';
 
 function PatientPage() {
   const isDoctor = false, patientId = 1;
   /////////////////////////////////////
-
+  const doctorId = useSelector((state) => state.doctorId.value)
+  const dispatch = useDispatch()
+  console.log(doctorId)
   const [patient, setPatient] = useState(
     {
       patientId: null,
@@ -64,12 +68,19 @@ function PatientPage() {
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);
+              //
+            }}
+            onBackFromDctorCalendar={() => {
+              setAllVewsFale();
+              setIsPatientVisitRejestrationForm(true);
+              dispatch(setDoctorId(0))
+              //
             }} />
           : ""}
         {isPatientVisitRejestrationForm ?
           <PatientVisitRejestrationForm
             userId={patientId}
-            onDoctorClick={()=>{
+            onDoctorClick={() => {
               setAllVewsFale()
               setIsMainCalendarComponent(true)
             }}

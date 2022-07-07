@@ -3,6 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import "./PatientVisitRejestrationForm.css";
 import { AiFillCaretLeft, AiFillCaretRight, AiOutlineEnvironment } from "react-icons/ai";
 import { getCities, getSpecializations, getDoctrsBySpecialization, getDoctrsBySpecializationAndCity } from "./../../../apiOperation/getOperaton/GetOperaton";
+import { useSelector, useDispatch } from 'react-redux';
+import { setDoctorId } from './../../../features/counter/counterSlice';
 
 function PatientVisitRejestrationForm({
    userId,
@@ -16,6 +18,9 @@ function PatientVisitRejestrationForm({
    const [chosenCity, setChosenCity] = useState("null");
    const [specializations, setSpecializations] = useState([]);
    const [chosenSpecialization, setChosenSpecialization] = useState("null");
+
+   const doctorId = useSelector((state) => state.doctorId.value)
+   const dispatch = useDispatch()
 
    useEffect(() => {
       getCities()
@@ -105,9 +110,10 @@ function PatientVisitRejestrationForm({
             {doctorList.map((doctor) => {
                return (
                   <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query" key={doctor.id}
-                     onClick={
-                        onDoctorClick
-                     }>
+                     onClick={() => {
+                        dispatch(setDoctorId(doctor.doctor.doctorId || 0))
+                        onDoctorClick()
+                     }}>
                      <Col className="col-12 col-lg-4">{"Dr " + doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
                      <Col className="col-12 col-lg-4">{doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
                      <Col className="col-12 col-lg-4">Najbliższy wolny termin:</Col>

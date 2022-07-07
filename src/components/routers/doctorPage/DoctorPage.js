@@ -27,7 +27,7 @@ function DoctorPage({
         });
 
     useEffect(() => {
-        getDoctorById()
+        getDoctorById(doctorId)
             .then(data =>
                 setDoctor(data)
             );

@@ -45,6 +45,15 @@ export async function getVisitByDoctorIdAndVisitDateBetween(id, dateStart, dateE
 		})
 	return tmpResponse;
 }
+export async function getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(id, dateStart, dateEnd, visitStatus) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/doctor/${id}/${dateStart}/${dateEnd}/${visitStatus}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
 export async function getVisitByVisitId(id) {
 	let tmpResponse;
 	await axios.get(`http://localhost:8080/visits/${id}`)
@@ -81,9 +90,10 @@ export async function getDoctrsBySpecializationAndCity(specialization, city) {
 		})
 	return tmpResponse;
 }
-export async function getDoctorById() {
+
+export async function getDoctorById(id) {
 	let tmpResponse;
-	await axios.get(`http://localhost:8080/doctors/1`)
+	await axios.get(`http://localhost:8080/doctors/${id}`)
 		.then(function (response) {
 			tmpResponse = response.data;
 			return (tmpResponse);

@@ -13,7 +13,8 @@ const PopupInformationAboutVisit = ({
     onAcceptVisit,
     onRejectVisit,
     onCancelVisit,
-    onDeleteVisit
+    onDeleteVisit,
+    onBookVisit
 }) => {
     const actualDate = moment(new Date()).format("YYYY-MM-DD");
 
@@ -140,6 +141,14 @@ const PopupInformationAboutVisit = ({
                         Odwołaj wizytę
                     </button> :
                     ""}
+                {!isDoctor && visit.visitStatusId === 1 ?
+                    <button type="button" className="btn btn-primary col-12  mt-3" onClick={onBookVisit}>
+                        Zarezerwuj
+                    </button>
+
+                    : ""
+
+                }
             </Container>
             <PopupDoctorData
                 doctor={visit.doctor}
