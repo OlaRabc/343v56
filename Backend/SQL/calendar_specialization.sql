@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `specialization`;
 CREATE TABLE `specialization` (
   `specialization_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
+  `short_name` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`specialization_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -35,7 +36,7 @@ CREATE TABLE `specialization` (
 
 LOCK TABLES `specialization` WRITE;
 /*!40000 ALTER TABLE `specialization` DISABLE KEYS */;
-INSERT INTO `specialization` VALUES (1,'Alergologia'),(2,'Chirurgia dziecięca'),(3,'Anestezjologia i intensywna terapia');
+INSERT INTO `specialization` VALUES (1,'Alergologia','Alg'),(2,'Chirurgia dziecięca','Chi.D'),(3,'Anestezjologia i intensywna terapia','AnIIT');
 /*!40000 ALTER TABLE `specialization` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-04 15:44:25
+-- Dump completed on 2022-07-07 13:15:11

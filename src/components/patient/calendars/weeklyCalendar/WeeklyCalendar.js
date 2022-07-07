@@ -3,16 +3,13 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
-import {visitObjectPrototype} from "./../../../util/constantObject";
+import { visitObjectPrototype } from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
-import { getVisitByPatientIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
-import {
-  dayFromString
-}
-  from './../../../util/dateHelper';
-
+import { dayFromString } from './../../../util/dateHelper';
+import { useSelector, useDispatch } from 'react-redux';
 
 function WeeklyCalendar({
   onCalendarVewChange,
@@ -20,6 +17,7 @@ function WeeklyCalendar({
   userId,
   isPatientVew
 }) {
+  const doctorId = useSelector((state) => state.doctorId.value)
 
   let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
 
@@ -41,16 +39,34 @@ function WeeklyCalendar({
 
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
+  const [doctor, setDoctor] = useState({});
 
   const [visitArray, setVisitArray] = useState([]);
 
   let squares = [];
+
   useEffect(() => {
-    getVisitByPatientIdAndVisitDateBetween(userId,
-      moment(dateInFirstSquare).format("YYYY-MM-DD"),
-      moment(dateInLastSquare).format("YYYY-MM-DD")).then(data =>
-        setVisitArray(data)
+    if (doctorId !== 0)
+      getDoctorById(doctorId).then(data =>
+        setDoctor(data)
       );
+  }, [])
+
+  useEffect(() => {
+    if (doctorId === 0) {
+      getVisitByPatientIdAndVisitDateBetween(userId,
+        moment(dateInFirstSquare).format("YYYY-MM-DD"),
+        moment(dateInLastSquare).format("YYYY-MM-DD")).then(data =>
+          setVisitArray(data)
+        );
+    }
+    else {
+      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+        moment(dateInFirstSquare).format("YYYY-MM-DD"),
+        moment(dateInLastSquare).format("YYYY-MM-DD"), 1).then(data =>
+          setVisitArray(data)
+        );
+    }
   }, [])
 
   function renderSquare(i) {
@@ -89,11 +105,15 @@ function WeeklyCalendar({
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
 
-              if (isDoctor === false && isPatientVew === true) {
-                let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
-                setVisitArray(tmpVisit)
-                console.log(tmpVisit)
+              let tmpVisit
+              if (isDoctor === false && isPatientVew === true && doctorId === 0) {
+                tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+
               }
+              else {
+                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"), 1)
+              }
+              setVisitArray(tmpVisit)
             }}>
             <AiFillCaretLeft />
           </button>
@@ -113,18 +133,31 @@ function WeeklyCalendar({
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
 
-              if (isDoctor === false && isPatientVew === true) {
-                let tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
-                setVisitArray(tmpVisit)
-                console.log(tmpVisit)
+              let tmpVisit
+              if (isDoctor === false && isPatientVew === true && doctorId === 0) {
+                tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+
               }
+              else {
+                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"), 1)
+              }
+              setVisitArray(tmpVisit)
             }}>
             <AiFillCaretRight />
           </button>
         </Col>
-        <Col className="col-10  col-lg-2  offset-1 offset-lg-5 p-2 my-2 nav-calendar" onClick={onCalendarVewChange}>
-          Tydzień
-        </Col>
+        {doctorId === 0 ?
+          <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+            Tydzień
+          </Col>
+          : <>
+            <Col className="col-12  col-lg-2   mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar no-cursor">
+              {doctor.firstName + " " + doctor.lastName}
+            </Col>
+            <Col className="col-12  col-lg-2  offset-lg-2 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+              Tydzień
+            </Col>
+          </>}
       </Row>
       <Row>
         {dayOfWeekArray.map((day) => {

@@ -4,5 +4,6 @@ import counterReducer from '../features/counter/counterSlice'
 export default configureStore({
     reducer: {
         doctorId: counterReducer,
+        doctorList: [],
       },
 })

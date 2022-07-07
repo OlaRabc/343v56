@@ -154,11 +154,15 @@ function MonthlyCalendar({
                 setFirstDayInNextM(firstOfM);
                 setFirstOfM(firstDayInLastM);
                 setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
-
-                if (isDoctor === false && isPatientVew === true) {
+                if (doctorId === 0) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
                   setVisitArray(tmp)
                 }
+                else {
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)), 1)
+                  setVisitArray(tmp)
+                }
+
               }}>
               <AiFillCaretLeft />
             </button>
@@ -186,8 +190,12 @@ function MonthlyCalendar({
                 setFirstOfM(firstDayInNextM);
                 setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
 
-                if (isDoctor === false && isPatientVew === true) {
-                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
+                if (doctorId === 0) {
+                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
+                  setVisitArray(tmp)
+                }
+                else {
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)), 1)
                   setVisitArray(tmp)
                 }
               }}>
@@ -307,7 +315,7 @@ function MonthlyCalendar({
         onBookVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupBookedVisitInformation(true)
-          
+
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
             else {

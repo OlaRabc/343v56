@@ -6,14 +6,23 @@ export const counterSlice = createSlice({
     value: 0,
   },
   reducers: {
-    
+
     setDoctorId: (state, action) => {
       state.value = action.payload
     },
   },
+  name: 'doctorList',
+  initialState: {
+    value: [null],
+  },
+  reducers: {
+
+    setDoctorList: (state, action) => {
+      state.value = action.payload
+    }
+  },
 })
 
-// Action creators are generated for each case reducer function
-export const {setDoctorId } = counterSlice.actions
+export const { setDoctorId, setDoctorList } = counterSlice.actions
 
 export default counterSlice.reducer
