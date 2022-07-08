@@ -16,15 +16,6 @@ export const counterSlice = createSlice({
     },
   },
 },
-  {
-    name: 'visitL',
-    initialState: {
-      value: [],
-    },
-    reducers: {
-      
-    },
-  },
 )
 
 export const { setDoctorId, setVisitL } = counterSlice.actions

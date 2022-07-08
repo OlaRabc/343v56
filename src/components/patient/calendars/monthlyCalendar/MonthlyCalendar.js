@@ -134,7 +134,6 @@ function MonthlyCalendar({
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
-                  setVisitArray(tmp)
                   dispatch(setVisitL(tmp || 0))
                 }
                 else {
@@ -142,7 +141,6 @@ function MonthlyCalendar({
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     1)
-                  setVisitArray(tmp)
                   dispatch(setVisitL(tmp || 0))
                 }
               }}>
@@ -180,6 +178,7 @@ function MonthlyCalendar({
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
+                  dispatch(setVisitL(tmp || 0))
                 }
                 else {
                   let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
@@ -187,6 +186,7 @@ function MonthlyCalendar({
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     1)
                   setVisitArray(tmp)
+                  dispatch(setVisitL(tmp || 0))
                 }
               }}>
               <AiFillCaretRight />
@@ -312,7 +312,7 @@ function MonthlyCalendar({
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
-          let tmp = visitArray.map((visit) => {
+          let tmp = visitL.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
             else {
               let tmpVisit = visit;
@@ -322,13 +322,14 @@ function MonthlyCalendar({
           })
 
           setVisitArray(tmp)
+          dispatch(setVisitL(tmp || 0))
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
         onBookVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupBookedVisitInformation(true)
 
-          let tmp = visitArray.map((visit) => {
+          let tmp = visitL.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
             else {
               let tmpVisit = visit;
@@ -337,6 +338,7 @@ function MonthlyCalendar({
             }
           })
           setVisitArray(tmp)
+          dispatch(setVisitL(tmp || 0))
 
           await patchVisit(visitToShow.visitId, 2, userId)
         }}
@@ -362,7 +364,7 @@ function MonthlyCalendar({
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
-          let tmp = visitArray.map((visit) => {
+          let tmp = visitL.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
             else {
               let tmpVisit = visit;
@@ -372,6 +374,7 @@ function MonthlyCalendar({
           })
 
           setVisitArray(tmp)
+          dispatch(setVisitL(tmp || 0))
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
       />
