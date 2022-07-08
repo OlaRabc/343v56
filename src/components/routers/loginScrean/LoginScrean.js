@@ -5,7 +5,7 @@ function LoginScrean({
     onLoginPatient,
     onLoginDoctor
 }) {
-    const [login, setLogin] = useState()
+    const [login, setLogin] = useState("")
     return (
         <div className="col-12 col-md-6 login-screan">
             <form >

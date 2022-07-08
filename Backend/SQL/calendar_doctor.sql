@@ -24,13 +24,14 @@ DROP TABLE IF EXISTS `doctor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctor` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(20) DEFAULT NULL,
-  `last_name` varchar(20) DEFAULT NULL,
-  `pwz` varchar(7) DEFAULT NULL,
-  `city_id` int DEFAULT NULL,
-  `street` varchar(40) DEFAULT NULL,
-  `local_number` varchar(5) DEFAULT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) NOT NULL,
+  `pwz` varchar(7) NOT NULL,
+  `city_id` int NOT NULL,
+  `street` varchar(40) NOT NULL,
+  `local_number` varchar(5) NOT NULL,
   PRIMARY KEY (`doctor_id`),
+  UNIQUE KEY `pwz_UNIQUE` (`pwz`),
   KEY `cityId` (`city_id`),
   CONSTRAINT `cityId` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-07 15:48:56
+-- Dump completed on 2022-07-08 14:37:43

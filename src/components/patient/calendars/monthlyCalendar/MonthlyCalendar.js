@@ -11,7 +11,8 @@ import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInfor
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
-import {  whatMonth,helper } from './../../../util/dateHelper';
+import { whatMonth, helper } from './../../../util/dateHelper';
+import { setVisitL } from "./../../../../features/counter/counterSlice";
 
 
 function MonthlyCalendar({
@@ -22,8 +23,11 @@ function MonthlyCalendar({
 
 }) {
   const doctorId = useSelector((state) => state.doctorId.value);
+  const visitL = useSelector((state) => state.doctorId.visitL);
   const dispatch = useDispatch();
 
+  console.log(doctorId)
+  console.log(visitL)
   const actualDate = moment(new Date()).format("YYYY-MM-DD d");
   let tmpDay = parseInt(moment(actualDate, "YYYY-MM-DD d").format("DD")) * (-1) + 1;
   let firstOfM = moment(actualDate, "YYYY-MM-DD d").add(tmpDay, 'days').format("YYYY-MM-DD d")
@@ -64,14 +68,18 @@ function MonthlyCalendar({
     if (isDoctor === false && isPatientVew === true && doctorId === 0) {
       getVisitByPatientIdAndVisitDateBetween(userId,
         moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD")).then(data =>
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD")).then(data => {
           setVisitArray(data)
+          dispatch(setVisitL(data || 0))
+        }
         );
     }
     else {
       getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"), 1).then(data =>
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"), 1).then(data => {
           setVisitArray(data)
+          dispatch(setVisitL(data || 0))
+        }
         );
     }
   }, [])
@@ -83,7 +91,7 @@ function MonthlyCalendar({
 
     if (tmpMonth !== month) thisMonth = false;
 
-    visitArray.map((visit) => {
+    visitL.map((visit) => {
       if (moment(visit.visitDate, "YYYY-MM-DD d").format("YYYY-MM-DD") == moment(tmpDate, "YYYY-MM-DD d").format("YYYY-MM-DD"))
         tmpVisit.push(visit)
     })
@@ -109,11 +117,11 @@ function MonthlyCalendar({
                 if (tmpDay < 0) tmpDay = 6
                 let tmpDateInFirstS = moment(tmpDateInLastMonth, "YYYY-MM-DD d").add(tmpDay * (-1), 'days').format("YYYY-MM-DD d");
                 let tmpDateInLastS = moment(tmpDateInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
-                
+
                 setFirstOfMonth(tmpDateInLastMonth)
                 setDateInFirstSquare(tmpDateInFirstS);
                 setDateInLastSquare(tmpDateInLastS);
- 
+
                 if (month === 1) {
                   setMonth(12);
                   setYear(year - 1);
@@ -121,12 +129,13 @@ function MonthlyCalendar({
                 else {
                   setMonth(month - 1);
                 }
-                
+
                 if (doctorId === 0) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
+                  dispatch(setVisitL(tmp || 0))
                 }
                 else {
                   let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
@@ -134,6 +143,7 @@ function MonthlyCalendar({
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     1)
                   setVisitArray(tmp)
+                  dispatch(setVisitL(tmp || 0))
                 }
               }}>
               <AiFillCaretLeft />
@@ -244,23 +254,46 @@ function MonthlyCalendar({
                   {moment(square.date, "YYYY-MM-DD d").format("DD")}
                 </Row>
                 <Row className="">
-                  {square.visitList.map((visit) => {
-                    return (
-                      <Col key={visit.visitId}
-                        className={visit.visitStatusId === 1 ? "visit btn-secondary col-11 m-1 " :
-                          (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1" :
-                            (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1"
-                              : "visit btn-danger col-11  m-1"))}
-                        onDoubleClick={(e) => {
-                          e.stopPropagation();
-                          setIsPopupInformationAboutVisit(true)
-                          setVisitToShow(visit)
-                          setVisitToShowSquareId(square.key)
-                        }}>
-                        {visit.specialization.shortName}
+                  {square.visitList.length > 2 ?
+                    <>
+                      {square.visitList.map((visit, index) => {
+                        return (
+                          index < 2 ?
+                            <Col key={visit.visitId}
+                              className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
+                                (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
+                                  (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
+                                    : "visit  btn-danger col-11  m-1 visit"))}
+                              onDoubleClick={(e) => {
+                                e.stopPropagation();
+                                setIsPopupInformationAboutVisit(true)
+                                setVisitToShow(visit)
+                              }}>
+                              {visit.specialization.shortName}
+                            </Col>
+                            : ""
+                        )
+                      })}
+                      <Col className="visit btn-primary col-11 m-1 visit">
+                        +{square.visitList.length - 2}
                       </Col>
-                    )
-                  })}
+                    </>
+                    : square.visitList.map((visit) => {
+                      return (
+                        <Col key={visit.visitId}
+                          className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
+                            (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
+                              (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
+                                : "visit  btn-danger col-11  m-1 visit"))}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            setIsPopupInformationAboutVisit(true)
+                            setVisitToShow(visit)
+                          }}>
+                          {visit.specialization.shortName}
+                        </Col>
+                      )
+                    })}
                 </Row>
               </div>
             )
@@ -269,7 +302,7 @@ function MonthlyCalendar({
       </Container>
 
 
-      
+
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}

@@ -183,7 +183,7 @@ function WeeklyCalendar({
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
         visit={visitToShow}
         isDoctor={isDoctor}
-        onCancelVisit={async () => {/*odwolac*/
+        onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
@@ -234,7 +234,7 @@ function WeeklyCalendar({
         }}
         onDeleteVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          //setIsPopupRejectVisitInformation(true);
+          setIsPopupDeletedVisitInformation(true);
 
           let tmp = visitArray.filter((visit) => {
             return visit.visitId !== visitToShow.visitId

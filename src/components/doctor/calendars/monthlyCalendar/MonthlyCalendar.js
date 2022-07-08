@@ -21,9 +21,6 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-
-
-  ////////////////////////////////////////////////////////////////////////
   const actualDate = moment(new Date()).format("YYYY-MM-DD d");
   let tmpDay = parseInt(moment(actualDate, "YYYY-MM-DD d").format("DD")) * (-1) + 1;
   let firstOfM = moment(actualDate, "YYYY-MM-DD d").add(tmpDay, 'days').format("YYYY-MM-DD d")
@@ -40,7 +37,6 @@ function MonthlyCalendar({
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
-  const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
 
@@ -157,7 +153,12 @@ function MonthlyCalendar({
               <AiFillCaretRight />
             </button>
           </Col>
-          <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+          <Col
+            className="col-10 col-sm-2 col-lg-2  
+          offset-1 offset-sm-3 
+          offset-lg-5 mt-2 pt-1 
+          pt-sm-2 p-md-2 nav-calendar"
+            onClick={onCalendarVewChange}>
             Miesiąc
           </Col>
         </Row>
@@ -196,37 +197,63 @@ function MonthlyCalendar({
                     "square not-this-month"
                     : "square "}
                 style={{
-                  borderRight: square.key % 7 === 0 ? "none"
+                  borderRight: square.key % 7 === 0 ?
+                    "none"
                     : "",
 
                 }}
               >
                 <Row
                   style={{
-                    color: square.key % 7 === 0 ? "red"
+                    color: square.key % 7 === 0 ?
+                      "red"
                       : "",
                   }}
                 >
                   {moment(square.date, "YYYY-MM-DD d").format("DD.MM.YYYY")}
                 </Row>
                 <Row className="">
-                  {square.visitList.map((visit) => {
-                    return (
-                      <Col key={visit.visitId}
-                        className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
-                          (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
-                            (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
-                              : "visit  btn-danger col-11  m-1 visit"))}
-                        onDoubleClick={(e) => {
-                          e.stopPropagation();
-                          setIsPopupInformationAboutVisit(true)
-                          setVisitToShow(visit)
-                          setVisitToShowSquareId(square.key)
-                        }}>
-                        {visit.specialization.shortName}
+
+                  {square.visitList.length > 2 ?
+                    <>
+                      {square.visitList.map((visit, index) => {
+                        return (
+                         index<2?
+                          <Col key={visit.visitId}
+                            className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
+                              (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
+                                (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
+                                  : "visit  btn-danger col-11  m-1 visit"))}
+                            onDoubleClick={(e) => {
+                              e.stopPropagation();
+                              setIsPopupInformationAboutVisit(true)
+                              setVisitToShow(visit)
+                            }}>
+                            {visit.specialization.shortName}
+                          </Col>
+                          :""
+                        )
+                      })}
+                      <Col className="visit btn-primary col-11 m-1 visit">
+                        +{square.visitList.length-2}
                       </Col>
-                    )
-                  })}
+                    </>
+                    : square.visitList.map((visit) => {
+                      return (
+                        <Col key={visit.visitId}
+                          className={visit.visitStatusId === 1 ? " btn-secondary col-11 m-1 visit" :
+                            (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
+                              (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
+                                : "visit  btn-danger col-11  m-1 visit"))}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            setIsPopupInformationAboutVisit(true)
+                            setVisitToShow(visit)
+                          }}>
+                          {visit.specialization.shortName}
+                        </Col>
+                      )
+                    })}
                 </Row>
               </div>
             )
@@ -234,14 +261,12 @@ function MonthlyCalendar({
         </Row>
       </Container>
 
-
-
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
         visit={visitToShow}
         isDoctor={isDoctor}
-        onCancelVisit={async () => {/*odwolac*/
+        onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
@@ -327,7 +352,7 @@ function MonthlyCalendar({
         open={isPopupDayVew}
         onClose={() => { setIsPopupDayVew(false); }}
 
-        onCancelVisit={async () => {/*odwolac*/
+        onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
