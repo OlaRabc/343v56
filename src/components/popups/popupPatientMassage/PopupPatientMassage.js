@@ -1,15 +1,15 @@
-import Modal from '../popupBasic/Modal';
 import './PopupPatientMassage.css';
+import Modal from '../popupBasic/Modal';
+
 const PopupPatientMassage = ({
     open,
     onClose,
 }) => {
-
-
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             Wizyta zaakceptowana
         </Modal>
     )

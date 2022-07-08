@@ -1,5 +1,6 @@
-import Modal from '../popupBasic/Modal';
 import './PopupRejectVisitInformation.css';
+import Modal from '../popupBasic/Modal';
+
 const PopupRejectVisitInformation = ({
     open,
     onClose,
@@ -9,7 +10,8 @@ const PopupRejectVisitInformation = ({
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             Wizyta odrzucona
         </Modal>
     )

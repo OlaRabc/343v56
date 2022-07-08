@@ -1,5 +1,5 @@
-import Modal from '../popupBasic/Modal';
 import './PopupMessageVew.css';
+import Modal from '../popupBasic/Modal';
 import moment from "moment";
 import { Container, Row, Col } from 'react-bootstrap';
 const PopupMessageVew = ({

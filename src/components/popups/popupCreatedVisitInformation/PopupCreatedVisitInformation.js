@@ -1,11 +1,10 @@
-import Modal from '../popupBasic/Modal';
 import './PopupCreatedVisitInformation.css';
+import Modal from '../popupBasic/Modal';
+
 const PopupCreatedVisitInformation = ({
     open,
     onClose,
 }) => {
-
-
     return (
         <Modal
             open={open}

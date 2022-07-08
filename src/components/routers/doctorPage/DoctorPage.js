@@ -2,16 +2,17 @@ import './DoctorPage.css';
 import { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import React, { useState } from 'react';
+import { getDoctorById } from "./../../../apiOperation/getOperaton/GetOperaton";
 import DoctorNavigation from "./../../navigation/doctorNavigation/DoctorNavigation";
 import DoctrOperationVew from "./../../doctor/doctrOperationVew/DoctrOperationVew"
-import MainCalendarComponent from "./../../doctor/calendars/mainCalendarComponent/MainCalendarComponent";
 import DoctorPlanningVisits from "./../../doctor/doctorPlanningVisits/DoctorPlanningVisits";
-import { getDoctorById } from "./../../../apiOperation/getOperaton/GetOperaton";
+import MainCalendarComponent from "./../../doctor/calendars/mainCalendarComponent/MainCalendarComponent";
+
 function DoctorPage({
 }) {
     const isDoctor = true;
     const doctorId = 1;
-    /////////////////////////////////////
+
     const [doctor, setDoctor] = useState(
         {
             doctorId: null,

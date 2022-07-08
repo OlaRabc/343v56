@@ -27,33 +27,7 @@ export async function getDoctorSpecializations(id) {
 		})
 	return tmpResponse;
 }
-export async function getVisitByPatientIdAndVisitDateBetween(id, dateStart, dateEnd) {
-	let tmpResponse;
-	await axios.get(`http://localhost:8080/visits/patient/${id}/${dateStart}/${dateEnd}`)
-		.then(function (response) {
-			tmpResponse = response.data;
-			return (tmpResponse);
-		})
-	return tmpResponse;
-}
-export async function getVisitByDoctorIdAndVisitDateBetween(id, dateStart, dateEnd) {
-	let tmpResponse;
-	await axios.get(`http://localhost:8080/visits/doctor/${id}/${dateStart}/${dateEnd}`)
-		.then(function (response) {
-			tmpResponse = response.data;
-			return (tmpResponse);
-		})
-	return tmpResponse;
-}
-export async function getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(id, dateStart, dateEnd, visitStatus) {
-	let tmpResponse;
-	await axios.get(`http://localhost:8080/visits/doctor/${id}/${dateStart}/${dateEnd}/${visitStatus}`)
-		.then(function (response) {
-			tmpResponse = response.data;
-			return (tmpResponse);
-		})
-	return tmpResponse;
-}
+
 export async function getVisitByVisitId(id) {
 	let tmpResponse;
 	await axios.get(`http://localhost:8080/visits/${id}`)
@@ -81,16 +55,6 @@ export async function getDoctrsBySpecialization(id) {
 		})
 	return tmpResponse;
 }
-export async function getDoctrsBySpecializationAndCity(specialization, city) {
-	let tmpResponse;
-	await axios.get(`http://localhost:8080/doctorspecializations/specialization/${specialization}/city/${city}`)
-		.then(function (response) {
-			tmpResponse = response.data;
-			return (tmpResponse);
-		})
-	return tmpResponse;
-}
-
 export async function getDoctorById(id) {
 	let tmpResponse;
 	await axios.get(`http://localhost:8080/doctors/${id}`)
@@ -109,3 +73,40 @@ export async function getMessageByPatientId(id) {
 		})
 	return tmpResponse;
 }
+export async function getDoctrsBySpecializationAndCity(specialization, city) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/doctorspecializations/specialization/${specialization}/city/${city}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
+export async function getVisitByPatientIdAndVisitDateBetween(id, dateStart, dateEnd) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/patient/${id}/${dateStart}/${dateEnd}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
+export async function getVisitByDoctorIdAndVisitDateBetween(id, dateStart, dateEnd) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/doctor/${id}/${dateStart}/${dateEnd}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
+export async function getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(id, dateStart, dateEnd, visitStatus) {
+	let tmpResponse;
+	await axios.get(`http://localhost:8080/visits/doctor/${id}/${dateStart}/${dateEnd}/${visitStatus}`)
+		.then(function (response) {
+			tmpResponse = response.data;
+			return (tmpResponse);
+		})
+	return tmpResponse;
+}
+

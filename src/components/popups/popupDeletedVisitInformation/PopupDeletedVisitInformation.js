@@ -1,15 +1,15 @@
-import Modal from '../popupBasic/Modal';
 import './PopupDeletedVisitInformation.css';
+import Modal from '../popupBasic/Modal';
+
 const PopupDeletedVisitInformation = ({
     open,
     onClose,
 }) => {
-
-
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             Wizyta uzunięta
         </Modal>
     )

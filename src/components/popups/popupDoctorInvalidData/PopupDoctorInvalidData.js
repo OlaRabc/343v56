@@ -1,15 +1,15 @@
-import Modal from '../popupBasic/Modal';
 import './PopupDoctorInvalidData.css';
+import Modal from '../popupBasic/Modal';
+
 const PopupDoctorInvalidData = ({
     open,
     onClose,
 }) => {
-
-
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             Błędne Dane
         </Modal>
     )

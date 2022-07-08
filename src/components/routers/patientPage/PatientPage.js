@@ -1,33 +1,22 @@
 import './PatientPage.css';
+import React, { useEffect, useState } from 'react';
 import PatientNavigation from "./../../navigation/patientNavigation/PatientNavigation";
 import PatentOperationVew from "./../../patient/patentOperationVew/PatentOperationVew";
-import React, { useEffect, useState } from 'react';
 import MainCalendarComponent from "./../../patient/calendars/mainCalendarComponent/MainCalendarComponent";
 import PatientVisitRejestrationForm from "./../../patient/patientVisitRejestrationForm/PatientVisitRejestrationForm";
 import PopupMessageVew from "./../../popups/popupMessageVew/PopupMessageVew";
 import { getPatientById, getMessageByPatientId } from "./../../../apiOperation/getOperaton/GetOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import { setDoctorId } from './../../../features/counter/counterSlice';
-
+import {patientPrototype} from './../../util/constantObject';
 function PatientPage() {
   const isDoctor = false, patientId = 1;
-  /////////////////////////////////////
-  const doctorId = useSelector((state) => state.doctorId.value)
+
+  const doctorId = useSelector((state) => state.doctorId.value);
   const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
-  const [patient, setPatient] = useState(
-    {
-      patientId: null,
-      firstName: null,
-      lastName: null,
-      mail: null,
-      phoneNumber: null,
-      cityId: {
-        cityId: null,
-        name: null
-      }
-    });
+  const [patient, setPatient] = useState(patientPrototype);
   useEffect(() => {
     getMessageByPatientId(patientId)
       .then(data =>

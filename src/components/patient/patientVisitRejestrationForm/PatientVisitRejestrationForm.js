@@ -1,6 +1,6 @@
+import "./PatientVisitRejestrationForm.css";
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import "./PatientVisitRejestrationForm.css";
 import { AiFillCaretLeft, AiFillCaretRight, AiOutlineEnvironment } from "react-icons/ai";
 import { getCities, getSpecializations, getDoctrsBySpecialization, getDoctrsBySpecializationAndCity } from "./../../../apiOperation/getOperaton/GetOperaton";
 import { useSelector, useDispatch } from 'react-redux';
@@ -28,6 +28,7 @@ function PatientVisitRejestrationForm({
             setCities(data)
          );
    }, [])
+
    useEffect(() => {
       getSpecializations()
          .then(data =>
@@ -45,9 +46,12 @@ function PatientVisitRejestrationForm({
                Znajdź Doktora:
             </div>
             <div className="col-12 col-lg-6 mt-2 form-group">
-               <label htmlFor="exampleInputCity" className="mx-2">Miasto:</label>
+               <label htmlFor="exampleInputCity" className="mx-2">
+                  Miasto:
+               </label>
 
-               <select className="form-control col-12 p-2"
+               <select
+                  className="form-control col-12 p-2"
                   onChange={e => {
                      setChosenCity(e.target.value)
                   }}>
@@ -64,7 +68,9 @@ function PatientVisitRejestrationForm({
                </select>
             </div>
             <div className="col-12 col-lg-6 mt-2 form-group">
-               <label htmlFor="exampleInputSpecjalization" className="mx-2" >Specjalizacja:</label>
+               <label htmlFor="exampleInputSpecjalization" className="mx-2" >
+                  Specjalizacja:
+               </label>
                <select className="form-control col-12 p-2"
                   onChange={e => {
                      setChosenSpecialization(e.target.value)
@@ -83,7 +89,9 @@ function PatientVisitRejestrationForm({
                   })}
                </select>
             </div>
-            <button type="button" className="btn bg-primary text-light col-12 col-lg-4 my-4 offset-lg-1"
+            <button
+               type="button"
+               className="btn bg-primary text-light col-12 col-lg-4 my-4 offset-lg-1"
                onClick={async () => {
                   let tmpSpec;
                   specializations.map((spec) => {
@@ -109,14 +117,22 @@ function PatientVisitRejestrationForm({
          <Row className="col-11 mt-2">
             {doctorList.map((doctor) => {
                return (
-                  <Row className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query" key={doctor.id}
+                  <Row
+                     className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query"
+                     key={doctor.id}
                      onClick={() => {
                         dispatch(setDoctorId(doctor.doctor.doctorId || 0))
                         onDoctorClick()
                      }}>
-                     <Col className="col-12 col-lg-4">{"Dr " + doctor.doctor.firstName + " " + doctor.doctor.lastName}</Col>
-                     <Col className="col-12 col-lg-4">{doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}</Col>
-                     <Col className="col-12 col-lg-4">Najbliższy wolny termin:</Col>
+                     <Col className="col-12 col-lg-4">
+                        {"Dr " + doctor.doctor.firstName + " " + doctor.doctor.lastName}
+                     </Col>
+                     <Col className="col-12 col-lg-4">
+                        {doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}
+                     </Col>
+                     <Col className="col-12 col-lg-4">
+                        Najbliższy wolny termin:
+                     </Col>
                   </Row>
                )
             })}
