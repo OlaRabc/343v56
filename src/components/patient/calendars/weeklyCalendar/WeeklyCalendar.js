@@ -8,7 +8,6 @@ import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutV
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
-import { dayFromString } from './../../../util/dateHelper';
 import { useSelector, useDispatch } from 'react-redux';
 
 function WeeklyCalendar({
@@ -186,7 +185,7 @@ function WeeklyCalendar({
                 borderRight: square.key % 7 === 0 ? "none"
                   : "1px solid black"
               }}>
-              {dayFromString(square.date)}
+              {moment(square.date).format("DD.MM")}
               <div>
                 {square.visitList.map((visit) => {
                   return (

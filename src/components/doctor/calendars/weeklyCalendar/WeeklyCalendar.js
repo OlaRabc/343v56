@@ -11,14 +11,7 @@ import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInfor
 import PopupDeletedVisitInformation from "../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
-import {
-  whatMonth,
-  firstOfWeek,
-  howLongMonth,
-  addZero,
-  dayFromString
-}
-  from './../../../util/dateHelper';
+
 
 
 function WeeklyCalendar({
@@ -160,7 +153,7 @@ function WeeklyCalendar({
                 borderRight: square.key % 7 === 0 ? "none"
                   : "1px solid black"
               }}>
-              {dayFromString(square.date)}
+              {moment(square.date).format("DD.MM")}
               <div>
                 {square.visitList.map((visit) => {
                   return (

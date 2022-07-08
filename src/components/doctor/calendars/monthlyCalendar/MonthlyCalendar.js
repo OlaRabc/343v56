@@ -1,8 +1,8 @@
+import "./MonthlyCalendar.css";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import "./MonthlyCalendar.css";
 import moment from "moment";
-import {visitObjectPrototype} from "./../../../util/constantObject";
+import { visitObjectPrototype } from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
@@ -12,25 +12,7 @@ import PopupDeletedVisitInformation from "./../../../popups/popupDeletedVisitInf
 import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
-import {
-  firstOfMonth,
-  whatMonth,
-  howLongMonth,
-  lastDays,
-  nextDays,
-  lastMonth,
-  nextMonth,
-  lastYear,
-  nextYear,
-  viewMonth,
-  addZero,
-  firstDayInLastMonth,
-  firstDayInNextMonth,
-  dayFromString,
-  dateInFirstSquare,
-  dateInLastSquare,
-  parseToApiDate
-} from './../../../util/dateHelper';
+import { whatMonth, helper } from './../../../util/dateHelper';
 
 
 function MonthlyCalendar({
@@ -39,16 +21,22 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  
+
 
   ////////////////////////////////////////////////////////////////////////
-  const actualDate = new Date();
-  const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))
-  const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")))
-  const [firstOfM, setFirstOfM] = useState(firstOfMonth());
-  const [firstDayInNextM, setFirstDayInNextM] = useState(firstDayInNextMonth(month, year, firstOfM));
-  const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month, year, firstOfM));
-  const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
+  const actualDate = moment(new Date()).format("YYYY-MM-DD d");
+  let tmpDay = parseInt(moment(actualDate, "YYYY-MM-DD d").format("DD")) * (-1) + 1;
+  let firstOfM = moment(actualDate, "YYYY-MM-DD d").add(tmpDay, 'days').format("YYYY-MM-DD d")
+  let tmpDay2 = helper(parseInt(moment(firstOfM, "YYYY-MM-DD d").format("d"))) * (-1);
+  let dayInFirstS = moment(firstOfM, "YYYY-MM-DD d").add(tmpDay2, 'days').format("YYYY-MM-DD d");
+  let dayInLastS = moment(dayInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
+
+  const [month, setMonth] = useState(parseInt(moment(actualDate, "YYYY-MM-DD d").format("MM")));
+  const [year, setYear] = useState(parseInt(moment(actualDate, "YYYY-MM-DD d").format("YYYY")));
+  const [firstOfMonth, setFirstOfMonth] = useState(firstOfM);
+  const [dateInFirstSquare, setDateInFirstSquare] = useState(dayInFirstS);
+  const [dateInLastSquare, setDateInLastSquare] = useState(dayInLastS);
+
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
@@ -71,14 +59,8 @@ function MonthlyCalendar({
   useEffect(() => {
     if (isDoctor === true) {
       getVisitByDoctorIdAndVisitDateBetween(userId,
-        parseToApiDate(
-          dateInFirstSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))),
-        parseToApiDate(
-          dateInLastSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))))
+        moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"))
         .then(data =>
           setVisitArray(data)
         );
@@ -86,20 +68,17 @@ function MonthlyCalendar({
   }, [])
 
   async function renderSquare(i) {
+    let thisMonth = true, tmpVisit = [];
+    let tmpDate = moment(dateInFirstSquare, "YYYY-MM-DD d").add((i - 1), 'days').format("YYYY-MM-DD d");
+    let tmpMonth = parseInt(moment(tmpDate, "YYYY-MM-DD d").format("MM"));
 
-    let thisMonth, tmpDate = "", tmpVisit = [];
-    if (i > howLongM + firstOfM - 1) thisMonth = false;
-    else if (i < firstOfM) thisMonth = false;
-    else thisMonth = true;
-
-    if (!thisMonth && i < 7) tmpDate = lastYear(month, year) + "-" + viewMonth(lastMonth(month)) + "-" + lastDays(month, year, firstOfM, i)
-    if (thisMonth) tmpDate = year + "-" + viewMonth(month) + "-" + addZero(i - firstOfM + 1)
-    if (!thisMonth && i > 20) tmpDate = nextYear(month, year) + "-" + viewMonth(nextMonth(month)) + "-" + addZero(nextDays(month, year, firstOfM, i))
+    if (tmpMonth !== month) thisMonth = false;
 
     visitArray.map((visit) => {
-      if (visit.visitDate == tmpDate)
+      if (moment(visit.visitDate, "YYYY-MM-DD d").format("YYYY-MM-DD") == moment(tmpDate, "YYYY-MM-DD d").format("YYYY-MM-DD"))
         tmpVisit.push(visit)
     })
+
     let tmpObj = { key: i, date: tmpDate, thisMonth: thisMonth, visitList: tmpVisit }
     squares.push(tmpObj);
 
@@ -117,27 +96,29 @@ function MonthlyCalendar({
               type="button"
               className="button"
               onClick={async () => {
-                let tmpMonth = month;
-                let tmpYear = year;
+                let tmpDateInLastMonth = moment(firstOfMonth, "YYYY-MM-DD d").add(-1, 'month').format("YYYY-MM-DD d");
+                let tmpDay = parseInt(moment(tmpDateInLastMonth, "YYYY-MM-DD d").format("d")) - 1;
+                if (tmpDay < 0) tmpDay = 6
+                let tmpDateInFirstS = moment(tmpDateInLastMonth, "YYYY-MM-DD d").add(tmpDay * (-1), 'days').format("YYYY-MM-DD d");
+                let tmpDateInLastS = moment(tmpDateInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
 
-                if (tmpMonth === 1) {
-                  tmpMonth = 12;
-                  tmpYear = year - 1;
-                  setMonth(tmpMonth); setYear(tmpYear);
-                } else {
-                  tmpMonth = tmpMonth - 1
-                  setMonth(tmpMonth);
+                setFirstOfMonth(tmpDateInLastMonth)
+                setDateInFirstSquare(tmpDateInFirstS);
+                setDateInLastSquare(tmpDateInLastS);
+
+                if (month === 1) {
+                  setMonth(12);
+                  setYear(year - 1);
+                }
+                else {
+                  setMonth(month - 1);
                 }
 
-                sethowLongM(howLongMonth(tmpMonth, tmpYear));
-                setFirstDayInNextM(firstOfM);
-                setFirstOfM(firstDayInLastM);
-                setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
+                let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId,
+                  moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                  moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
+                setVisitArray(tmp)
 
-                if (isDoctor === true) {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
-                  setVisitArray(tmp)
-                }
               }}>
               <AiFillCaretLeft />
             </button>
@@ -150,25 +131,28 @@ function MonthlyCalendar({
               type="button"
               className="button"
               onClick={async () => {
-                let tmpMonth = month;
-                let tmpYear = year;
-                if (month === 12) {
-                  tmpMonth = 1;
-                  tmpYear += 1
-                  setMonth(tmpMonth); setYear(tmpYear);
-                } else {
-                  tmpMonth += 1
-                  setMonth(tmpMonth);
-                }
-                sethowLongM(howLongMonth(tmpMonth, tmpYear));
-                setFirstDayInLastM(firstOfM);
-                setFirstOfM(firstDayInNextM);
-                setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
+                let tmpDateInNextMonth = moment(firstOfMonth, "YYYY-MM-DD d").add(1, 'month').format("YYYY-MM-DD d");
+                let tmpDay = parseInt(moment(tmpDateInNextMonth, "YYYY-MM-DD d").format("d")) - 1;
+                if (tmpDay < 0) tmpDay = 6
 
-                if (isDoctor === true) {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)));
-                  setVisitArray(tmp)
+
+                setFirstOfMonth(tmpDateInNextMonth)
+                if (month === 12) {
+                  setMonth(1);
+                  setYear(year + 1);
                 }
+                else {
+                  setMonth(month + 1);
+                }
+                let tmpDateInFirstS = moment(tmpDateInNextMonth, "YYYY-MM-DD d").add(tmpDay * (-1), 'days').format("YYYY-MM-DD d");
+                let tmpDateInLastS = moment(tmpDateInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
+                setDateInFirstSquare(tmpDateInFirstS);
+                setDateInLastSquare(tmpDateInLastS);
+
+                let tmp = await getVisitByDoctorIdAndVisitDateBetween(userId,
+                  moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                  moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
+                setVisitArray(tmp)
               }}>
               <AiFillCaretRight />
             </button>
@@ -214,7 +198,7 @@ function MonthlyCalendar({
                 style={{
                   borderRight: square.key % 7 === 0 ? "none"
                     : "",
-                    
+
                 }}
               >
                 <Row
@@ -223,7 +207,7 @@ function MonthlyCalendar({
                       : "",
                   }}
                 >
-                  {dayFromString(square.date)}
+                  {moment(square.date, "YYYY-MM-DD d").format("DD.MM.YYYY")}
                 </Row>
                 <Row className="">
                   {square.visitList.map((visit) => {

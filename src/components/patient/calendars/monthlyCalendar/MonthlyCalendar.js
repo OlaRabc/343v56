@@ -1,6 +1,6 @@
+import "./MonthlyCalendar.css";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import "./MonthlyCalendar.css";
 import moment from "moment";
 import { visitObjectPrototype } from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
@@ -11,25 +11,7 @@ import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInfor
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  firstOfMonth,
-  whatMonth,
-  howLongMonth,
-  lastDays,
-  nextDays,
-  lastMonth,
-  nextMonth,
-  lastYear,
-  nextYear,
-  viewMonth,
-  addZero,
-  firstDayInLastMonth,
-  firstDayInNextMonth,
-  dayFromString,
-  dateInFirstSquare,
-  dateInLastSquare,
-  parseToApiDate
-} from './../../../util/dateHelper';
+import {  whatMonth,helper } from './../../../util/dateHelper';
 
 
 function MonthlyCalendar({
@@ -39,16 +21,22 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  const doctorId = useSelector((state) => state.doctorId.value)
-  const dispatch = useDispatch()
-  ////////////////////////////////////////////////////////////////////////
-  const actualDate = new Date();
-  const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")))
-  const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")))
-  const [firstOfM, setFirstOfM] = useState(firstOfMonth());
-  const [firstDayInNextM, setFirstDayInNextM] = useState(firstDayInNextMonth(month, year, firstOfM));
-  const [firstDayInLastM, setFirstDayInLastM] = useState(firstDayInLastMonth(month, year, firstOfM));
-  const [howLongM, sethowLongM] = useState(howLongMonth(month, year));
+  const doctorId = useSelector((state) => state.doctorId.value);
+  const dispatch = useDispatch();
+
+  const actualDate = moment(new Date()).format("YYYY-MM-DD d");
+  let tmpDay = parseInt(moment(actualDate, "YYYY-MM-DD d").format("DD")) * (-1) + 1;
+  let firstOfM = moment(actualDate, "YYYY-MM-DD d").add(tmpDay, 'days').format("YYYY-MM-DD d")
+  let tmpDay2 = helper(parseInt(moment(firstOfM, "YYYY-MM-DD d").format("d"))) * (-1);
+  let dayInFirstS = moment(firstOfM, "YYYY-MM-DD d").add(tmpDay2, 'days').format("YYYY-MM-DD d");
+  let dayInLastS = moment(dayInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
+
+
+  const [month, setMonth] = useState(parseInt(moment(actualDate, "YYYY-MM-DD d").format("MM")));
+  const [year, setYear] = useState(parseInt(moment(actualDate, "YYYY-MM-DD d").format("YYYY")));
+  const [firstOfMonth, setFirstOfMonth] = useState(firstOfM);
+  const [dateInFirstSquare, setDateInFirstSquare] = useState(dayInFirstS);
+  const [dateInLastSquare, setDateInLastSquare] = useState(dayInLastS);
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
@@ -57,12 +45,10 @@ function MonthlyCalendar({
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
   const [doctor, setDoctor] = useState({});
 
-
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
   const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
-
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
   let squares = [];
@@ -77,50 +63,31 @@ function MonthlyCalendar({
   useEffect(() => {
     if (isDoctor === false && isPatientVew === true && doctorId === 0) {
       getVisitByPatientIdAndVisitDateBetween(userId,
-        parseToApiDate(
-          dateInFirstSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))),
-        parseToApiDate(
-          dateInLastSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))))
-        .then(data =>
+        moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD")).then(data =>
           setVisitArray(data)
         );
     }
     else {
-      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
-        parseToApiDate(
-          dateInFirstSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))),
-        parseToApiDate(
-          dateInLastSquare(firstOfMonth(),
-            parseInt(moment(actualDate).format("MM")),
-            parseInt(moment(actualDate).format("YYYY")))),
-        1)
-        .then(data =>
+      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"), 1).then(data =>
           setVisitArray(data)
         );
     }
   }, [])
 
   async function renderSquare(i) {
+    let thisMonth = true, tmpVisit = [];
+    let tmpDate = moment(dateInFirstSquare, "YYYY-MM-DD d").add((i - 1), 'days').format("YYYY-MM-DD d");
+    let tmpMonth = parseInt(moment(tmpDate, "YYYY-MM-DD d").format("MM"));
 
-    let thisMonth, tmpDate = "", tmpVisit = [];
-    if (i > howLongM + firstOfM - 1) thisMonth = false;
-    else if (i < firstOfM) thisMonth = false;
-    else thisMonth = true;
-
-    if (!thisMonth && i < 7) tmpDate = lastYear(month, year) + "-" + viewMonth(lastMonth(month)) + "-" + lastDays(month, year, firstOfM, i)
-    if (thisMonth) tmpDate = year + "-" + viewMonth(month) + "-" + addZero(i - firstOfM + 1)
-    if (!thisMonth && i > 20) tmpDate = nextYear(month, year) + "-" + viewMonth(nextMonth(month)) + "-" + addZero(nextDays(month, year, firstOfM, i))
+    if (tmpMonth !== month) thisMonth = false;
 
     visitArray.map((visit) => {
-      if (visit.visitDate == tmpDate)
+      if (moment(visit.visitDate, "YYYY-MM-DD d").format("YYYY-MM-DD") == moment(tmpDate, "YYYY-MM-DD d").format("YYYY-MM-DD"))
         tmpVisit.push(visit)
     })
+
     let tmpObj = { key: i, date: tmpDate, thisMonth: thisMonth, visitList: tmpVisit }
     squares.push(tmpObj);
 
@@ -128,7 +95,6 @@ function MonthlyCalendar({
   for (let i = 1; i < 43; i++) {
     renderSquare(i);
   }
-
   return (
     <div>
       <Container className="p-4 my-3 calendar ">
@@ -138,31 +104,37 @@ function MonthlyCalendar({
               type="button"
               className="button"
               onClick={async () => {
-                let tmpMonth = month;
-                let tmpYear = year;
-
-                if (tmpMonth === 1) {
-                  tmpMonth = 12;
-                  tmpYear = year - 1;
-                  setMonth(tmpMonth); setYear(tmpYear);
-                } else {
-                  tmpMonth = tmpMonth - 1
-                  setMonth(tmpMonth);
+                let tmpDateInLastMonth = moment(firstOfMonth, "YYYY-MM-DD d").add(-1, 'month').format("YYYY-MM-DD d");
+                let tmpDay = parseInt(moment(tmpDateInLastMonth, "YYYY-MM-DD d").format("d")) - 1;
+                if (tmpDay < 0) tmpDay = 6
+                let tmpDateInFirstS = moment(tmpDateInLastMonth, "YYYY-MM-DD d").add(tmpDay * (-1), 'days').format("YYYY-MM-DD d");
+                let tmpDateInLastS = moment(tmpDateInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
+                
+                setFirstOfMonth(tmpDateInLastMonth)
+                setDateInFirstSquare(tmpDateInFirstS);
+                setDateInLastSquare(tmpDateInLastS);
+ 
+                if (month === 1) {
+                  setMonth(12);
+                  setYear(year - 1);
                 }
-
-                sethowLongM(howLongMonth(tmpMonth, tmpYear));
-                setFirstDayInNextM(firstOfM);
-                setFirstOfM(firstDayInLastM);
-                setFirstDayInLastM(firstDayInLastMonth(tmpMonth, tmpYear, firstDayInLastM));
+                else {
+                  setMonth(month - 1);
+                }
+                
                 if (doctorId === 0) {
-                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
+                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
+                    moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
                 }
                 else {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)), 1)
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+                    moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    1)
                   setVisitArray(tmp)
                 }
-
               }}>
               <AiFillCaretLeft />
             </button>
@@ -175,27 +147,35 @@ function MonthlyCalendar({
               type="button"
               className="button"
               onClick={async () => {
-                let tmpMonth = month;
-                let tmpYear = year;
+                let tmpDateInNextMonth = moment(firstOfMonth, "YYYY-MM-DD d").add(1, 'month').format("YYYY-MM-DD d");
+                let tmpDay = parseInt(moment(tmpDateInNextMonth, "YYYY-MM-DD d").format("d")) - 1;
+                if (tmpDay < 0) tmpDay = 6
+
+
+                setFirstOfMonth(tmpDateInNextMonth)
                 if (month === 12) {
-                  tmpMonth = 1;
-                  tmpYear += 1
-                  setMonth(tmpMonth); setYear(tmpYear);
-                } else {
-                  tmpMonth += 1
-                  setMonth(tmpMonth);
+                  setMonth(1);
+                  setYear(year + 1);
                 }
-                sethowLongM(howLongMonth(tmpMonth, tmpYear));
-                setFirstDayInLastM(firstOfM);
-                setFirstOfM(firstDayInNextM);
-                setFirstDayInNextM(firstDayInNextMonth(tmpMonth, tmpYear, firstDayInNextM));
+                else {
+                  setMonth(month + 1);
+                }
+                let tmpDateInFirstS = moment(tmpDateInNextMonth, "YYYY-MM-DD d").add(tmpDay * (-1), 'days').format("YYYY-MM-DD d");
+                let tmpDateInLastS = moment(tmpDateInFirstS, "YYYY-MM-DD d").add(41, 'days').format("YYYY-MM-DD d");
+                setDateInFirstSquare(tmpDateInFirstS);
+                setDateInLastSquare(tmpDateInLastS);
 
                 if (doctorId === 0) {
-                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)))
+                  let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
+                    moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
                 }
                 else {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, parseToApiDate(dateInFirstSquare(firstDayInLastM, tmpMonth, tmpYear)), parseToApiDate(dateInLastSquare(firstDayInLastM, tmpMonth, tmpYear)), 1)
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+                    moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+                    1)
                   setVisitArray(tmp)
                 }
               }}>
@@ -214,7 +194,6 @@ function MonthlyCalendar({
                 Miesiąc
               </Col>
             </>}
-
 
         </Row>
         <Row>
@@ -262,7 +241,7 @@ function MonthlyCalendar({
                       : "",
                   }}
                 >
-                  {dayFromString(square.date)}
+                  {moment(square.date, "YYYY-MM-DD d").format("DD")}
                 </Row>
                 <Row className="">
                   {square.visitList.map((visit) => {
@@ -290,13 +269,13 @@ function MonthlyCalendar({
       </Container>
 
 
-
+      
       <PopupInformationAboutVisit
         open={isPopupInformationAboutVisit}
         onClose={() => { setIsPopupInformationAboutVisit(false) }}
         visit={visitToShow}
         isDoctor={isDoctor}
-        onCancelVisit={async () => {/*odwolac*/
+        onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
@@ -346,7 +325,7 @@ function MonthlyCalendar({
         open={isPopupDayVew}
         onClose={() => { setIsPopupDayVew(false); }}
 
-        onCancelVisit={async () => {/*odwolac*/
+        onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupCancelVisitInformation(true);
 
