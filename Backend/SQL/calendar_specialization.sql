@@ -24,9 +24,11 @@ DROP TABLE IF EXISTS `specialization`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `specialization` (
   `specialization_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
   `short_name` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`specialization_id`)
+  PRIMARY KEY (`specialization_id`),
+  UNIQUE KEY `name_UNIQUE` (`name`),
+  UNIQUE KEY `short_name_UNIQUE` (`short_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-07 15:48:56
+-- Dump completed on 2022-07-08 14:37:44

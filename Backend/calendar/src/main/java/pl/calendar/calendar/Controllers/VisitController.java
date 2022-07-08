@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.calendar.calendar.Classes.Doctor;
+import pl.calendar.calendar.Classes.Message;
+import pl.calendar.calendar.Classes.Patient;
 import pl.calendar.calendar.Classes.Visit;
 import pl.calendar.calendar.Repository.DoctorRepository;
+import pl.calendar.calendar.Repository.MessageRepository;
 import pl.calendar.calendar.Repository.PatientRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
 
@@ -25,6 +28,8 @@ public class VisitController {
     public PatientRepository patientRepository;
     @Autowired
     public DoctorRepository doctorRepository;
+    @Autowired
+    public MessageRepository messageRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -169,24 +174,31 @@ public class VisitController {
         Visit v = visitRepository.getById(id);
         Date currentDate = new Date(System.currentTimeMillis());
         Date date2 = v.getVisitDate();
-
+        Patient p=v.getPatient();
+        Doctor d=v.getDoctor();
         if (date2.after(currentDate)) {
             if (status == 1L) {//free
                 v.setVisitStatusId(1L);
                 v.setPatient(null);
+                return ResponseEntity.ok("");
             }
             if (status == 2L) { //toAccept
                 v.setVisitStatusId(2L);
                 v.setPatient(patientRepository.findById(patient).get());
+                return ResponseEntity.ok("");
             }
             if (status == 3L) { //acepted
                 v.setVisitStatusId(3L);
+                return ResponseEntity.ok("");
             }
             if (status == 4L) { //removed
                 v.setVisitStatusId(4L);
+                v.setPatient(null);
+                return ResponseEntity.ok("");
             }
             if (status == 5L) { //del
                 v.setVisitStatusId(5L);
+                return ResponseEntity.ok("");
             }
             visitRepository.saveAndFlush(v);
             return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visit status error");

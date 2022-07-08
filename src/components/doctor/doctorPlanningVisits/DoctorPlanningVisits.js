@@ -25,7 +25,7 @@ function DoctorPlanningVisits({
                <button
                   type="button"
                   className="btn btn-primary col-12 p-2"
-                  nClick={() => {
+                  onClick={() => {
                      setOneVisitPlanning(true);
                      setScheduleVisitPlanning(false);
                   }}>

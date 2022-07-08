@@ -2,15 +2,12 @@ package pl.calendar.calendar.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.calendar.calendar.Classes.City;
-import pl.calendar.calendar.Classes.Message;
-import pl.calendar.calendar.Classes.Patient;
+import org.springframework.web.bind.annotation.*;
+import pl.calendar.calendar.Classes.*;
 import pl.calendar.calendar.Repository.MessageRepository;
 
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +28,7 @@ public class MessageController {
     }
     @GetMapping("/patient/{id}")
     public ResponseEntity<?> getByPatientId(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(messageRepository.findByPatientId(id));
+        return ResponseEntity.ok(messageRepository.findByPatientIdAndIsRead(id, "false"));
     }
+
 }
