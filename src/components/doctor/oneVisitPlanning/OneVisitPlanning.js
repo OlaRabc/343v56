@@ -12,6 +12,7 @@ function OneVisitPlanning({
 }) {
   let date = new Date();
   date.setDate(date.getDate() + 1);
+
   const [doctorSpecializations, setDoctorSpecializations] = useState([]);
   const [chosenSpecialization, setChosenSpecialization] = useState("null");
   const [visitDate, setVisitDate] = useState(date);
@@ -34,30 +35,41 @@ function OneVisitPlanning({
   return (
     <Container className="col-12" >
       <Row className="col-12 my-3 p-1 patent-operation-vew" >
-
         <Col className="col-12 col-md-4 my-3" >
           <label htmlFor="exampleInputCity" className="mx-2">
             Data wizyty:
           </label>
-          <input type="date" min={moment(date).format("YYYY-MM-DD")} className="cursor" required
+          <input
+            type="date"
+            min={moment(date).format("YYYY-MM-DD")}
+            className="cursor"
+            required
             onChange={e => {
               setVisitDate(e.target.value)
-            }}></input>
+            }}>
+          </input>
         </Col>
         <Col className="col-12 col-md-4 my-3" >
           <label htmlFor="exampleInputCity" className="mx-2">
             Początek wizyty:
           </label>
-          <input type="time" className="cursor" required
+          <input
+            type="time"
+            className="cursor"
+            required
             onChange={e => {
               setVisitStart(e.target.value)
-            }}></input>
+            }}>
+          </input>
         </Col>
         <Col className="col-12 col-md-4 my-3" >
-          <label htmlFor="exampleInputCity" className="mx-2"
+          <label
+            htmlFor="exampleInputCity"
+            className="mx-2"
             onChange={e => {
               setTime(e.target.value)
-            }}>
+            }}
+          >
             Czas Wizyty:
           </label>
           <input type="text" name="visitTime" size="1" value="30" className="cursor" disabled />
@@ -86,27 +98,31 @@ function OneVisitPlanning({
 
       <Row>
         <Col className="col-12 my-3 " >
-          <button type="button" className="btn btn-primary col-12 p-2" onClick={async () => {
-            let specializationId = 0;
-            doctorSpecializations.map((spec => {
-              if (spec.specialization.name === chosenSpecialization)
-                specializationId = spec.specialization.specializationId
-            }));
-            let visitToPost = {
-              doctorId: doctorId,
-              visitDate: visitDate,
-              visitStart: moment(visitStart, "HH:mm").format("HH:mm:00"),
-              visitEnd: moment(visitStart, "HH:mm").add(30, 'm').format("HH:mm:ss"),
-              specializationId: specializationId
-            }
-            if (chosenSpecialization !== "null") {
-              await patchVisits([visitToPost]);
-              setIsPopupCreatedVisitInformation(true);
-            }
-            else {
-              setIsPopupDoctorInvalidData(true);
-            }
-          }}>
+          <button
+            type="button"
+            className="btn btn-primary col-12 p-2"
+            onClick={async () => {
+              let specializationId = 0;
+              doctorSpecializations.map((spec => {
+                if (spec.specialization.name === chosenSpecialization)
+                  specializationId = spec.specialization.specializationId
+              }));
+              let visitToPost = {
+                doctorId: doctorId,
+                visitDate: visitDate,
+                visitStart: moment(visitStart, "HH:mm").format("HH:mm:00"),
+                visitEnd: moment(visitStart, "HH:mm").add(30, 'm').format("HH:mm:ss"),
+                specializationId: specializationId
+              }
+              if (chosenSpecialization !== "null") {
+                await patchVisits([visitToPost]);
+                setIsPopupCreatedVisitInformation(true);
+              }
+              else {
+                setIsPopupDoctorInvalidData(true);
+              }
+            }}
+          >
             Planuj
           </button>
         </Col>

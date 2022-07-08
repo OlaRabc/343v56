@@ -1,6 +1,6 @@
+import "./DoctorPlanningVisits.css";
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import "./DoctorPlanningVisits.css";
 import { AiFillCaretLeft } from "react-icons/ai";
 import ScheduleVisitPlanning from "./../scheduleVisitPlanning/ScheduleVisitPlanning";
 import OneVisitPlanning from "./../oneVisitPlanning/OneVisitPlanning";
@@ -22,26 +22,34 @@ function DoctorPlanningVisits({
          </Row>
          <Row>
             <Col className="col-12 col-md-5 my-3 " >
-               <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
-                  setOneVisitPlanning(true);
-                  setScheduleVisitPlanning(false);
-               }}>
+               <button
+                  type="button"
+                  className="btn btn-primary col-12 p-2"
+                  nClick={() => {
+                     setOneVisitPlanning(true);
+                     setScheduleVisitPlanning(false);
+                  }}>
                   Zaplanuj wizytę
                </button>
             </Col>
             <Col className="col-12  col-md-5 my-3 offset-md-2" >
-               <button type="button" className="btn btn-primary col-12 p-2" onClick={() => {
-                  setOneVisitPlanning(false);
-                  setScheduleVisitPlanning(true);
-               }}>
+               <button
+                  type="button"
+                  className="btn btn-primary col-12 p-2"
+                  onClick={() => {
+                     setOneVisitPlanning(false);
+                     setScheduleVisitPlanning(true);
+                  }}>
                   Zaplanuj Harmonogram
                </button>
             </Col>
          </Row>
+         
          {scheduleVisitPlanning ?
             <ScheduleVisitPlanning
                isDoctor={isDoctor}
-               doctorId={doctorId} />
+               doctorId={doctorId}
+            />
             : ""}
          {oneVisitPlanning ?
             <OneVisitPlanning
@@ -49,8 +57,6 @@ function DoctorPlanningVisits({
                doctorId={doctorId}
             />
             : ""}
-
-
       </Container>
    )
 }

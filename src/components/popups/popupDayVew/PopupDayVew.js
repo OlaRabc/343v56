@@ -1,7 +1,7 @@
-import Modal from '../popupBasic/Modal';
 import './PopupDayVew.css';
+import Modal from '../popupBasic/Modal';
 import moment from "moment";
-import {visitObjectPrototype} from "./../../util/constantObject";
+import { visitObjectPrototype } from "./../../util/constantObject";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import PopupInformationAboutVisit from "../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
@@ -13,17 +13,16 @@ const PopupDayVew = ({
     open,
     onClose,
     onCancelVisit,
-    onConfirmButtonClick,
-    onCancelButtonClick
 }) => {
-    const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-
     const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+
+    const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
 
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             <Container className='col-12 text-center'>
                 <Row>
                     <Col className=' col-12 p-2 mb-3 text-center bg-primary text-light '>

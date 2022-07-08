@@ -1,19 +1,17 @@
-import Modal from '../popupBasic/Modal';
 import './PopupPatientData.css';
+import Modal from '../popupBasic/Modal';
 import { AiOutlineClose } from "react-icons/ai";
 import { Container, Row, Col } from 'react-bootstrap';
 const PopupPatientData = ({
     patient,
     open,
-    onClose,
-    onCancelButtonClick
+    onClose
 }) => {
-
-
     return (
         <Modal
             open={open}
-            onClose={onClose}>
+            onClose={onClose}
+        >
             <Container className="col-12 patient-popup">
                 <Row className="col-12">
                     <Col className="col-12 m-2" >
@@ -28,14 +26,16 @@ const PopupPatientData = ({
                 </Row>
                 <Row>
                     <Col>
-                        <button type="button" className="btn btn-primary col-12   mt-3" onClick={onClose}>
+                        <button
+                            type="button"
+                            className="btn btn-primary col-12   mt-3"
+                            onClick={onClose}
+                        >
                             Anuluj
                         </button>
                     </Col>
                 </Row>
-
             </Container>
-
         </Modal>
     )
 }

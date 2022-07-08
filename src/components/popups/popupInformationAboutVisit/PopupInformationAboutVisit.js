@@ -1,10 +1,11 @@
+import './PopupInformationAboutVisit.css';
 import Modal from '../popupBasic/Modal';
 import moment from "moment";
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import PopupDoctorData from "./../popupDoctorData/PopupDoctorData";
 import PopupPatientData from "./../popupPatientData/PopupPatientData";
-import './PopupInformationAboutVisit.css';
-import { Container, Row, Col } from 'react-bootstrap';
+
 const PopupInformationAboutVisit = ({
     isDoctor,
     open,
@@ -52,8 +53,6 @@ const PopupInformationAboutVisit = ({
                                 "Wolna Wizyta" :
                                 visit.patient.firstName + " " + visit
                                     .patient.lastName
-
-
                             )}
                     </Col>
                 </Row>
@@ -86,7 +85,6 @@ const PopupInformationAboutVisit = ({
                         {visit
                             .specialization.name}
                     </Col>
-
                     {visit.patient === null ?
                         "" :
                         <>
@@ -99,8 +97,6 @@ const PopupInformationAboutVisit = ({
                             </Col>
                         </>
                     }
-
-
                 </Row>
                 <button type="button" className="btn btn-primary col-12   mt-3" onClick={onClose}>
                     Anuluj
@@ -109,7 +105,6 @@ const PopupInformationAboutVisit = ({
                 {visit
                     .visitStatusId === 2 && isDoctor && visit.visitDate > actualDate ? ( /*doctor? */
                     <>
-
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
                             {/*change visitSttus=green*/}
                             Zaakceptuj Wizytę
@@ -139,15 +134,13 @@ const PopupInformationAboutVisit = ({
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}>
                         {/*patient removed visit*/}
                         Odwołaj wizytę
-                    </button> :
-                    ""}
+                    </button>
+                    : ""}
                 {!isDoctor && visit.visitStatusId === 1 && visit.visitDate > actualDate ?
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onBookVisit}>
                         Zarezerwuj
                     </button>
-
                     : ""
-
                 }
             </Container>
             <PopupDoctorData
