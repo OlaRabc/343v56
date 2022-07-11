@@ -1,5 +1,12 @@
-.cos{
+.msg-count{
     position: relative; 
     left: 10px; 
     bottom: 13px
+}
+.float-right
+{
+    float: right;
+    position: relative; 
+    bottom: -9px;
+    cursor: pointer;
 }

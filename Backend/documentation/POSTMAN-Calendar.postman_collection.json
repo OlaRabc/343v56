@@ -1,0 +1,679 @@
+{
+	"info": {
+		"_postman_id": "6936dec9-6ba4-4915-8490-7359d0d5ae33",
+		"name": "POSTMAN-Calendar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "getCities",
+					"protocolProfileBehavior": {
+						"strictSSL": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postCities - workn't",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "8",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "\"gf\"",
+									"type": "default",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/cities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delCities - workn't",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/cities/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cities",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "getPatient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPatients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doctors",
+			"item": [
+				{
+					"name": "getDoctors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDoctor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctors/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctors",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visits",
+			"item": [
+				{
+					"name": "getVisits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitByDoctorIdAndVisitDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/doctor/{id}/{visitDate}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"doctor",
+								"{id}",
+								"{visitDate}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitByDoctorIdAndVisitBetween",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/doctor/{id}/{dateStart}/{dateEnd}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"doctor",
+								"{id}",
+								"{dateStart}",
+								"{dateEnd}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitByDoctorIdAndVisitBetweenAndStatusId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/doctor/{id}/{dateStart}/{dateEnd}/{visitStatus}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"doctor",
+								"{id}",
+								"{dateStart}",
+								"{dateEnd}",
+								"{visitStatus}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitByPatientIdAndVisitDate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/patient/{id}/{visitDate}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"patient",
+								"{id}",
+								"{visitDate}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitByPatientIdAndVisitBetween",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/patient/{id}/{dateStart}/{dateEnd}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"patient",
+								"{id}",
+								"{dateStart}",
+								"{dateEnd}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delVisitByVisitId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8080/visits/patient/1/2022-07-01/2022-07-30",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visits/{visitId}/status/{statusId/patient/{patientId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits",
+								"{visitId}",
+								"status",
+								"{statusId",
+								"patient",
+								"{patientId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8080/visits",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"visitDate\":\"2022-08-07\",\r\n    \"visitStart\":\"10:00:00\",\r\n    \"visitEnd\":\"10:30:00\",\r\n    \"doctor\":{\r\n        \"doctorId\":1\r\n    },\r\n    \"specialization\":{\r\n        \"specializationId\":1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/visits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visits"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Specializations",
+			"item": [
+				{
+					"name": "getSpecializations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/specializations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"specializations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VisitStatus",
+			"item": [
+				{
+					"name": "getVisitStatuses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visitstatuses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visitstatuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getVisitStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/visitstatuses/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"visitstatuses",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "getMessages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMessage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/messages/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"messages",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMessageByPatientId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/messages/patient/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"messages",
+								"patient",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DoctorSpecializations",
+			"item": [
+				{
+					"name": "getDoctorSpecializations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctorspecializations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctorspecializations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDoctorSpecializationByDoctorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctorspecializations/doctor/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctorspecializations",
+								"doctor",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDoctorSpecializationBySpecializationId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctorspecializations/specialization/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctorspecializations",
+								"specialization",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDoctorSpecializationByDoctorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctorspecializations/city/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctorspecializations",
+								"city",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDoctorSpecializationBySpecializationIdAndCityId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/doctorspecializations/specialization/{specialization}/city/{city}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"doctorspecializations",
+								"specialization",
+								"{specialization}",
+								"city",
+								"{city}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

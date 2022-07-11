@@ -10,18 +10,21 @@ function PatientNavigation({
 
   return (
     <nav className='navbar navbar-dark bg-primary text-light px-3'>
-      <div className='navbar-brand '>
+      <div className='navbar-brand col-10'>
         {firstName + " " + lastName}
       </div>
-      <div onClick={onMessageClick}>
+      <div 
+      className='float-right'
+      onClick={onMessageClick}
+      >
         <AiOutlineMessage/>
         <div
-          className='cos'
+          className='msg-count'
         >
           {messages.length}
         </div>
       </div>
-      <div className='navbar-toggler mr-2'><AiOutlineMenu />
+      <div className='float-end mr-2'><AiOutlineMenu />
       </div>
     </nav>
   );
