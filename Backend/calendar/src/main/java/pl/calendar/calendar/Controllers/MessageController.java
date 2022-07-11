@@ -28,7 +28,7 @@ public class MessageController {
     }
     @GetMapping("/patient/{id}")
     public ResponseEntity<?> getByPatientId(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(messageRepository.findByPatientIdAndIsRead(id, "false"));
+        return ResponseEntity.ok(messageRepository.findFirst5ByPatientIdAndIsReadOrderByMessageIdDesc(id, "false"));
     }
 
 }
