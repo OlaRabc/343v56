@@ -7,7 +7,6 @@ function PatientNavigation({
   messages,
   onMessageClick
 }) {
-  const [isPopupMessage, setIsPopupMessage] = useState(false);
 
   return (
     <nav className='navbar navbar-dark bg-primary text-light px-3'>
@@ -15,10 +14,15 @@ function PatientNavigation({
         {firstName + " " + lastName}
       </div>
       <div onClick={onMessageClick}>
-        <AiOutlineMessage />
-        {messages.length}
+        <AiOutlineMessage/>
+        <div
+          className='cos'
+        >
+          {messages.length}
+        </div>
       </div>
-      <div className='navbar-toggler mr-2'><AiOutlineMenu /></div>
+      <div className='navbar-toggler mr-2'><AiOutlineMenu />
+      </div>
     </nav>
   );
 }

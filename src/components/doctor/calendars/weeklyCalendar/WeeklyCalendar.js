@@ -28,8 +28,6 @@ function WeeklyCalendar({
   dateInL.setDate(tmp.getDate() + 7);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
-  const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")));
-  const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")));
   const [dateInFirstSquare, setDateInFirstSquare] = useState(tmp);
   const [dateInLastSquare, setDateInLastSquare] = useState(dateInL);
 

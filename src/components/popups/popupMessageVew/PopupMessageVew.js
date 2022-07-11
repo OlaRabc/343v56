@@ -16,7 +16,21 @@ const PopupMessageVew = ({
             <Container className='col-12 text-center'>
                 <Row>
                     <Col>
-                        messages
+                        {messages.map((msg) => {
+                            return (
+                                <Col
+                                    className="msg"
+                                    key={msg.messageId}
+                                >
+                                    {"Status wizyty z dnia " + msg.visitDate + " został zmieniony na: "}
+                                    {msg.newStatusId === 2 ? "do zaakceptowania" :
+                                        msg.newStatusId === 3 ? "zaakceptowana" :
+                                            "odwołana"}
+
+                                    <hr />
+                                </Col>
+                            )
+                        })}
                     </Col>
                 </Row>
             </Container>
