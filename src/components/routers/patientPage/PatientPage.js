@@ -35,6 +35,7 @@ function PatientPage() {
   const [isMainCalendarComponent, setIsMainCalendarComponent] = useState(false);
   const [isPatientVisitRejestrationForm, setIsPatientVisitRejestrationForm] = useState(false);
   const [isPopupMessageVew, setIsPopupMessageVew] = useState(false);
+  const [isPopupMessage, setIsPopupMessage] = useState(false);
 
   function setAllVewsFale() {
     setIsPatentOperationVew(false);
@@ -98,6 +99,11 @@ function PatientPage() {
        onClose={() => { setIsPopupMessageVew(false); }}
        messages={messages}
        />
+       <PopupMessageVew
+        open={isPopupMessage}
+        onClose={() => { setIsPopupMessage(false); }}
+        messages={messages}
+      />
     </div>
   );
 }

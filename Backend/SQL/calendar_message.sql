@@ -31,7 +31,7 @@ CREATE TABLE `message` (
   `visit_date` date DEFAULT NULL,
   PRIMARY KEY (`message_id`),
   KEY `visitId` (`doctor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,1,'false',1,3,'2022-07-22'),(2,28,'false',NULL,1,NULL),(3,79,'false',1,1,NULL);
+INSERT INTO `message` VALUES (7,7,'false',2,1,'2022-09-10'),(8,7,'false',3,1,'2022-09-10'),(9,7,'false',4,1,'2022-09-10'),(10,7,'false',2,1,'2022-09-13'),(20,7,'false',4,NULL,'2022-07-29'),(21,4,'false',4,NULL,'2022-07-14'),(22,1,'false',4,NULL,'2022-08-05'),(23,1,'false',2,1,'2022-07-30');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-08 14:37:44
+-- Dump completed on 2022-07-11 13:02:24

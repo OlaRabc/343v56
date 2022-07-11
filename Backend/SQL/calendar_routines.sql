@@ -16,31 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `specialization`
+-- Dumping events for database 'calendar'
 --
 
-DROP TABLE IF EXISTS `specialization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `specialization` (
-  `specialization_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `short_name` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`specialization_id`),
-  UNIQUE KEY `name_UNIQUE` (`name`),
-  UNIQUE KEY `short_name_UNIQUE` (`short_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
--- Dumping data for table `specialization`
+-- Dumping routines for database 'calendar'
 --
-
-LOCK TABLES `specialization` WRITE;
-/*!40000 ALTER TABLE `specialization` DISABLE KEYS */;
-INSERT INTO `specialization` VALUES (1,'Alergologia','Alg'),(2,'Chirurgia dziecięca','Chi.D'),(3,'Anestezjologia i intensywna terapia','AnIIT');
-/*!40000 ALTER TABLE `specialization` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -51,4 +32,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-11 13:02:24
+-- Dump completed on 2022-07-11 13:02:25

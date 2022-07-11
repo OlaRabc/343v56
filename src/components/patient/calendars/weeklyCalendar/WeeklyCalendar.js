@@ -9,6 +9,7 @@ import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInfor
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
+import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInformation/PopupBookedVisitInformation";
 
 function WeeklyCalendar({
   onCalendarVewChange,
@@ -27,14 +28,14 @@ function WeeklyCalendar({
   dateInL.setDate(tmp.getDate() + 7);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
-  const [month, setMonth] = useState(parseInt(moment(actualDate).format("MM")));
-  const [year, setYear] = useState(parseInt(moment(actualDate).format("YYYY")));
   const [dateInFirstSquare, setDateInFirstSquare] = useState(tmp);
   const [dateInLastSquare, setDateInLastSquare] = useState(dateInL);
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
+  const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
+  
 
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
@@ -231,10 +232,30 @@ function WeeklyCalendar({
           setVisitArray(tmp)
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
+        onBookVisit={async()=>{
+          setIsPopupInformationAboutVisit(false);
+          setIsPopupBookedVisitInformation(true)
+
+          let tmp = visitArray.map((visit) => {
+            if (visit.visitId !== visitToShow.visitId) return visit
+            else {
+              let tmpVisit = visit;
+              tmpVisit.visitStatusId = 2;
+              return tmpVisit;
+            }
+          })
+
+          setVisitArray(tmp)
+          await patchVisit(visitToShow.visitId, 2, userId)
+        }}
       />
       <PopupCancelVisitInformation
         open={isPopupCancelVisitInformation}
         onClose={() => { setIsPopupCancelVisitInformation(false); }}
+      />
+      <PopupBookedVisitInformation
+        open={isPopupBookedVisitInformation}
+        onClose={() => { setIsPopupBookedVisitInformation(false); }}
       />
     </Container>
   )
