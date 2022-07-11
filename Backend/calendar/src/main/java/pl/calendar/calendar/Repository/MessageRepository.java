@@ -7,6 +7,6 @@ import pl.calendar.calendar.Classes.Visit;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-   List<Message> findByPatientIdAndIsRead(Long pacientId, String isRead);
+   List<Message> findFirst5ByPatientIdAndIsReadOrderByMessageIdDesc(Long pacientId, String isRead);
 
 }

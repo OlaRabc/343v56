@@ -8,7 +8,6 @@ import pl.calendar.calendar.Classes.Message;
 import pl.calendar.calendar.Classes.Patient;
 import pl.calendar.calendar.Classes.Visit;
 import pl.calendar.calendar.Repository.DoctorRepository;
-import pl.calendar.calendar.Repository.MessageRepository;
 import pl.calendar.calendar.Repository.PatientRepository;
 import pl.calendar.calendar.Repository.VisitRepository;
 
@@ -28,8 +27,6 @@ public class VisitController {
     public PatientRepository patientRepository;
     @Autowired
     public DoctorRepository doctorRepository;
-    @Autowired
-    public MessageRepository messageRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Visit>> getAllVisits() {
@@ -95,38 +92,6 @@ public class VisitController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping("/one")
-    @ResponseBody
-    public ResponseEntity<?> postOneVisit(@RequestBody Visit newVisit) throws ParseException {
-        Date currentDate = new Date(System.currentTimeMillis());
-        Date date2 = newVisit.getVisitDate();
-        if (!(date2.after(currentDate))) {
-            return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
-        }
-        Doctor d = newVisit.getDoctor();
-        List<Visit> visitList = visitRepository.findByDoctor_doctorIdAndVisitDate(d.getDoctorId(), newVisit.getVisitDate());
-
-        for (Visit oldVisit : visitList) {
-            if (!(oldVisit.getVisitStart().after(newVisit.getVisitStart()))
-                    && oldVisit.getVisitEnd().after(newVisit.getVisitStart())) {
-                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
-            }
-            if (newVisit.getVisitEnd().after(oldVisit.getVisitStart())
-                    && !(newVisit.getVisitEnd().after(oldVisit.getVisitEnd()))) {
-                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
-            }
-            if (!(newVisit.getVisitStart().after(oldVisit.getVisitStart()))
-                    && !(oldVisit.getVisitStart().after(newVisit.getVisitEnd()))
-                    && !(newVisit.getVisitStart().after(oldVisit.getVisitEnd()))
-                    && !(oldVisit.getVisitEnd().after(newVisit.getVisitEnd()))) {
-                return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visitat at this time already exist");
-            }
-        }
-        newVisit.setVisitStatusId(1L);
-        newVisit.setPatient(null);
-        visitRepository.saveAndFlush(newVisit);
-        return ResponseEntity.ok("");
-    }
 
     @PostMapping("")
     @ResponseBody
@@ -180,28 +145,33 @@ public class VisitController {
             if (status == 1L) {//free
                 v.setVisitStatusId(1L);
                 v.setPatient(null);
+                visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
             if (status == 2L) { //toAccept
                 v.setVisitStatusId(2L);
                 v.setPatient(patientRepository.findById(patient).get());
+                visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
             if (status == 3L) { //acepted
                 v.setVisitStatusId(3L);
+                visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
             if (status == 4L) { //removed
                 v.setVisitStatusId(4L);
                 v.setPatient(null);
+                visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
             if (status == 5L) { //del
                 v.setVisitStatusId(5L);
+                visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
-            visitRepository.saveAndFlush(v);
-            return (ResponseEntity<?>) ResponseEntity.badRequest().body("Visit status error");
+
+
         }
         return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
     }
