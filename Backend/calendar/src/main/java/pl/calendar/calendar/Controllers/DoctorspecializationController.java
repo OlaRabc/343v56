@@ -6,22 +6,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.calendar.calendar.Classes.Doctor;
 import pl.calendar.calendar.Classes.Doctorspecialization;
+import pl.calendar.calendar.Classes.Specialization;
+import pl.calendar.calendar.Classes.Visit;
 import pl.calendar.calendar.Repository.DoctorRepository;
 import pl.calendar.calendar.Repository.DoctorspecializationRepository;
 import pl.calendar.calendar.Repository.SpecializationRepository;
+import pl.calendar.calendar.Repository.VisitRepository;
 
+import java.sql.Date;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping("/doctorspecializations")
 public class DoctorspecializationController {
+    Date currentDate = new Date(System.currentTimeMillis());
     @Autowired
     public DoctorspecializationRepository doctorspecializationRepository;
     @Autowired
     public DoctorRepository doctorRepository;
     @Autowired
-    public SpecializationRepository specializationRepository;
+    public VisitRepository visitRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Doctorspecialization>> getAllDoctorSpecializations() {
@@ -31,14 +39,27 @@ public class DoctorspecializationController {
     @GetMapping("/doctor/{id}")
     public ResponseEntity<?> getAllDoctorSpecializations(@PathVariable("id") Long id) {
         if(!doctorRepository.existsById(id)) return (ResponseEntity<?>) ResponseEntity.badRequest().body("Doctor not found");
-
         return ResponseEntity.ok(doctorspecializationRepository.findByDoctor_doctorIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(id));
     }
 
-    @GetMapping("/specialization/{id}")
+    @GetMapping("/specialization/{id}") /*/*/
     public ResponseEntity<List<Doctorspecialization>> getDoctorBySpecializationId(@PathVariable("id") Long id) {
+       List <Doctorspecialization> dsList=doctorspecializationRepository.findBySpecialization_specializationIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(id);
+        for (Doctorspecialization ds : dsList) {
+            Doctor d=ds.getDoctor();
 
-        return ResponseEntity.ok(doctorspecializationRepository.findBySpecialization_specializationIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(id));
+            Visit v= visitRepository.findFirst1ByDoctor_doctorIdAndVisitStatusIdAndSpecialization_specializationIdAndVisitDateAfterOrderByVisitDateAsc(
+                    d.getDoctorId(),
+                    1L,
+                    id,
+                    currentDate);
+            if(!isNull(v)){
+                ds.setFirstFreeDate(v.getVisitDate());
+            }
+
+        }
+
+       return ResponseEntity.ok(dsList);
     }
 
     @GetMapping("/city/{id}")

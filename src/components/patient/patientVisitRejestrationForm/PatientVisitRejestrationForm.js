@@ -1,5 +1,6 @@
 import "./PatientVisitRejestrationForm.css";
 import React, { useEffect, useState } from 'react';
+import moment from "moment";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight, AiOutlineEnvironment } from "react-icons/ai";
 import { getCities, getSpecializations, getDoctrsBySpecialization, getDoctrsBySpecializationAndCity } from "./../../../apiOperation/getOperaton/GetOperaton";
@@ -131,7 +132,7 @@ function PatientVisitRejestrationForm({
                         {doctor.doctor.city.name + ", " + doctor.doctor.street + " " + doctor.doctor.localNumber}
                      </Col>
                      <Col className="col-12 col-lg-4">
-                        Najbliższy wolny termin:
+                        Najbliższy termin: {moment(doctor.firstFreeDate).format("DD.MM.YYYY")}
                      </Col>
                   </Row>
                )

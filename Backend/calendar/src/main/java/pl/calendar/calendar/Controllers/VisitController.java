@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.calendar.calendar.Classes.Doctor;
-import pl.calendar.calendar.Classes.Message;
 import pl.calendar.calendar.Classes.Patient;
 import pl.calendar.calendar.Classes.Visit;
 import pl.calendar.calendar.Repository.DoctorRepository;
@@ -68,7 +67,15 @@ public class VisitController {
             @PathVariable("visitStatus") Long visitStatus) {
         return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusId(id, dateStart, dateEnd, visitStatus));
     }
-
+    @GetMapping("/doctor/{id}/{dateStart}/{dateEnd}/{visitStatus}/{specializationId}")
+    public ResponseEntity<List<Visit>> getByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(
+            @PathVariable("id") Long id,
+            @PathVariable("dateStart") Date dateStart,
+            @PathVariable("dateEnd") Date dateEnd,
+            @PathVariable("visitStatus") Long visitStatus,
+            @PathVariable("specializationId") Long specializationId) {
+        return ResponseEntity.ok(visitRepository.findByDoctor_doctorIdAndVisitDateBetweenAndVisitStatusIdAndSpecialization_specializationId(id, dateStart, dateEnd, visitStatus, specializationId));
+    }
 
     @GetMapping("/patient/{id}/{visitDate}")
     public ResponseEntity<List<Visit>> getByPatientIdAndVisitDate(
@@ -85,7 +92,13 @@ public class VisitController {
             @PathVariable("dateEnd") Date dateEnd) {
         return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd, 1L, 5L));
     }
-
+    @GetMapping("/first/{id}/{specializationId}") /* ok*/
+    public ResponseEntity<?> getFirstFreeVisitByDoctorId(
+            @PathVariable("id") Long id,
+            @PathVariable("specializationId") Long specializationId) {
+        Date currentDate = new Date(System.currentTimeMillis());
+        return ResponseEntity.ok(visitRepository.findFirst1ByDoctor_doctorIdAndVisitStatusIdAndSpecialization_specializationIdAndVisitDateAfterOrderByVisitDateAsc(id, 1L, specializationId, currentDate));
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVisit(@PathVariable("id") Long id) {
         visitRepository.deleteById(id);
