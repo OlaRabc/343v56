@@ -21,17 +21,4 @@ public class CityController {
         return ResponseEntity.ok(cityRepository.findAllByOrderByName());
     }
 
-
-    //@DeleteMapping("/{id}")
-    //public ResponseEntity<?> deleteCity(@PathVariable("id") Long id) {
-    //    cityRepository.deleteById(id);
-    //    return ResponseEntity.ok("");
-    //}
-    //
-    //@PostMapping("")
-    //@ResponseBody
-    //public ResponseEntity<?> postCity(@RequestBody City city) {
-    //    cityRepository.saveAndFlush(city);
-    //    return ResponseEntity.ok("");
-    //}
 }

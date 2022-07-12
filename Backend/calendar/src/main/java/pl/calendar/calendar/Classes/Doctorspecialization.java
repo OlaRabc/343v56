@@ -3,6 +3,7 @@ package pl.calendar.calendar.Classes;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -22,4 +23,7 @@ public class Doctorspecialization {
     @ManyToOne
     @JoinColumn(name = "specializationId")
     private Specialization specialization;
+
+    @Transient
+    private Date firstFreeDate=null;
 }
