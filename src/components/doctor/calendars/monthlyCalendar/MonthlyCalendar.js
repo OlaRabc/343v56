@@ -9,7 +9,6 @@ import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitI
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInformation/PopupRejectVisitInformation";
 import PopupDeletedVisitInformation from "./../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
-import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { whatMonth, helper } from './../../../util/dateHelper';
@@ -42,7 +41,6 @@ function MonthlyCalendar({
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
   const [isPopupRejectVisitInformation, setIsPopupRejectVisitInformation] = useState(false);
@@ -187,11 +185,6 @@ function MonthlyCalendar({
           {squares.map((square) => {
             return (
               <div key={square.key}
-                onDoubleClick={() => {
-                  setIsPopupDayVew(true)
-                  setVisitList(square.visitList)
-                  setDateToVisitDayVew(square.date)
-                }}
                 className={
                   !square.thisMonth ?
                     "square not-this-month"
@@ -224,7 +217,7 @@ function MonthlyCalendar({
                               (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
                                 (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
                                   : "visit  btn-danger col-11  m-1 visit"))}
-                            onDoubleClick={(e) => {
+                            onClick={(e) => {
                               e.stopPropagation();
                               setIsPopupInformationAboutVisit(true)
                               setVisitToShow(visit)
@@ -245,7 +238,7 @@ function MonthlyCalendar({
                             (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
                               (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
                                 : "visit  btn-danger col-11  m-1 visit"))}
-                          onDoubleClick={(e) => {
+                          onClick={(e) => {
                             e.stopPropagation();
                             setIsPopupInformationAboutVisit(true)
                             setVisitToShow(visit)
@@ -343,32 +336,6 @@ function MonthlyCalendar({
       <PopupDeletedVisitInformation
         open={isPopupDeletedVisitInformation}
         onClose={() => { setIsPopupDeletedVisitInformation(false); }}
-      />
-      <PopupDayVew
-        isDoctor={isDoctor}
-        userId={userId}
-        visitList={visitList}
-        dateToVisitDayVew={dateToVisitDayVew}
-        open={isPopupDayVew}
-        onClose={() => { setIsPopupDayVew(false); }}
-
-        onCancelVisit={async () => {
-          setIsPopupInformationAboutVisit(false);
-          setIsPopupCancelVisitInformation(true);
-
-          let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
-            else {
-              let tmpVisit = visit;
-              tmpVisit.visitStatusId = 4;
-              return tmpVisit;
-            }
-          })
-
-          setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 4, userId)
-        }}
-
       />
     </div>
   )

@@ -8,11 +8,10 @@ import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutV
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
 import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
 import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInformation/PopupBookedVisitInformation";
-import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import { whatMonth, helper } from './../../../util/dateHelper';
-import { setVisitL } from "./../../../../features/counter/counterSlice";
 
 
 function MonthlyCalendar({
@@ -22,12 +21,9 @@ function MonthlyCalendar({
   onCalendarVewChange
 
 }) {
-  const doctorId = useSelector((state) => state.doctorId.value);
-  const visitL = useSelector((state) => state.doctorId.visitL);
+  const d = useSelector((state) => state.doctorId.value);
   const dispatch = useDispatch();
 
-  console.log(doctorId)
-  console.log(visitL)
   const actualDate = moment(new Date()).format("YYYY-MM-DD d");
   let tmpDay = parseInt(moment(actualDate, "YYYY-MM-DD d").format("DD")) * (-1) + 1;
   let firstOfM = moment(actualDate, "YYYY-MM-DD d").add(tmpDay, 'days').format("YYYY-MM-DD d")
@@ -58,27 +54,25 @@ function MonthlyCalendar({
   let squares = [];
 
   useEffect(() => {
-    if (doctorId !== 0)
-      getDoctorById(doctorId).then(data =>
+    if (d !== 0)
+      getDoctorById(d.doctor.doctorId).then(data =>
         setDoctor(data)
       );
   }, [])
 
   useEffect(() => {
-    if (isDoctor === false && isPatientVew === true && doctorId === 0) {
+    if (isDoctor === false && isPatientVew === true && d === 0) {
       getVisitByPatientIdAndVisitDateBetween(userId,
         moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
         moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD")).then(data => {
           setVisitArray(data)
-          //dispatch(setVisitL(data || 0))
         }
         );
     }
     else {
-      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"), 1).then(data => {
+      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId, moment(dateInFirstSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"),
+        moment(dateInLastSquare, "YYYY-MM-DD d").format("YYYY-MM-DD"), 1, d.specialization.specializationId).then(data => {
           setVisitArray(data)
-          //dispatch(setVisitL(data || 0))
         }
         );
     }
@@ -130,20 +124,18 @@ function MonthlyCalendar({
                   setMonth(month - 1);
                 }
 
-                if (doctorId === 0) {
+                if (d === 0) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
-                  //dispatch(setVisitL(tmp || 0))
                 }
                 else {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-                    1)
+                    1,d.specialization.specializationId)
                   setVisitArray(tmp)
-                  //dispatch(setVisitL(tmp || 0))
                 }
               }}>
               <AiFillCaretLeft />
@@ -175,26 +167,24 @@ function MonthlyCalendar({
                 setDateInFirstSquare(tmpDateInFirstS);
                 setDateInLastSquare(tmpDateInLastS);
 
-                if (doctorId === 0) {
+                if (d === 0) {
                   let tmp = await getVisitByPatientIdAndVisitDateBetween(userId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"))
                   setVisitArray(tmp)
-                  //dispatch(setVisitL(tmp || 0))
                 }
                 else {
-                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+                  let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-                    1)
+                    1,d.specialization.specializationId)
                   setVisitArray(tmp)
-                  //dispatch(setVisitL(tmp || 0))
                 }
               }}>
               <AiFillCaretRight />
             </button>
           </Col>
-          {doctorId === 0 ?
+          {d === 0 ?
             <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
               Miesiąc
             </Col>

@@ -12,7 +12,6 @@ function PatientVisitRejestrationForm({
    onDoctorClick
 }) {
    const [doctorList, setDoctorList] = useState([]);
-   const [firstFreeVisitList, setFirstFreeVisitList] = useState([]); //!!!!
 
    const [cities, setCities] = useState([]);
    const [chosenCity, setChosenCity] = useState("null");
@@ -38,6 +37,7 @@ function PatientVisitRejestrationForm({
 
    return (
       <Container className="col-12">
+         {console.log(doctorList)}
          <div className="col-1 offset-md-1 back" onClick={onBack}>
             <AiFillCaretLeft />
          </div>
@@ -121,7 +121,7 @@ function PatientVisitRejestrationForm({
                      className="col-12 bg-primary text-light m-2 p-3 rounded doctor-query"
                      key={doctor.id}
                      onClick={() => {
-                        dispatch(setDoctorId(doctor.doctor.doctorId || 0))
+                        dispatch(setDoctorId(doctor || null))
                         onDoctorClick()
                      }}>
                      <Col className="col-12 col-lg-4">

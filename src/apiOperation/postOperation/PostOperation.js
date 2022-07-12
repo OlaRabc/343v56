@@ -1,4 +1,5 @@
 import axios from "axios";
+const link="http://localhost:8080";
 
 export async function patchVisits(visits) {
     let tmp = []
@@ -15,7 +16,7 @@ export async function patchVisits(visits) {
             }
         })
     })
-    await axios.post(`http://localhost:8080/visits`, tmp).catch(function (error) {
+    await axios.post(`${link}/visits`, tmp).catch(function (error) {
         console.log(error.message);
       })
 }

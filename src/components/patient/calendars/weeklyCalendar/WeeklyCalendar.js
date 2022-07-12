@@ -6,7 +6,7 @@ import moment from "moment";
 import { visitObjectPrototype } from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
-import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
+import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInformation/PopupBookedVisitInformation";
@@ -17,8 +17,8 @@ function WeeklyCalendar({
   userId,
   isPatientVew
 }) {
-  const doctorId = useSelector((state) => state.doctorId.value)
-
+  const d = useSelector((state) => state.doctorId.value)
+  console.log(d)
   let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
 
   let day = actualDate.getDay();
@@ -35,7 +35,7 @@ function WeeklyCalendar({
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
   const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
-  
+
 
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
@@ -46,14 +46,14 @@ function WeeklyCalendar({
   let squares = [];
 
   useEffect(() => {
-    if (doctorId !== 0)
-      getDoctorById(doctorId).then(data =>
+    if (d !== 0)
+      getDoctorById(d.doctor.doctorId).then(data =>
         setDoctor(data)
       );
   }, [])
 
   useEffect(() => {
-    if (doctorId === 0) {
+    if (d === 0) {
       getVisitByPatientIdAndVisitDateBetween(userId,
         moment(dateInFirstSquare).format("YYYY-MM-DD"),
         moment(dateInLastSquare).format("YYYY-MM-DD")).then(data =>
@@ -61,9 +61,11 @@ function WeeklyCalendar({
         );
     }
     else {
-      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId,
+      getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId,
         moment(dateInFirstSquare).format("YYYY-MM-DD"),
-        moment(dateInLastSquare).format("YYYY-MM-DD"), 1).then(data =>
+        moment(dateInLastSquare).format("YYYY-MM-DD"),
+        1,
+        d.specialization.specializationId).then(data =>
           setVisitArray(data)
         );
     }
@@ -106,12 +108,17 @@ function WeeklyCalendar({
               setDateInLastSquare(dateInL)
 
               let tmpVisit
-              if (isDoctor === false && isPatientVew === true && doctorId === 0) {
+              if (isDoctor === false && isPatientVew === true && d === 0) {
                 tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
 
               }
               else {
-                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"), 1)
+                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(
+                  d.doctor.doctorId,
+                  moment(dateInF).format("YYYY-MM-DD"),
+                  moment(dateInL).format("YYYY-MM-DD"),
+                  1,
+                  d.specialization.specializationId)
               }
               setVisitArray(tmpVisit)
             }}>
@@ -134,19 +141,27 @@ function WeeklyCalendar({
               setDateInLastSquare(dateInL)
 
               let tmpVisit
-              if (isDoctor === false && isPatientVew === true && doctorId === 0) {
-                tmpVisit = await getVisitByPatientIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
+              if (isDoctor === false && isPatientVew === true && d === 0) {
+                tmpVisit = await getVisitByPatientIdAndVisitDateBetween(
+                  userId,
+                  moment(dateInF).format("YYYY-MM-DD"),
+                  moment(dateInL).format("YYYY-MM-DD"))
 
               }
               else {
-                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatus(doctorId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"), 1)
+                tmpVisit = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(
+                  d.doctor.doctorId,
+                  moment(dateInF).format("YYYY-MM-DD"),
+                  moment(dateInL).format("YYYY-MM-DD"),
+                  1,
+                  d.specialization.specializationId)
               }
               setVisitArray(tmpVisit)
             }}>
             <AiFillCaretRight />
           </button>
         </Col>
-        {doctorId === 0 ?
+        {d === 0 ?
           <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
             Tydzień
           </Col>
@@ -232,7 +247,7 @@ function WeeklyCalendar({
           setVisitArray(tmp)
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
-        onBookVisit={async()=>{
+        onBookVisit={async () => {
           setIsPopupInformationAboutVisit(false);
           setIsPopupBookedVisitInformation(true)
 
