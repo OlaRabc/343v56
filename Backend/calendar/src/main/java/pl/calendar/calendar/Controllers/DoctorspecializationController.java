@@ -62,13 +62,24 @@ public class DoctorspecializationController {
        return ResponseEntity.ok(dsList);
     }
 
-    @GetMapping("/city/{id}")
-    public ResponseEntity<List<Doctorspecialization>> findByDoctor_city_name(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(doctorspecializationRepository.findByDoctor_city_cityIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(id));
-    }
+
 
     @GetMapping("/specialization/{specialization}/city/{city}")
     public ResponseEntity<List<Doctorspecialization>> getDoctorBySpecializationId(@PathVariable("specialization") Long specialization, @PathVariable("city") Long city) {
-        return ResponseEntity.ok(doctorspecializationRepository.findBySpecialization_specializationIdAndDoctor_city_cityIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(specialization, city));
+        List <Doctorspecialization> dsList=doctorspecializationRepository.findBySpecialization_specializationIdAndDoctor_city_cityIdOrderByDoctor_lastNameAscDoctor_firstNameAsc(specialization, city);
+        for (Doctorspecialization ds : dsList) {
+            Doctor d=ds.getDoctor();
+
+            Visit v= visitRepository.findFirst1ByDoctor_doctorIdAndVisitStatusIdAndSpecialization_specializationIdAndVisitDateAfterOrderByVisitDateAsc(
+                    d.getDoctorId(),
+                    1L,
+                    specialization,
+                    currentDate);
+            if(!isNull(v)){
+                ds.setFirstFreeDate(v.getVisitDate());
+            }
+
+        }
+        return ResponseEntity.ok(dsList);
     }
 }

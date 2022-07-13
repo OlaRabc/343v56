@@ -21,4 +21,6 @@ public class CityController {
         return ResponseEntity.ok(cityRepository.findAllByOrderByName());
     }
 
+
+
 }

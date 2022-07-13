@@ -17,4 +17,5 @@ public interface VisitRepository extends JpaRepository<Visit,Long> {
     List<Visit> findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(Long id, Date startVisitDate, Date endVisitDate, Long visitStatus1, Long visitStatus2);
 
     Visit findFirst1ByDoctor_doctorIdAndVisitStatusIdAndSpecialization_specializationIdAndVisitDateAfterOrderByVisitDateAsc(Long doctorId, Long visitStatus, Long specializationId, Date date);
+    List<Visit> findByVisitDateAndVisitStatusId(Date visitDate, Long visitStatusId);
 }

@@ -13,13 +13,22 @@ import pl.calendar.calendar.Repository.VisitRepository;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/visits")
 public class VisitController {
+    public static Date addDays(Date date, int days) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, days);
+        return new Date(c.getTimeInMillis());
+    }
+
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Date currentDate = new java.sql.Date(new java.util.Date().getTime());
     @Autowired
     public VisitRepository visitRepository;
     @Autowired
@@ -92,13 +101,21 @@ public class VisitController {
             @PathVariable("dateEnd") Date dateEnd) {
         return ResponseEntity.ok(visitRepository.findByPatient_patientIdAndVisitDateBetweenAndVisitStatusIdBetween(id, dateStart, dateEnd, 1L, 5L));
     }
-    @GetMapping("/first/{id}/{specializationId}") /* ok*/
+    @GetMapping("/first/{id}/{specializationId}")
     public ResponseEntity<?> getFirstFreeVisitByDoctorId(
             @PathVariable("id") Long id,
             @PathVariable("specializationId") Long specializationId) {
-        Date currentDate = new Date(System.currentTimeMillis());
         return ResponseEntity.ok(visitRepository.findFirst1ByDoctor_doctorIdAndVisitStatusIdAndSpecialization_specializationIdAndVisitDateAfterOrderByVisitDateAsc(id, 1L, specializationId, currentDate));
     }
+    @GetMapping("/tomorrow")
+    public ResponseEntity<?> getVisitFromTomorrow() { /* test to delete*/
+        Date tomorrow = currentDate;
+        int futureDay =1;
+
+        java.sql.Date futureDate = this.addDays(currentDate, futureDay);
+        return ResponseEntity.ok(visitRepository.findByVisitDateAndVisitStatusId(futureDate,3L));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVisit(@PathVariable("id") Long id) {
         visitRepository.deleteById(id);
@@ -109,7 +126,6 @@ public class VisitController {
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<?> postOneDayVisit(@RequestBody List<Visit> newVisitList) throws ParseException {
-        Date currentDate = new Date(System.currentTimeMillis());
         for (Visit newVisit : newVisitList) {
             Date date2 = newVisit.getVisitDate();
             if (!(date2.after(currentDate))) {
@@ -150,7 +166,6 @@ public class VisitController {
             @PathVariable("status") Long status,
             @PathVariable("patient") Long patient) {
         Visit v = visitRepository.getById(id);
-        Date currentDate = new Date(System.currentTimeMillis());
         Date date2 = v.getVisitDate();
         Patient p=v.getPatient();
         Doctor d=v.getDoctor();
@@ -183,8 +198,6 @@ public class VisitController {
                 visitRepository.saveAndFlush(v);
                 return ResponseEntity.ok("");
             }
-
-
         }
         return (ResponseEntity<?>) ResponseEntity.badRequest().body("Date after current date");
     }
