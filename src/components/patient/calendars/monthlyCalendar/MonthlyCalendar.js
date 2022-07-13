@@ -46,7 +46,6 @@ function MonthlyCalendar({
   const [doctor, setDoctor] = useState({});
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupDayVew, setIsPopupDayVew] = useState(false);
   const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
   const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
 
@@ -134,7 +133,7 @@ function MonthlyCalendar({
                   let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-                    1,d.specialization.specializationId)
+                    1, d.specialization.specializationId)
                   setVisitArray(tmp)
                 }
               }}>
@@ -177,7 +176,7 @@ function MonthlyCalendar({
                   let tmp = await getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId(d.doctor.doctorId,
                     moment(tmpDateInFirstS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
                     moment(tmpDateInLastS, "YYYY-MM-DD d").format("YYYY-MM-DD"),
-                    1,d.specialization.specializationId)
+                    1, d.specialization.specializationId)
                   setVisitArray(tmp)
                 }
               }}>
@@ -185,14 +184,21 @@ function MonthlyCalendar({
             </button>
           </Col>
           {d === 0 ?
-            <Col className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+            <Col
+              className="col-10 col-sm-2 col-lg-2  offset-1 offset-sm-3 offset-lg-5 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar"
+              onClick={onCalendarVewChange}
+            >
               Miesiąc
             </Col>
             : <>
-              <Col className="col-12 col-md-2 col-lg-2   mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar no-cursor">
+              <Col
+                className="col-12 col-md-2 col-lg-2   mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar no-cursor">
                 {doctor.firstName + " " + doctor.lastName}
               </Col>
-              <Col className="col-12 col-md-2 col-lg-2 offset-md-1 offset-lg-2 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar" onClick={onCalendarVewChange}>
+              <Col
+                className="col-12 col-md-2 col-lg-2 offset-md-1 offset-lg-2 mt-2 pt-1 pt-sm-2 p-md-2 nav-calendar"
+                onClick={onCalendarVewChange}
+              >
                 Miesiąc
               </Col>
             </>}
@@ -223,11 +229,6 @@ function MonthlyCalendar({
           {squares.map((square) => {
             return (
               <div key={square.key}
-                onDoubleClick={() => {
-                  setIsPopupDayVew(true)
-                  setVisitList(square.visitList)
-                  setDateToVisitDayVew(square.date)
-                }}
                 className={
                   !square.thisMonth ?
                     "square not-this-month"
@@ -256,7 +257,7 @@ function MonthlyCalendar({
                                 (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
                                   (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
                                     : "visit  btn-danger col-11  m-1 visit"))}
-                              onDoubleClick={(e) => {
+                              onClick={(e) => {
                                 e.stopPropagation();
                                 setIsPopupInformationAboutVisit(true)
                                 setVisitToShow(visit)
@@ -277,7 +278,7 @@ function MonthlyCalendar({
                             (visit.visitStatusId === 3 ? "visit btn-success col-11  m-1 visit" :
                               (visit.visitStatusId === 2 ? "visit btn-warning col-11  m-1 visit"
                                 : "visit  btn-danger col-11  m-1 visit"))}
-                          onDoubleClick={(e) => {
+                          onClick={(e) => {
                             e.stopPropagation();
                             setIsPopupInformationAboutVisit(true)
                             setVisitToShow(visit)
@@ -314,7 +315,6 @@ function MonthlyCalendar({
           })
 
           setVisitArray(tmp)
-          //dispatch(setVisitL(tmp || 0))
           await patchVisit(visitToShow.visitId, 4, userId)
         }}
         onBookVisit={async () => {
@@ -330,7 +330,6 @@ function MonthlyCalendar({
             }
           })
           setVisitArray(tmp)
-          //dispatch(setVisitL(tmp || 0))
 
           await patchVisit(visitToShow.visitId, 2, userId)
         }}
@@ -343,32 +342,6 @@ function MonthlyCalendar({
       <PopupBookedVisitInformation
         open={isPopupBookedVisitInformation}
         onClose={() => { setIsPopupBookedVisitInformation(false); }}
-      />
-      <PopupDayVew
-        isDoctor={isDoctor}
-        userId={userId}
-        visitList={visitList}
-        dateToVisitDayVew={dateToVisitDayVew}
-        open={isPopupDayVew}
-        onClose={() => { setIsPopupDayVew(false); }}
-
-        onCancelVisit={async () => {
-          setIsPopupInformationAboutVisit(false);
-          setIsPopupCancelVisitInformation(true);
-
-          let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
-            else {
-              let tmpVisit = visit;
-              tmpVisit.visitStatusId = 4;
-              return tmpVisit;
-            }
-          })
-
-          setVisitArray(tmp)
-          //dispatch(setVisitL(tmp || 0))
-          await patchVisit(visitToShow.visitId, 4, userId)
-        }}
       />
     </div>
   )

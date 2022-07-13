@@ -39,7 +39,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'Gertruda','Zawadzka',4,'GertrudaZawadzka@dayrep.com','784485740'),(2,'Ludmita','Olszewska',5,'LudmitaOlszewska@teleworm.us','699820770'),(3,'Longin','Jasiński',6,'LonginJasinski@teleworm.us','694138682'),(4,'Jeronim','Michalski',7,'Michalski@jourrapide.com','606345593');
+INSERT INTO `patient` VALUES (1,'Gertruda','Zawadzka',4,'gertrudazawadzka31@gmail.com','784485740'),(2,'Ludmita','Olszewska',5,'LudmitaOlszewska@teleworm.us','699820770'),(3,'Longin','Jasiński',6,'LonginJasinski@teleworm.us','694138682'),(4,'Jeronim','Michalski',7,'Michalski@jourrapide.com','606345593');
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-11 13:02:24
+-- Dump completed on 2022-07-13 12:55:52
