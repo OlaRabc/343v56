@@ -1,4 +1,3 @@
-import './PopupDoctorInvalidData.css';
 import Modal from '../popupBasic/Modal';
 
 const PopupDoctorInvalidData = ({

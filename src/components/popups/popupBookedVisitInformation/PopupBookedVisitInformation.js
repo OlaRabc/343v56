@@ -1,4 +1,3 @@
-import './PopupBookedVisitInformation.css';
 import Modal from '../popupBasic/Modal';
 
 const PopupBookedVisitInformation = ({

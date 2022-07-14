@@ -1,4 +1,3 @@
-import './PopupDayVew.css';
 import Modal from '../popupBasic/Modal';
 import moment from "moment";
 import { visitObjectPrototype } from "./../../util/constantObject";
@@ -57,9 +56,6 @@ const PopupDayVew = ({
                 onClose={() => setIsPopupInformationAboutVisit(false)}
                 visit={visitToShow}
                 onCancelVisit={onCancelVisit}
-            //onAcceptVisit={()=>{console.log("dd")}}
-            //onRejectVisit={()=>{console.log("dd")}}
-            //onCancelVisit={()=>{console.log("dd")}}
             />
         </Modal>
     )

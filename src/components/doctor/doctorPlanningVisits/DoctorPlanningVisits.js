@@ -1,4 +1,3 @@
-import "./DoctorPlanningVisits.css";
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft } from "react-icons/ai";
