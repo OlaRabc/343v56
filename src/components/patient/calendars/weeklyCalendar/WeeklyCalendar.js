@@ -3,7 +3,6 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
-import { visitObjectPrototype } from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAktionInformation from "./../../../popups/popupAktionInformation/PopupAktionInformation";
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
@@ -18,7 +17,6 @@ function WeeklyCalendar({
   isPatientVew
 }) {
   const d = useSelector((state) => state.doctorId.value)
-  console.log(d)
   let actualDate = new Date(), tmp = new Date(), dateInL = new Date()
 
   let day = actualDate.getDay();
@@ -36,10 +34,10 @@ function WeeklyCalendar({
   const [isPopupAktionInformation, setIsPopupAktionInformation] = useState(false);
 
 
-  const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShow, setVisitToShow] = useState({});
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [doctor, setDoctor] = useState({});
-  const [message, setMessage]=useState("");
+  const [message, setMessage] = useState("");
 
   const [visitArray, setVisitArray] = useState([]);
 
@@ -77,10 +75,9 @@ function WeeklyCalendar({
 
     let date = moment(tmp).format("YYYY-MM-DD");
 
-    let tmpVisit = [];
-    visitArray.map((visit) => {
+    let tmpVisit = visitArray.filter((visit) => {
       if (visit.visitDate == date) {
-        tmpVisit.push(visit)
+        return(visit);
       }
     })
 

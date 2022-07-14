@@ -8,7 +8,6 @@ import PopupMessageVew from "./../../popups/popupMessageVew/PopupMessageVew";
 import { getPatientById, getMessageByPatientId } from "./../../../apiOperation/getOperaton/GetOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import { setDoctorId } from './../../../features/counter/counterSlice';
-import {patientPrototype} from './../../util/constantObject';
 function PatientPage() {
   const isDoctor = false, patientId = 1;
 
@@ -16,7 +15,7 @@ function PatientPage() {
   const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
-  const [patient, setPatient] = useState(patientPrototype);
+  const [patient, setPatient] = useState({});
   useEffect(() => {
     getMessageByPatientId(patientId)
       .then(data =>

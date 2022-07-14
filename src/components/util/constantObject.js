@@ -1,14 +1,4 @@
-export const patientPrototype = {
-  patientId: null,
-  firstName: null,
-  lastName: null,
-  mail: null,
-  phoneNumber: null,
-  cityId: {
-    cityId: null,
-    name: null
-  }
-}
+
 export const visitObjectPrototype = {
   visitId: null,
   visitStatusId: null,
@@ -27,7 +17,7 @@ export const visitObjectPrototype = {
       name: null
     }
   },
-  patient: patientPrototype,
+  patient: {},
   specialization: {
     specializationId: null,
     name: null,

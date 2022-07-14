@@ -188,14 +188,13 @@ function ScheduleVisitPlanning({
               let tmpDateEnd = moment(visitDateEnd).format("YYYY-MM-DD d") + moment(visitStart, "HH:mm").format(" HH:mm");
               let visitList = [];
 
-              let isCheckedDay;
-              checkedDay.map((day) => {
-                if (day === true) isCheckedDay = true;
+              let isCheckedDay = checkedDay.filter((day) => {
+                if (day === true) return true;
               })
 
               if (chosenSpecialization !== "null" && visitCount > 0 && visitCount < 13 && isCheckedDay && tmpDateStart < tmpDateEnd) {
                 let specializationId = 0;
-                doctorSpecializations.map((spec => {
+                doctorSpecializations.filter((spec => {
                   if (spec.specialization.name === chosenSpecialization)
                     specializationId = spec.specialization.specializationId
                 }));

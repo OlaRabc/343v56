@@ -2,7 +2,6 @@ import "./MonthlyCalendar.css";
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import moment from "moment";
-import { visitObjectPrototype } from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAktionInformation from "./../../../popups/popupAktionInformation/PopupAktionInformation";
@@ -10,7 +9,6 @@ import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateB
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
 import { whatMonth, helper } from './../../../util/dateHelper';
-
 
 function MonthlyCalendar({
   isDoctor,
@@ -37,7 +35,7 @@ function MonthlyCalendar({
   const [dateInLastSquare, setDateInLastSquare] = useState(dayInLastS);
 
   const [visitArray, setVisitArray] = useState([]);
-  const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShow, setVisitToShow] = useState({});
   const [visitList, setVisitList] = useState([]);
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
   const [doctor, setDoctor] = useState({});
@@ -75,15 +73,15 @@ function MonthlyCalendar({
   }, [])
 
   async function renderSquare(i) {
-    let thisMonth = true, tmpVisit = [];
+    let thisMonth = true;
     let tmpDate = moment(dateInFirstSquare, "YYYY-MM-DD d").add((i - 1), 'days').format("YYYY-MM-DD d");
     let tmpMonth = parseInt(moment(tmpDate, "YYYY-MM-DD d").format("MM"));
 
     if (tmpMonth !== month) thisMonth = false;
 
-    visitArray.map((visit) => {
+    let tmpVisit = visitArray.filter((visit) => {
       if (moment(visit.visitDate, "YYYY-MM-DD d").format("YYYY-MM-DD") == moment(tmpDate, "YYYY-MM-DD d").format("YYYY-MM-DD"))
-        tmpVisit.push(visit)
+        return(visit)
     })
 
     let tmpObj = { key: i, date: tmpDate, thisMonth: thisMonth, visitList: tmpVisit }
@@ -304,7 +302,7 @@ function MonthlyCalendar({
           setMessage("Wizyta odwołana");
 
           let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
+            if (visit?.visitId !== visitToShow?.visitId) return visit
             else {
               let tmpVisit = visit;
               tmpVisit.visitStatusId = 4;
@@ -313,7 +311,7 @@ function MonthlyCalendar({
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 4, userId)
+          await patchVisit(visitToShow?.visitId, 4, userId)
         }}
         onBookVisit={async () => {
           setIsPopupInformationAboutVisit(false);
@@ -322,7 +320,7 @@ function MonthlyCalendar({
 
 
           let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
+            if (visit?.visitId !== visitToShow?.visitId) return visit
             else {
               let tmpVisit = visit;
               tmpVisit.visitStatusId = 2;
@@ -331,7 +329,7 @@ function MonthlyCalendar({
           })
           setVisitArray(tmp)
 
-          await patchVisit(visitToShow.visitId, 2, userId)
+          await patchVisit(visitToShow?.visitId, 2, userId)
         }}
       />
       <PopupAktionInformation
