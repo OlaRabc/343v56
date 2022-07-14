@@ -5,9 +5,7 @@ import moment from "moment";
 import { visitObjectPrototype } from "./../../../util/constantObject";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
-import PopupDayVew from "./../../../popups/popupDayVew/PopupDayVew";
-import PopupBookedVisitInformation from "./../../../popups/popupBookedVisitInformation/PopupBookedVisitInformation";
+import PopupAktionInformation from "./../../../popups/popupAktionInformation/PopupAktionInformation";
 import { getVisitByPatientIdAndVisitDateBetween, getVisitByDoctorIdAndVisitDateBetweenAndVisitStatusAndSpecializationId, getDoctorById } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 import { useSelector, useDispatch } from 'react-redux';
@@ -40,14 +38,13 @@ function MonthlyCalendar({
 
   const [visitArray, setVisitArray] = useState([]);
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
-  const [visitToShowSquareId, setVisitToShowSquareId] = useState();
   const [visitList, setVisitList] = useState([]);
   const [dateToVisitDayVew, setDateToVisitDayVew] = useState();
   const [doctor, setDoctor] = useState({});
+  const [message, setMessage]=useState("");
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
-  const [isPopupBookedVisitInformation, setIsPopupBookedVisitInformation] = useState(false);
+  const [isPopupAktionInformation, setIsPopupAktionInformation] = useState(false);
 
   const dayOfWeekArray = ["Pon", "Wto", "Śro", "Czw", "Pią", "Sob", "Nie"];
   let squares = [];
@@ -303,7 +300,8 @@ function MonthlyCalendar({
         isDoctor={isDoctor}
         onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupCancelVisitInformation(true);
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta odwołana");
 
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
@@ -319,7 +317,9 @@ function MonthlyCalendar({
         }}
         onBookVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupBookedVisitInformation(true)
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta zarezerwowana");
+
 
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
@@ -334,15 +334,12 @@ function MonthlyCalendar({
           await patchVisit(visitToShow.visitId, 2, userId)
         }}
       />
+      <PopupAktionInformation
+        open={isPopupAktionInformation}
+        onClose={() => { setIsPopupAktionInformation(false); }}
+        message={message}
+      />
 
-      <PopupCancelVisitInformation
-        open={isPopupCancelVisitInformation}
-        onClose={() => { setIsPopupCancelVisitInformation(false); }}
-      />
-      <PopupBookedVisitInformation
-        open={isPopupBookedVisitInformation}
-        onClose={() => { setIsPopupBookedVisitInformation(false); }}
-      />
     </div>
   )
 }

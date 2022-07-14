@@ -5,10 +5,7 @@ import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
 import {visitObjectPrototype} from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
-import PopupAcceptedVisitInformation from "./../../../popups/popupAcceptedVisitInformation/PopupAcceptedVisitInformation";
-import PopupCancelVisitInformation from "./../../../popups/popupCancelVisitInformation/PopupCancelVisitInformation";
-import PopupRejectVisitInformation from "./../../../popups/popupRejectVisitInformation/PopupRejectVisitInformation";
-import PopupDeletedVisitInformation from "../../../popups/popupDeletedVisitInformation/PopupDeletedVisitInformation";
+import PopupAktionInformation from "./../../../popups/popupAktionInformation/PopupAktionInformation";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
 import { patchVisit } from "./../../../../apiOperation/patchOperation/PatchOperaton";
 
@@ -33,13 +30,11 @@ function WeeklyCalendar({
 
 
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
-  const [isPopupCancelVisitInformation, setIsPopupCancelVisitInformation] = useState(false);
-  const [isPopupAcceptedVisitInformation, setIsPopupAcceptedVisitInformation] = useState(false);
-  const [isPopupRejectVisitInformation, setIsPopupRejectVisitInformation] = useState(false);
-  const [isPopupDeletedVisitInformation, setIsPopupDeletedVisitInformation] = useState(false);
+  const [isPopupAktionInformation, setIsPopupAktionInformation] = useState(false);
 
   const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
+  const [message, setMessage]=useState("");
 
   const [visitArray, setVisitArray] = useState([]);
 
@@ -161,7 +156,7 @@ function WeeklyCalendar({
                         (visit.visitStatusId === 3 ? "btn btn-success col-11  m-1" :
                           (visit.visitStatusId === 2 ? "btn btn-warning col-11  m-1"
                             : "btn btn-danger col-11  m-1"))}
-                      onDoubleClick={(e) => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         setIsPopupInformationAboutVisit(true)
                         setVisitToShow(visit)
@@ -183,7 +178,8 @@ function WeeklyCalendar({
         isDoctor={isDoctor}
         onCancelVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupCancelVisitInformation(true);
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta odwołana")
 
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
@@ -199,7 +195,8 @@ function WeeklyCalendar({
         }}
         onAcceptVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupAcceptedVisitInformation(true);
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta zaakceptowana");
 
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
@@ -215,7 +212,8 @@ function WeeklyCalendar({
         }}
         onRejectVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupRejectVisitInformation(true);
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta odwołana");
 
           let tmp = visitArray.map((visit) => {
             if (visit.visitId !== visitToShow.visitId) return visit
@@ -232,7 +230,8 @@ function WeeklyCalendar({
         }}
         onDeleteVisit={async () => {
           setIsPopupInformationAboutVisit(false);
-          setIsPopupDeletedVisitInformation(true);
+          setIsPopupAktionInformation(true);
+          setMessage("Wizyta usunięta");
 
           let tmp = visitArray.filter((visit) => {
             return visit.visitId !== visitToShow.visitId
@@ -242,21 +241,10 @@ function WeeklyCalendar({
           await patchVisit(visitToShow.visitId, 5, userId)
         }}
       />
-      <PopupCancelVisitInformation
-        open={isPopupCancelVisitInformation}
-        onClose={() => { setIsPopupCancelVisitInformation(false); }}
-      />
-      <PopupRejectVisitInformation
-        open={isPopupRejectVisitInformation}
-        onClose={() => { setIsPopupRejectVisitInformation(false); }}
-      />
-      <PopupAcceptedVisitInformation
-        open={isPopupAcceptedVisitInformation}
-        onClose={() => { setIsPopupAcceptedVisitInformation(false); }}
-      />
-      <PopupDeletedVisitInformation
-        open={isPopupDeletedVisitInformation}
-        onClose={() => { setIsPopupDeletedVisitInformation(false); }}
+      <PopupAktionInformation
+        open={isPopupAktionInformation}
+        onClose={() => { setIsPopupAktionInformation(false); }}
+        message={message}
       />
     </Container>
   )
