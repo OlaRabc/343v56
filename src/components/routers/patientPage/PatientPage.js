@@ -72,13 +72,11 @@ function PatientPage() {
             onBack={() => {
               setAllVewsFale();
               setIsPatentOperationVew(true);
-              //
             }}
             onBackFromDctorCalendar={() => {
               setAllVewsFale();
               setIsPatientVisitRejestrationForm(true);
-              dispatch(setDoctorId(0))
-              //
+              dispatch(setDoctorId(0));
             }} />
           : ""}
         {isPatientVisitRejestrationForm ?

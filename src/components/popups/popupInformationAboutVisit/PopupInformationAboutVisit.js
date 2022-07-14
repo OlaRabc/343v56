@@ -1,4 +1,3 @@
-import './PopupInformationAboutVisit.css';
 import Modal from '../popupBasic/Modal';
 import moment from "moment";
 import React, { useState} from 'react';

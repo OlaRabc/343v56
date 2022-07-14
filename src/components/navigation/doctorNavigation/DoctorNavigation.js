@@ -1,4 +1,3 @@
-import './DoctorNavigation.css';
 import {AiOutlineMenu, AiOutlineImport, AiFillExclamationCircle, AiOutlineMessage} from "react-icons/ai";
 
 function DoctorNavigation({
