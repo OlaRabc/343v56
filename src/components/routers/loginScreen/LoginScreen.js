@@ -1,13 +1,13 @@
-import './LoginScrean.css';
+import './LoginScreen.css';
 import { Link } from "react-router-dom";
 import React, { useState } from 'react';
-function LoginScrean({
+function LoginScreen({
     onLoginPatient,
     onLoginDoctor
 }) {
     const [login, setLogin] = useState("")
     return (
-        <div className="col-12 col-md-6 login-screan">
+        <div className="col-12 col-md-6 login-screen">
             <form >
                 <div className="mt-2">
                     <label >
@@ -51,7 +51,8 @@ function LoginScrean({
                 <button
                     type="button"
                     className="btn btn-success col-12 mb-3  mt-4 "
-                    onClick={() => console.log("register")}>
+                    onClick={() => console.log("register")}
+                >
                     Zarejestruj się
                 </button>
             </form>
@@ -59,4 +60,4 @@ function LoginScrean({
     );
 }
 
-export default LoginScrean;
+export default LoginScreen;

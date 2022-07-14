@@ -3,7 +3,6 @@ import "./WeeklyCalendar.css";
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import moment from "moment";
-import {visitObjectPrototype} from "./../../../util/constantObject";
 import PopupInformationAboutVisit from "./../../../popups/popupInformationAboutVisit/PopupInformationAboutVisit";
 import PopupAktionInformation from "./../../../popups/popupAktionInformation/PopupAktionInformation";
 import { getVisitByDoctorIdAndVisitDateBetween } from "./../../../../apiOperation/getOperaton/GetOperaton";
@@ -32,9 +31,9 @@ function WeeklyCalendar({
   const [isPopupInformationAboutVisit, setIsPopupInformationAboutVisit] = useState(false);
   const [isPopupAktionInformation, setIsPopupAktionInformation] = useState(false);
 
-  const [visitToShow, setVisitToShow] = useState(visitObjectPrototype);
+  const [visitToShow, setVisitToShow] = useState({});
   const [visitToShowSquareId, setVisitToShowSquareId] = useState();
-  const [message, setMessage]=useState("");
+  const [message, setMessage] = useState("");
 
   const [visitArray, setVisitArray] = useState([]);
 
@@ -53,10 +52,9 @@ function WeeklyCalendar({
 
     let date = moment(tmp).format("YYYY-MM-DD");
 
-    let tmpVisit = [];
-    visitArray.map((visit) => {
+    let tmpVisit = visitArray.filter((visit) => {
       if (visit.visitDate == date) {
-        tmpVisit.push(visit)
+        return (visit)
       }
     })
 
@@ -82,11 +80,10 @@ function WeeklyCalendar({
 
               setDateInFirstSquare(dateInF)
               setDateInLastSquare(dateInL)
-             
+
               if (isDoctor === true) {
                 let tmpVisit = await getVisitByDoctorIdAndVisitDateBetween(userId, moment(dateInF).format("YYYY-MM-DD"), moment(dateInL).format("YYYY-MM-DD"))
                 setVisitArray(tmpVisit)
-                console.log(tmpVisit)
               }
             }}>
             <AiFillCaretLeft />
@@ -128,7 +125,6 @@ function WeeklyCalendar({
                   : "1px solid black",
                 color: day === "Nie" ? "red"
                   : "",
-
               }}
             >
               {day}
@@ -152,9 +148,9 @@ function WeeklyCalendar({
                   return (
                     <div
                       key={visit.visitId}
-                      className={visit.visitStatusId === 1 ? "btn btn-secondary col-11 m-1 " :
-                        (visit.visitStatusId === 3 ? "btn btn-success col-11  m-1" :
-                          (visit.visitStatusId === 2 ? "btn btn-warning col-11  m-1"
+                      className={visit?.visitStatusId === 1 ? "btn btn-secondary col-11 m-1 " :
+                        (visit?.visitStatusId === 3 ? "btn btn-success col-11  m-1" :
+                          (visit?.visitStatusId === 2 ? "btn btn-warning col-11  m-1"
                             : "btn btn-danger col-11  m-1"))}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -182,7 +178,7 @@ function WeeklyCalendar({
           setMessage("Wizyta odwołana")
 
           let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
+            if (visit?.visitId !== visitToShow?.visitId) return visit
             else {
               let tmpVisit = visit;
               tmpVisit.visitStatusId = 4;
@@ -191,7 +187,7 @@ function WeeklyCalendar({
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 4, userId)
+          await patchVisit(visitToShow?.visitId, 4, userId)
         }}
         onAcceptVisit={async () => {
           setIsPopupInformationAboutVisit(false);
@@ -199,7 +195,7 @@ function WeeklyCalendar({
           setMessage("Wizyta zaakceptowana");
 
           let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
+            if (visit?.visitId !== visitToShow?.visitId) return visit
             else {
               let tmpVisit = visit;
               tmpVisit.visitStatusId = 3;
@@ -208,7 +204,7 @@ function WeeklyCalendar({
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 3, userId)
+          await patchVisit(visitToShow?.visitId, 3, userId)
         }}
         onRejectVisit={async () => {
           setIsPopupInformationAboutVisit(false);
@@ -216,17 +212,17 @@ function WeeklyCalendar({
           setMessage("Wizyta odwołana");
 
           let tmp = visitArray.map((visit) => {
-            if (visit.visitId !== visitToShow.visitId) return visit
+            if (visit?.visitId !== visitToShow?.visitId) return visit
             else {
               let tmpVisit = visit;
               tmpVisit.visitStatusId = 1;
-              tmpVisit.patient=null;
+              tmpVisit.patient = null;
               return tmpVisit;
             }
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 1, userId)
+          await patchVisit(visitToShow?.visitId, 1, userId)
         }}
         onDeleteVisit={async () => {
           setIsPopupInformationAboutVisit(false);
@@ -234,11 +230,11 @@ function WeeklyCalendar({
           setMessage("Wizyta usunięta");
 
           let tmp = visitArray.filter((visit) => {
-            return visit.visitId !== visitToShow.visitId
+            return visit?.visitId !== visitToShow?.visitId
           })
 
           setVisitArray(tmp)
-          await patchVisit(visitToShow.visitId, 5, userId)
+          await patchVisit(visitToShow?.visitId, 5, userId)
         }}
       />
       <PopupAktionInformation

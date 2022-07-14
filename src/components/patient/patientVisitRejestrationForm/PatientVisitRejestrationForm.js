@@ -100,7 +100,7 @@ function PatientVisitRejestrationForm({
                   })
 
                   let tmpCity;
-                  cities.map((city) => {
+                  cities.filter((city) => {
                      if (city.name === chosenCity) tmpCity = city.cityId
                   })
 

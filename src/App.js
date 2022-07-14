@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import LoginScrean from "./components/routers/loginScrean/LoginScrean";
+import LoginScreen from "./components/routers/loginScreen/LoginScreen";
 import PatientPage from "./components/routers/patientPage/PatientPage";
 import DoctorPage from "./components/routers/doctorPage/DoctorPage";
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ function App() {
   const [nextPage, setNextPage] = useState("login");
   return (
     <div id="App">
-      {nextPage === "login" ? <LoginScrean
+      {nextPage === "login" ? <LoginScreen
         onLoginPatient={() => { setNextPage("parient") }}
         onLoginDoctor={() => { setNextPage("doctor") }}
       /> : ""}
@@ -27,7 +27,7 @@ function App() {
 export default App;
 /*<BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginScrean/>}>
+          <Route path="/" element={<LoginScreen/>}>
           </Route>
 
           <Route path="patient" element={<PatientPage/>}>

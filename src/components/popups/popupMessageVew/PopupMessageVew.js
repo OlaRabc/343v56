@@ -26,7 +26,6 @@ const PopupMessageVew = ({
                                     {msg.newStatusId === 2 ? "do zaakceptowania" :
                                         msg.newStatusId === 3 ? "zaakceptowana" :
                                             "odwołana"}
-
                                     <hr />
                                 </Col>
                             )

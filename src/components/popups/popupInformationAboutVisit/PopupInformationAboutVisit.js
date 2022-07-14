@@ -1,6 +1,6 @@
 import Modal from '../popupBasic/Modal';
 import moment from "moment";
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import PopupDoctorData from "./../popupDoctorData/PopupDoctorData";
 import PopupPatientData from "./../popupPatientData/PopupPatientData";
@@ -29,29 +29,27 @@ const PopupInformationAboutVisit = ({
             <Container>
                 <Row>
                     <Col
-                        className={visit.visitStatusId === 1 ?
+                        className={visit?.visitStatusId === 1 ?
                             "btn btn-secondary col-12" :
-                            (visit.visitStatusId === 3 ?
+                            (visit?.visitStatusId === 3 ?
                                 "btn btn-success col-12" :
-                                (visit.visitStatusId === 2
+                                (visit?.visitStatusId === 2
                                     ? "btn btn-warning col-12"
                                     : "btn btn-danger col-12"))
                         }
                         onClick={() => {
                             if (!isDoctor) setIsPopupDoctorData(true)
-                            if (isDoctor && visit.patient !== null) {
+                            if (isDoctor && visit?.patient !== null) {
                                 setIsPopupPatientData(true);
-                                setPatient(visit.patient);
+                                setPatient(visit?.patient);
                             }
                         }}>
                         {!isDoctor ?
                             "Dr " + visit
-                                .doctor.firstName + " " + visit
-                                    .doctor.lastName
-                            : (visit.patient == null ?
+                                .doctor?.firstName + " " + visit?.doctor?.lastName
+                            : (visit?.patient == null ?
                                 "Wolna Wizyta" :
-                                visit.patient.firstName + " " + visit
-                                    .patient.lastName
+                                visit?.patient?.firstName + " " + visit?.patient?.lastName
                             )}
                     </Col>
                 </Row>
@@ -60,39 +58,34 @@ const PopupInformationAboutVisit = ({
                         Data wizyty:
                     </Col>
                     <Col className="col-12 col-md-5 my-4 my-md-2">
-                        {moment(visit
-                            .visitDate).format("DD.MM.YYYY")}
+                        {moment(visit?.visitDate).format("DD.MM.YYYY")}
                     </Col>
                     <Col className="col-12 col-md-5 offset-md-2 my-2">
                         Początek wizyty:
                     </Col>
                     <Col className="col-12 col-md-5 my-4 my-md-2">
-                        {visit
-                            .visitStart}
+                        {visit?.visitStart}
                     </Col>
                     <Col className="col-12 col-md-5 offset-md-2 my-2">
                         Koniec wizyty:
                     </Col>
                     <Col className="col-12 col-md-5 my-4 my-md-2">
-                        {visit
-                            .visitEnd}
+                        {visit?.visitEnd}
                     </Col>
                     <Col className="col-12 col-md-5 offset-md-2 my-2">
                         Specjalizacja:
                     </Col>
                     <Col className="col-12 col-md-5 my-4 my-md-2">
-                        {visit
-                            .specialization.name}
+                        {visit?.specialization?.name}
                     </Col>
-                    {visit.patient === null ?
+                    {visit?.patient === null ?
                         "" :
                         <>
                             <Col className="col-12 col-md-5 offset-md-2 my-2">
                                 Telefon:
                             </Col>
                             <Col className="col-12 col-md-5 my-4 my-md-2">
-                                {visit
-                                    .patient.phoneNumber}
+                                {visit?.patient?.phoneNumber}
                             </Col>
                         </>
                     }
@@ -101,8 +94,7 @@ const PopupInformationAboutVisit = ({
                     Anuluj
                 </button>
 
-                {visit
-                    .visitStatusId === 2 && isDoctor && visit.visitDate > actualDate ? ( /*doctor? */
+                {visit?.visitStatusId === 2 && isDoctor && visit?.visitDate > actualDate ? ( /*doctor? */
                     <>
                         <button type="button" className="btn btn-primary col-12  mt-3" onClick={onAcceptVisit}>
                             {/*change visitSttus=green*/}
@@ -114,28 +106,28 @@ const PopupInformationAboutVisit = ({
                     </>
                 ) :
                     (
-                        visit.visitStatusId !== 4
-                            && visit.visitStatusId !== 5
-                            && visit.visitStatusId !== 1
-                            && visit.visitDate > actualDate ?
+                        visit?.visitStatusId !== 4
+                            && visit?.visitStatusId !== 5
+                            && visit?.visitStatusId !== 1
+                            && visit?.visitDate > actualDate ?
                             <button type="button" className="btn btn-primary col-12  mt-3" onClick={onCancelVisit}>
                                 {/*visitStatus=free     cancel*/}
                                 Odwołaj wizytę
                             </button> : ""
                     )}
-                {isDoctor && visit.visitDate > actualDate ?
+                {isDoctor && visit?.visitDate > actualDate ?
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onDeleteVisit}>
                         {/*visitStatus=free     cancel*/}
                         Usuń wizytę
                     </button>
                     : ""}
-                {isDoctor && visit.visitDate > actualDate && visit.visitStatusId === 4 ?
+                {isDoctor && visit?.visitDate > actualDate && visit?.visitStatusId === 4 ?
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onRejectVisit}>
                         {/*patient removed visit*/}
                         Odwołaj wizytę
                     </button>
                     : ""}
-                {!isDoctor && visit.visitStatusId === 1 && visit.visitDate > actualDate ?
+                {!isDoctor && visit?.visitStatusId === 1 && visit?.visitDate > actualDate ?
                     <button type="button" className="btn btn-primary col-12  mt-3" onClick={onBookVisit}>
                         Zarezerwuj
                     </button>
@@ -143,7 +135,7 @@ const PopupInformationAboutVisit = ({
                 }
             </Container>
             <PopupDoctorData
-                doctor={visit.doctor}
+                doctor={visit?.doctor}
                 open={isPopupDoctorData}
                 onClose={() => { setIsPopupDoctorData(false) }}
             />
